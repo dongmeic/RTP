@@ -1,0 +1,248 @@
+{
+  "currentVersion" : 10.81, 
+  "id" : 2, 
+  "name" : "Sidewalk", 
+  "type" : "Feature Layer", 
+  "serviceItemId" : "a12ed223723e432bbe70d842e93d4acc", 
+  "sourceSchemaChangesAllowed" : true, 
+  "hasViews" : true, 
+  "displayField" : "FIRST_Side", 
+  "description" : "", 
+  "copyrightText" : "", 
+  "defaultVisibility" : true, 
+  "editingInfo" : {
+    "lastEditDate" : 1599153017676
+  }, 
+  "relationships" : [], 
+  "isDataVersioned" : false, 
+  "supportsAppend" : true, 
+  "supportsCalculate" : true, 
+  "supportsASyncCalculate" : true, 
+  "supportsTruncate" : false, 
+  "supportsAttachmentsByUploadId" : true, 
+  "supportsAttachmentsResizing" : true, 
+  "supportsRollbackOnFailureParameter" : true, 
+  "supportsStatistics" : true, 
+  "supportsExceedsLimitStatistics" : true, 
+  "supportsAdvancedQueries" : true, 
+  "supportsValidateSql" : true, 
+  "supportsCoordinatesQuantization" : true, 
+  "supportsLayerOverrides " : true, 
+  "supportsTilesAndBasicQueriesMode " : true, 
+  "supportsFieldDescriptionProperty" : true, 
+  "supportsQuantizationEditMode" : true, 
+  "supportsApplyEditsWithGlobalIds" : true, 
+  "supportsMultiScaleGeometry" : true, 
+  "supportsReturningQueryGeometry" : true, 
+  "hasGeometryProperties" : true, 
+  "geometryProperties" : 
+  {
+    "shapeLengthFieldName" : "Shape__Length", 
+    "units" : "esriFeet"
+  }, 
+  "advancedQueryCapabilities" : {
+    "supportsPagination" : true, 
+    "supportsPaginationOnAggregatedQueries" : true, 
+    "supportsQueryRelatedPagination" : true, 
+    "supportsQueryWithDistance" : true, 
+    "supportsReturningQueryExtent" : true, 
+    "supportsStatistics" : true, 
+    "supportsOrderBy" : true, 
+    "supportsDistinct" : true, 
+    "supportsQueryWithResultType" : true, 
+    "supportsSqlExpression" : true, 
+    "supportsAdvancedQueryRelated" : true, 
+    "supportsCountDistinct" : true, 
+    "supportsPercentileStatistics" : true, 
+    "supportsLod" : true, 
+    "supportsQueryWithLodSR" : false, 
+    "supportedLodTypes" : [
+      "geohash"
+    ], 
+    "supportsReturningGeometryCentroid" : false, 
+    "supportsReturningGeometryProperties" : true, 
+    "supportsQueryWithDatumTransformation" : true, 
+    "supportsHavingClause" : true, 
+    "supportsOutFieldSQLExpression" : true, 
+    "supportsMaxRecordCountFactor" : true, 
+    "supportsTopFeaturesQuery" : true, 
+    "supportsDisjointSpatialRel" : true, 
+    "supportsQueryWithCacheHint" : true, 
+    "supportsQueryAnalytic" : true
+  }, 
+  "useStandardizedQueries" : true, 
+  "geometryType" : "esriGeometryPolyline", 
+  "minScale" : 0, 
+  "maxScale" : 0, 
+  "extent" : {
+    "xmin" : 4251132.1986430464, 
+    "ymin" : 869555.5751312346, 
+    "xmax" : 4293984.0884068329, 
+    "ymax" : 894352.3690944874, 
+    "spatialReference" : {
+      "wkt" : "PROJCS[\"NAD_1983_StatePlane_Oregon_South_FIPS_3602_Feet_Intl\",GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4921259.843],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-120.5],PARAMETER[\"Standard_Parallel_1\",42.33333333333333],PARAMETER[\"Standard_Parallel_2\",44.0],PARAMETER[\"Latitude_Of_Origin\",41.66666666666666],UNIT[\"Foot\",0.3048]]"
+    }
+  }, 
+  "drawingInfo":{"renderer":{"type":"simple","symbol":{"type":"esriSLS","style":"esriSLSSolid","color":[171,0,162,255],"width":2},"label":"","description":""},"transparency":0,"labelingInfo":null}, 
+  "allowGeometryUpdates" : true, 
+  "hasAttachments" : false, 
+  "htmlPopupType" : "esriServerHTMLPopupTypeAsHTMLText", 
+  "hasM" : true, 
+  "allowUpdateWithoutMValues" : false, 
+  "hasZ" : true, 
+  "enableZDefaults" : true, 
+  "zDefault" : 0, 
+  "objectIdField" : "OBJECTID_1", 
+  "uniqueIdField" : 
+  {
+    "name" : "OBJECTID_1", 
+    "isSystemMaintained" : true
+  }, 
+  "globalIdField" : "GlobalID", 
+  "typeIdField" : "", 
+  "fields" : [
+    {
+      "name" : "OBJECTID_1", 
+      "type" : "esriFieldTypeOID", 
+      "alias" : "OBJECTID_1", 
+      "sqlType" : "sqlTypeOther", 
+      "nullable" : false, 
+      "editable" : false, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "OBJECTID", 
+      "type" : "esriFieldTypeInteger", 
+      "alias" : "OBJECTID", 
+      "sqlType" : "sqlTypeOther", 
+      "nullable" : true, 
+      "editable" : true, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "DIS", 
+      "type" : "esriFieldTypeInteger", 
+      "alias" : "DIS", 
+      "sqlType" : "sqlTypeOther", 
+      "nullable" : true, 
+      "editable" : true, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "FIRST_Side", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "FIRST_Side", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 254, 
+      "nullable" : true, 
+      "editable" : true, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "LAST_Sidew", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "LAST_Sidew", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 254, 
+      "nullable" : true, 
+      "editable" : true, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "SHAPE_Leng", 
+      "type" : "esriFieldTypeDouble", 
+      "alias" : "SHAPE_Leng", 
+      "sqlType" : "sqlTypeOther", 
+      "nullable" : true, 
+      "editable" : true, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "GlobalID", 
+      "type" : "esriFieldTypeGlobalID", 
+      "alias" : "", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 38, 
+      "nullable" : false, 
+      "editable" : false, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "Shape__Length", 
+      "type" : "esriFieldTypeDouble", 
+      "alias" : "Shape__Length", 
+      "sqlType" : "sqlTypeDouble", 
+      "nullable" : true, 
+      "editable" : false, 
+      "domain" : null, 
+      "defaultValue" : null
+    }
+  ], 
+  "indexes" : [
+    {
+      "name" : "PK__SIDEWALK__E458E6E779F7383F", 
+      "fields" : "OBJECTID_1", 
+      "isAscending" : true, 
+      "isUnique" : true, 
+      "description" : ""
+    }, 
+    {
+      "name" : "user_13349.SIDEWALK_SIDEWALK_Shape_sidx", 
+      "fields" : "Shape", 
+      "isAscending" : true, 
+      "isUnique" : false, 
+      "description" : ""
+    }, 
+    {
+      "name" : "Shape__Length_Index", 
+      "fields" : "Shape__Length", 
+      "isAscending" : true, 
+      "isUnique" : false, 
+      "description" : ""
+    }, 
+    {
+      "name" : "GlobalID_idx", 
+      "fields" : "GlobalID", 
+      "isAscending" : true, 
+      "isUnique" : true, 
+      "description" : ""
+    }
+  ], 
+  "dateFieldsTimeReference" : {
+    "timeZone" : "UTC", 
+    "respectsDaylightSaving" : false
+  }, 
+  "preferredTimeReference" : null, 
+  "types" : [], 
+  "templates" : [
+    {
+      "name" : "Sidewalk", 
+      "description" : "", 
+      "drawingTool" : "esriFeatureEditToolLine", 
+      "prototype" : {
+        "attributes" : {
+          "LAST_Sidew" : null, 
+          "SHAPE_Leng" : null, 
+          "OBJECTID" : null, 
+          "DIS" : null, 
+          "FIRST_Side" : null
+        }
+      }
+    }
+  ], 
+  "supportedQueryFormats" : "JSON, geoJSON, PBF", 
+  "hasStaticData" : false, 
+  "maxRecordCount" : 1000, 
+  "standardMaxRecordCount" : 4000, 
+  "standardMaxRecordCountNoGeometry" : 32000, 
+  "tileMaxRecordCount" : 4000, 
+  "maxRecordCountFactor" : 1, 
+  "capabilities" : "Create,Query,Update,Editing,Sync"
+}
