@@ -1,7 +1,7 @@
 # RTP_Mapping
 The repo is to collect data for RTP travel model and mapping
 
-# Required datasets
+# Required datasets for performance analysis
 
 1. Transit stops and high frequency stops
 
@@ -15,3 +15,5 @@ The repo is to collect data for RTP travel model and mapping
 
 6. Title VI category 3 and 4
 
+
+# Required datasets for web-mapping
