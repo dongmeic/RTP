@@ -17,7 +17,7 @@ The repo is to collect data for RTP travel model and mapping
 
 
 # Required datasets for web-mapping
-Transportation:
+## Transportation
 
 ·        Roads (interstate, state freeways, arterials)
 
@@ -26,7 +26,7 @@ Transportation:
 ·        Bike/Ped facilities
 
 
-General land use (economic development)
+## General land use (economic development)
 
 o   Educational center
 
@@ -36,9 +36,8 @@ o   Industrial district
 
 o   Special district
 
- 
 
-RTP
+## RTP
 
 Project modes
 
@@ -48,7 +47,7 @@ Project modes
 
 ·        Bike/Ped
 
-Recreation
+## Recreation
 
 ·        Community centers 
 
@@ -69,21 +68,19 @@ o   Rural preservation
 o   Stream preservation
  
  
-Access to opportunities
+## Access to opportunities
 
 ·        Workplace accessibility auto
 
 ·        Workplace accessibility transit
- 
 
-Growth projections
+## Growth projections
 
 ·        Population projections
 
 ·        Employment projections
 
-
-Active transportation
+## Active transportation
 
 ·        Planned pathways
 
@@ -93,7 +90,7 @@ Active transportation
 
 ·        Existing bike on-street
 
-Future land use
+## Future land use
 
 ·        Generalized future land use - city
 
