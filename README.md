@@ -56,7 +56,7 @@ o   Rural preservation
 o   Stream preservation
  
  
-## Access to opportunities
+## Access to opportunities (off-peak and peaking)
 
 ·        Workplace accessibility auto
 
