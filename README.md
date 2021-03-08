@@ -80,4 +80,4 @@ o   Stream preservation
 
 ## Land use
 
-## Plan designations
+## Plan designations (future land use)
