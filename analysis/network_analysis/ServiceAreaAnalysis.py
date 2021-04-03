@@ -1,4 +1,4 @@
-import arcpy, os
+import arcpy, os, datetime
 from arcpy import env
 
 env.overwriteOutput = True
@@ -36,9 +36,13 @@ def ServiceAreaAnalysis(layer_name = "Service Area",
     facilities_sublayer = layer_object.listLayers(facilities_layer_name)[0]
     polygons_sublayer = layer_object.listLayers(polygons_layer_name)[0]
     print('Solving service area...')
+    now = datetime.datetime.now()
     solver_properties = arcpy.na.GetSolverProperties(layer_object)
     arcpy.na.Solve(layer_object)
     print('Done...')
+    later = datetime.datetime.now()
+    elapsed = later - now
+    print(elapsed)
     print('Exporting service area polygons...')
     arcpy.management.AddJoin(polygons_sublayer, "FacilityID", facilities_sublayer, "ObjectID")
     out_featureclass = "SA" + mode + destination
