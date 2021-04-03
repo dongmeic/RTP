@@ -1,4 +1,4 @@
-# RTP_Mapping
+# RTP
 The repo is to collect data for RTP travel model and mapping
 
 # Required datasets for performance analysis
