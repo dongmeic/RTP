@@ -3,6 +3,8 @@ from arcpy import env
 
 env.overwriteOutput = True
 env.workspace = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\Network_Analysis\Network_Analysis.gdb"
+input_folder = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources"
+inNetworkDataset = "Network_Ped_Bike/Network_ND"
 
 if arcpy.CheckExtension("network") == "Available":
     arcpy.CheckOutExtension("network")
@@ -33,7 +35,7 @@ def ServiceAreaAnalysis(layer_name = "Service Area",
     print('Done...')
     facilities_sublayer = layer_object.listLayers(facilities_layer_name)[0]
     polygons_sublayer = layer_object.listLayers(polygons_layer_name)[0]
-    print('Sovling service area...')
+    print('Solving service area...')
     solver_properties = arcpy.na.GetSolverProperties(layer_object)
     arcpy.na.Solve(layer_object)
     print('Done...')
