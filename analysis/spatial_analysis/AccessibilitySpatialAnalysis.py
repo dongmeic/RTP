@@ -9,7 +9,6 @@ path = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\PerformanceAnalysis\serv
 def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                  condition = "ohh > 0",
                                  newfield = "sa_jobs",
-                                 sa_layer = "SABikingJobs",
                                  AOI = "MPO",
                                  bound = os.path.join(path, "equity_area.shp"),
                                  sa_point_layer = "baseyearJobs_FeatureToPoint",
@@ -28,24 +27,40 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
     with arcpy.da.UpdateCursor(layer_name, ['ORIG_FID', newfield]) as cursor: 
         for row in cursor:
             arcpy.management.SelectLayerByAttribute(layer_name, "NEW_SELECTION", "ORIG_FID = {0}".format(row[0]), None)
-            arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", sa_layer, 
+            if year == 2020:
+                arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", "SA" + travel_mode + service, 
                                                    None, "NEW_SELECTION", "NOT_INVERT")
+            elif year == 2045:
+                arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", "SA" + travel_mode + service + str(year), 
+                                                   None, "NEW_SELECTION", "NOT_INVERT")
+                
+            
             if AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
                 arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, 
                                                    None, "SUBSET_SELECTION", "NOT_INVERT")
                 if AOI == "NEFA":
                     arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, 
                                                    None, "SWITCH_SELECTION", "NOT_INVERT")
-                
             table = arcpy.AddJoin_management(sa_layer, "ObjectID", sa_point_layer, "ORIG_FID", "KEEP_COMMON")
             arcpy.CopyFeatures_management(table, "joinedtable")
-            fieldName = sa_point_layer + "_" + jobfield
-            fieldsum = arcpy.da.TableToNumPyArray("joinedtable", fieldName, skip_nulls=True)
-            row[1] = fieldsum[fieldName].sum()
+            
+            if service == "Jobs":
+                fieldName = sa_point_layer + "_" + jobfield
+                fieldsum = arcpy.da.TableToNumPyArray("joinedtable", fieldName, skip_nulls=True)
+                row[1] = fieldsum[fieldName].sum()
+            elif service == "Amenities":
+                fieldcount = arcpy.da.TableToNumPyArray("joinedtable", "ObjectID", skip_nulls=True)
+                row[1] = fieldsum[fieldName].count()
+                
             cursor.updateRow(row)
+            
     later = datetime.datetime.now()
     elapsed = later - now
-    print("updated field values for {0} completed by {1}...".format(AOI + service + travel_mode + str(year), elapsed))
+    print("updated field values for {0} by {1} in {2} in {3} completed with {4} seconds...".format(service, 
+                                                                                                   travel_mode, 
+                                                                                                   AOI, 
+                                                                                                   str(year), 
+                                                                                                   elapsed))
     arcpy.SelectLayerByAttribute_management(layer_name, "CLEAR_SELECTION")
     arcpy.CopyFeatures_management(layer_name, layer_name)
     
