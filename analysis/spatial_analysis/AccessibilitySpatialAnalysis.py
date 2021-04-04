@@ -1,4 +1,4 @@
-import arcpy, os, numpy
+import arcpy, os, numpy, datetime
 from arcpy import env
 
 env.workspace = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\Network_Analysis\Network_Analysis.gdb"
@@ -10,10 +10,13 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                  condition = "ohh > 0",
                                  newfield = "sa_jobs",
                                  sa_layer = "SABikingJobs",
-                                 AOI = "MPO',
+                                 AOI = "MPO",
                                  bound = os.path.join(path, "equity_area.shp"),
                                  sa_point_layer = "baseyearJobs_FeatureToPoint",
-                                 jobfield = "jobs"):
+                                 jobfield = "jobs",
+                                 service = "Jobs",
+                                 travel_mode = "Biking",
+                                 year = 2020):
     arcpy.management.MakeFeatureLayer("parcels_FeatureToPoint", layer_name, condition)
     fieldList = arcpy.ListFields(layer_name)
     field_names = [f.name for f in fieldList]
@@ -42,7 +45,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
             cursor.updateRow(row)
     later = datetime.datetime.now()
     elapsed = later - now
-    print("updated field values for {0} completed by {1}...".format(AOI + jobfield + "_" + layer_name, elapsed))
+    print("updated field values for {0} completed by {1}...".format(AOI + service + travel_mode + str(year), elapsed))
     arcpy.SelectLayerByAttribute_management(layer_name, "CLEAR_SELECTION")
     arcpy.CopyFeatures_management(layer_name, layer_name)
     
