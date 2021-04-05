@@ -11,7 +11,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                  newfield = "sa_jobs",
                                  AOI = "MPO",
                                  bound = os.path.join(path, "equity_area.shp"),
-                                 sa_point_layer = "baseyearJobs_FeatureToPoint",
+                                 point_layer = "baseyearJobs_FeatureToPoint",
                                  jobfield = "jobs",
                                  service = "Jobs",
                                  travel_mode = "Biking",
@@ -22,7 +22,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
     if year == 2045:
         sa_layer = sa_layer + str(year)
         
-    table = arcpy.AddJoin_management(sa_layer, "ObjectID", sa_point_layer, "ORIG_FID", "KEEP_COMMON")
+    table = arcpy.AddJoin_management(sa_layer, "ObjectID", point_layer, "ORIG_FID", "KEEP_COMMON")
     arcpy.CopyFeatures_management(table, "joinedtable")
     
     arcpy.management.MakeFeatureLayer("parcels_FeatureToPoint", layer_name, condition)
@@ -35,6 +35,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
     now = datetime.datetime.now()
     with arcpy.da.UpdateCursor(layer_name, ['ORIG_FID', newfield]) as cursor: 
         for row in cursor:
+            print(row)
             targetHH = arcpy.management.SelectLayerByAttribute(layer_name, "NEW_SELECTION", "ORIG_FID = {0}".format(row[0]), 
                                                            None)
             selectedSA = arcpy.management.SelectLayerByLocation("joinedtable", "COMPLETELY_CONTAINS", targetHH, 
@@ -48,7 +49,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                                    None, "SWITCH_SELECTION", "NOT_INVERT")
             
             if service == "Jobs":
-                fieldName = sa_point_layer + "_" + jobfield
+                fieldName = point_layer + "_" + jobfield
                 fieldsum = arcpy.da.TableToNumPyArray(selectedSA, fieldName, skip_nulls=True)
                 value = fieldsum[fieldName].sum()
                 row[1] = value
@@ -59,6 +60,7 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                 row[1] = value
                 
             cursor.updateRow(row)
+            print(value)
             
     later = datetime.datetime.now()
     elapsed = later - now
