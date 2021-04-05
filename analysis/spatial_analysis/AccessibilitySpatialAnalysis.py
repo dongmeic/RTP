@@ -16,6 +16,15 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                  service = "Jobs",
                                  travel_mode = "Biking",
                                  year = 2020):
+    
+    sa_layer = "SA" + travel_mode + service
+    
+    if year == 2045:
+        sa_layer = sa_layer + str(year)
+        
+    table = arcpy.AddJoin_management(sa_layer, "ObjectID", sa_point_layer, "ORIG_FID", "KEEP_COMMON")
+    arcpy.CopyFeatures_management(table, "joinedtable")
+    
     arcpy.management.MakeFeatureLayer("parcels_FeatureToPoint", layer_name, condition)
     fieldList = arcpy.ListFields(layer_name)
     field_names = [f.name for f in fieldList]
@@ -26,31 +35,28 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
     now = datetime.datetime.now()
     with arcpy.da.UpdateCursor(layer_name, ['ORIG_FID', newfield]) as cursor: 
         for row in cursor:
-            arcpy.management.SelectLayerByAttribute(layer_name, "NEW_SELECTION", "ORIG_FID = {0}".format(row[0]), None)
-            if year == 2020:
-                arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", "SA" + travel_mode + service, 
-                                                   None, "NEW_SELECTION", "NOT_INVERT")
-            elif year == 2045:
-                arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", "SA" + travel_mode + service + str(year), 
-                                                   None, "NEW_SELECTION", "NOT_INVERT")
-                
+            targetHH = arcpy.management.SelectLayerByAttribute(layer_name, "NEW_SELECTION", "ORIG_FID = {0}".format(row[0]), 
+                                                           None)
+            selectedSA = arcpy.management.SelectLayerByLocation("joinedtable", "COMPLETELY_CONTAINS", targetHH, 
+                                               None, "NEW_SELECTION", "NOT_INVERT")         
             
             if AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
-                arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, 
+                arcpy.management.SelectLayerByLocation(selectedSA, "INTERSECT", bound, 
                                                    None, "SUBSET_SELECTION", "NOT_INVERT")
                 if AOI == "NEFA":
-                    arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, 
+                    arcpy.management.SelectLayerByLocation(selectedSA, "INTERSECT", bound, 
                                                    None, "SWITCH_SELECTION", "NOT_INVERT")
-            table = arcpy.AddJoin_management(sa_layer, "ObjectID", sa_point_layer, "ORIG_FID", "KEEP_COMMON")
-            arcpy.CopyFeatures_management(table, "joinedtable")
             
             if service == "Jobs":
                 fieldName = sa_point_layer + "_" + jobfield
-                fieldsum = arcpy.da.TableToNumPyArray("joinedtable", fieldName, skip_nulls=True)
-                row[1] = fieldsum[fieldName].sum()
+                fieldsum = arcpy.da.TableToNumPyArray(selectedSA, fieldName, skip_nulls=True)
+                value = fieldsum[fieldName].sum()
+                row[1] = value
             elif service == "Amenities":
-                fieldcount = arcpy.da.TableToNumPyArray("joinedtable", "ObjectID", skip_nulls=True)
-                row[1] = fieldsum[fieldName].count()
+                fieldName = "ObjectID"
+                fieldcount = arcpy.da.TableToNumPyArray(selectedSA, fieldName, skip_nulls=True)
+                value = fieldsum[fieldName].count()
+                row[1] = value
                 
             cursor.updateRow(row)
             
