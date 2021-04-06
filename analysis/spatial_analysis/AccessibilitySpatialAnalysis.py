@@ -6,7 +6,67 @@ env.overwriteOutput = True
 
 path = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\PerformanceAnalysis\service_transit_equity"
 
-def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
+
+def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
+                             AOI = "MPO",
+                             bound = os.path.join(path, "equity_area.shp"),
+                             point_layer = "baseyearJobs_FeatureToPoint",
+                             jobfield = "ojobs",
+                             service = "Jobs",
+                             travel_mode = "Biking",
+                             year = 2020):
+    
+    sa_layer = "SA" + travel_mode + service
+    
+    if year == 2045:
+        sa_layer = sa_layer + str(year)
+        
+    table = arcpy.AddJoin_management(sa_layer, "ObjectID", point_layer, "ORIG_FID", "KEEP_COMMON")
+    arcpy.CopyFeatures_management(table, "joinedtable")
+    
+    now = datetime.datetime.now()
+    out_layer = AOI + service + travel_mode + year
+    
+    fieldnm = point_layer + "_" + jobfield
+    
+    
+    arcpy.analysis.SpatialJoin(layer_name, "joinedtable", out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 
+                '''btype "btype" true true false 80 Text 0 0,First,#,{0},btype,0,80;
+                   nrsqft "nrsqft" true true false 8 Double 0 0,First,#,{0},nrsqft,-1,-1;
+                   rsqft "rsqft" true true false 8 Double 0 0,First,#,{0},rsqft,-1,-1;
+                   du "du" true true false 8 Double 0 0,First,#,{0},du,-1,-1;
+                   yrbuilt "yrbuilt" true true false 8 Double 0 0,First,#,{0},yrbuilt,-1,-1;
+                   lpid "lpid" true true false 8 Double 0 0,First,#,{0},lpid,-1,-1;
+                   pundev "pundev" true true false 8 Double 0 0,First,#,{0},pundev,-1,-1;
+                   dev_land "dev_land" true true false 8 Double 0 0,First,#,{0},dev_land,-1,-1;
+                   developed "developed" true true false 8 Double 0 0,First,#,{0},developed,-1,-1;
+                   obtype "obtype" true true false 80 Text 0 0,First,#,{0},obtype,0,80;
+                   orsqft "orsqft" true true false 8 Double 0 0,First,#,{0},orsqft,-1,-1;
+                   onrsqft "onrsqft" true true false 8 Double 0 0,First,#,{0},onrsqft,-1,-1;
+                   odu "odu" true true false 8 Double 0 0,First,#,{0},odu,-1,-1;
+                   zid "zid" true true false 8 Double 0 0,First,#,{0},zid,-1,-1;
+                   rezoned "rezoned" true true false 8 Double 0 0,First,#,{0},rezoned,-1,-1;
+                   city "city" true true false 80 Text 0 0,First,#,{0},city,0,80;
+                   annexed "annexed" true true false 8 Double 0 0,First,#,{0},annexed,-1,-1;
+                   ozid "ozid" true true false 8 Double 0 0,First,#,{0},ozid,-1,-1;
+                   AreaPerJob "AreaPerJob" true true false 8 Double 0 0,First,#,{0},AreaPerJob,-1,-1;
+                   isNonRes "isNonRes" true true false 4 Long 0 0,First,#,{0},isNonRes,-1,-1;
+                   jobs "jobs" true true false 8 Double 0 0,First,#,{0},jobs,-1,-1;
+                   ojobs "ojobs" true true false 8 Double 0 0,First,#,{0},ojobs,-1,-1;
+                   hh "hh" true true false 8 Double 0 0,First,#,{0},hh,-1,-1;
+                   ohh "ohh" true true false 8 Double 0 0,First,#,{0},ohh,-1,-1;
+                   ORIG_FID "ORIG_FID" true true false 4 Long 0 0,First,#,{0},ORIG_FID,-1,-1;
+                    {1} "ojobs" true true false 8 Double 0 0,Sum,#,joinedtable,{1},-1,-1;
+Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,joinedtable,Shape_Length,-1,-1;
+Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,joinedtable,Shape_Area,-1,-1'''.format(layer_name,fieldnm), "COMPLETELY_WITHIN", None, '')
+    later = datetime.datetime.now()
+    elapsed = later - now
+    print(elapsed)
+
+
+
+# Do Not Run - way too slow with thousands of points
+def AccessibilitySA_withCursor(layer_name = "baseyear_hh",
                                  condition = "ohh > 0",
                                  newfield = "sa_jobs",
                                  AOI = "MPO",
@@ -71,4 +131,5 @@ def AccessibilitySpatialAnalysis(layer_name = "baseyear_hh",
                                                                                                    elapsed))
     arcpy.SelectLayerByAttribute_management(layer_name, "CLEAR_SELECTION")
     arcpy.CopyFeatures_management(layer_name, layer_name)
+    
     
