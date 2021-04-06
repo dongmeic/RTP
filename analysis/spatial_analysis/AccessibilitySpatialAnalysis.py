@@ -27,42 +27,22 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
     now = datetime.datetime.now()
     out_layer = AOI + service + travel_mode + year
     
-    fieldnm = point_layer + "_" + jobfield
+    if AOI == "MPO":
+        input_layer = layer_name
+        elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
+            input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, None, 
+                                                                 "NEW_SELECTION", "NOT_INVERT")
+            if AOI == "NEFA":
+                input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", bound, None, 
+                                                                     "SWITCH_SELECTION", "NOT_INVERT")
     
+    arcpy.analysis.SpatialJoin(input_layer, "joinedtable", out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON",
+                           'btype "btype" true true false 80 Text 0 0,First,#,{0},btype,0,80;nrsqft "nrsqft" true true false 8 Double 0 0,First,#,{0},nrsqft,-1,-1;rsqft "rsqft" true true false 8 Double 0 0,First,#,{0},rsqft,-1,-1;du "du" true true false 8 Double 0 0,First,#,{0},du,-1,-1;yrbuilt "yrbuilt" true true false 8 Double 0 0,First,#,{0},yrbuilt,-1,-1;lpid "lpid" true true false 8 Double 0 0,First,#,{0},lpid,-1,-1;pundev "pundev" true true false 8 Double 0 0,First,#,{0},pundev,-1,-1;dev_land "dev_land" true true false 8 Double 0 0,First,#,{0},dev_land,-1,-1;developed "developed" true true false 8 Double 0 0,First,#,{0},developed,-1,-1;obtype "obtype" true true false 80 Text 0 0,First,#,{0},obtype,0,80;orsqft "orsqft" true true false 8 Double 0 0,First,#,{0},orsqft,-1,-1;onrsqft "onrsqft" true true false 8 Double 0 0,First,#,{0},onrsqft,-1,-1;odu "odu" true true false 8 Double 0 0,First,#,{0},odu,-1,-1;zid "zid" true true false 8 Double 0 0,First,#,{0},zid,-1,-1;rezoned "rezoned" true true false 8 Double 0 0,First,#,{0},rezoned,-1,-1;city "city" true true false 80 Text 0 0,First,#,{0},city,0,80;annexed "annexed" true true false 8 Double 0 0,First,#,{0},annexed,-1,-1;ozid "ozid" true true false 8 Double 0 0,First,#,{0},ozid,-1,-1;AreaPerJob "AreaPerJob" true true false 8 Double 0 0,First,#,{0},AreaPerJob,-1,-1;isNonRes "isNonRes" true true false 4 Long 0 0,First,#,{0},isNonRes,-1,-1;jobs "jobs" true true false 8 Double 0 0,First,#,{0},jobs,-1,-1;ojobs "ojobs" true true false 8 Double 0 0,First,#,{0},ojobs,-1,-1;hh "hh" true true false 8 Double 0 0,First,#,{0},hh,-1,-1;ohh "ohh" true true false 8 Double 0 0,First,#,{0},ohh,-1,-1;ORIG_FID "ORIG_FID" true true false 4 Long 0 0,First,#,{0},ORIG_FID,-1,-1;{1}_{2} "{2}" true true false 8 Double 0 0,Sum,#,joinedtable,{1}_{2},-1,-1;Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,joinedtable,Shape_Length,-1,-1;Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,joinedtable,Shape_Area,-1,-1'.format(layer_name, point_layer, jobfield), 
+                           "COMPLETELY_WITHIN", None, '')
     
-    arcpy.analysis.SpatialJoin(layer_name, "joinedtable", out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 
-                '''btype "btype" true true false 80 Text 0 0,First,#,{0},btype,0,80;
-                   nrsqft "nrsqft" true true false 8 Double 0 0,First,#,{0},nrsqft,-1,-1;
-                   rsqft "rsqft" true true false 8 Double 0 0,First,#,{0},rsqft,-1,-1;
-                   du "du" true true false 8 Double 0 0,First,#,{0},du,-1,-1;
-                   yrbuilt "yrbuilt" true true false 8 Double 0 0,First,#,{0},yrbuilt,-1,-1;
-                   lpid "lpid" true true false 8 Double 0 0,First,#,{0},lpid,-1,-1;
-                   pundev "pundev" true true false 8 Double 0 0,First,#,{0},pundev,-1,-1;
-                   dev_land "dev_land" true true false 8 Double 0 0,First,#,{0},dev_land,-1,-1;
-                   developed "developed" true true false 8 Double 0 0,First,#,{0},developed,-1,-1;
-                   obtype "obtype" true true false 80 Text 0 0,First,#,{0},obtype,0,80;
-                   orsqft "orsqft" true true false 8 Double 0 0,First,#,{0},orsqft,-1,-1;
-                   onrsqft "onrsqft" true true false 8 Double 0 0,First,#,{0},onrsqft,-1,-1;
-                   odu "odu" true true false 8 Double 0 0,First,#,{0},odu,-1,-1;
-                   zid "zid" true true false 8 Double 0 0,First,#,{0},zid,-1,-1;
-                   rezoned "rezoned" true true false 8 Double 0 0,First,#,{0},rezoned,-1,-1;
-                   city "city" true true false 80 Text 0 0,First,#,{0},city,0,80;
-                   annexed "annexed" true true false 8 Double 0 0,First,#,{0},annexed,-1,-1;
-                   ozid "ozid" true true false 8 Double 0 0,First,#,{0},ozid,-1,-1;
-                   AreaPerJob "AreaPerJob" true true false 8 Double 0 0,First,#,{0},AreaPerJob,-1,-1;
-                   isNonRes "isNonRes" true true false 4 Long 0 0,First,#,{0},isNonRes,-1,-1;
-                   jobs "jobs" true true false 8 Double 0 0,First,#,{0},jobs,-1,-1;
-                   ojobs "ojobs" true true false 8 Double 0 0,First,#,{0},ojobs,-1,-1;
-                   hh "hh" true true false 8 Double 0 0,First,#,{0},hh,-1,-1;
-                   ohh "ohh" true true false 8 Double 0 0,First,#,{0},ohh,-1,-1;
-                   ORIG_FID "ORIG_FID" true true false 4 Long 0 0,First,#,{0},ORIG_FID,-1,-1;
-                    {1} "ojobs" true true false 8 Double 0 0,Sum,#,joinedtable,{1},-1,-1;
-Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,joinedtable,Shape_Length,-1,-1;
-Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,joinedtable,Shape_Area,-1,-1'''.format(layer_name,fieldnm), "COMPLETELY_WITHIN", None, '')
     later = datetime.datetime.now()
     elapsed = later - now
     print(elapsed)
-
 
 
 # Do Not Run - way too slow with thousands of points
