@@ -45,10 +45,9 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
         EFAbound = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\PerformanceAnalysis\service_transit_equity\equity_area.shp"
         input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                  "NEW_SELECTION", "NOT_INVERT")
-        
         if AOI == "NEFA":
             print("Switching the household points to the non-equtiy focused areas within MPO...")
-            input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
+            input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                      "SWITCH_SELECTION", "NOT_INVERT")
             input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", MPObound, None, 
                                                                      "SUBSET_SELECTION", "NOT_INVERT")
