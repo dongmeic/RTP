@@ -35,9 +35,9 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
     
     out_layer = AOI + service + travel_mode + str(year)
     
+    MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
     if AOI == "MPO":
         print("Getting the household points within the MPO boundary...")
-        MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
         input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", MPObound, None, 
                                                                      "New_SELECTION", "NOT_INVERT")
     elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
