@@ -1,8 +1,61 @@
-import arcpy, os, numpy, datetime
+import arcpy, os, numpy, datetime, re
 from arcpy import env
+import pandas as pd
 
 env.workspace = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\Network_Analysis\Network_Analysis.gdb"
 env.overwriteOutput = True
+
+input_folder = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources"
+EquityAreaID = pd.read_csv("../EquityAreaID.csv")
+
+# 2 years * 3 AOI * 2 travel modes * 2 services
+sas = ["Jobs", "Amenities"]
+travel_modes = ["Biking", "Walking"]
+layerNames = ["baseyearJobs_FeatureToPoint", "forecastJobs_FeatureToPoint"]
+AOIs = ["MPO", "EFA", "NEFA"]
+# matched with layer names
+jobfields = ["ojobs", "jobs"]
+years = [2020, 2045]
+hhfields = ["ohh", "hh"]
+
+def AccessibilityEquityArea(service = "Jobs",
+                            travel_mode = "Biking",
+                            year = 2020):
+    
+    EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
+    AOI = "EFA"
+    layer_name = AOI + service + travel_mode + str(year)
+    
+    byYear = []
+    colnm = []
+    for i in EquityAreaID.index:
+        BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]
+        EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
+        
+        newfield = 'weighted_' + jobfields[years.index(year)]
+        fieldList = arcpy.ListFields(layer_name)
+        field_names = [f.name for f in fieldList]
+        if newfield in field_names:
+            pass
+        else:
+            arcpy.AddField_management(layer_name, newfield, "FLOAT", "", "", 50)
+        
+        hhfield = hhfields[years.index(year)]
+        targetfield = layerNames[years.index(year)] + "_" + jobfields[years.index(year)]
+        arcpy.management.CalculateField(layer_name, newfield, "!{0}! * !{1}!".format(hhfield, targetfield), "PYTHON3")
+        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                 "NEW_SELECTION", "NOT_INVERT")
+        
+        HHsum = arcpy.da.TableToNumPyArray(input_layer, hhfield, skip_nulls=True)
+        WgtJobsSum = arcpy.da.TableToNumPyArray(input_layer, newfield, skip_nulls=True)
+        
+        acc = round(WgtJobsSum[newfield].sum() / HHsum[hhfield].sum())
+        EFA_ID = EquityAreaID['EquityArea'].values[i]
+        print("Got the accessibility number for {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
+        byYear.append(acc)
+        colnm.append(AOI + str(EFA_ID) + "_" + str(year))
+    return byYear, colnm
+    
 
 def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
                              AOI = "MPO",
@@ -17,7 +70,7 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
     now = datetime.datetime.now()
     
     sa_layer = "SA" + travel_mode + service
-    if year == 2045:
+    if service == "Jobs" and year == 2045:
         sa_layer = sa_layer + str(year)
     
     if service == "Jobs":
@@ -28,11 +81,12 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
             
         print("Getting a join table between service area and job points...")
         oldFieldList = [f.name for f in arcpy.ListFields(sa_layer)]
-        oldField = [i for i in oldFieldList if re.search(r'FacilityID', i)]
+        oldField = [i for i in oldFieldList if re.search(r'FacilityID', i)][0]
         newField = "FacilityID"
-        sa_layer = arcpy.management.AlterField(sa_layer, oldfield, newField)
-        point_layer = arcpy.AddField_management("baseyearJobs_FeatureToPoint", "FacilityID", "LONG")
-        point_layer = arcpy.CalculateField_management("baseyearJobs_FeatureToPoint", "FacilityID", "!ORIG_FID! + 1", "PYTHON3" )
+        if oldField != newField:
+            arcpy.AlterField_management(sa_layer, oldField, newField)
+        arcpy.AddField_management(point_layer, "FacilityID", "LONG")
+        arcpy.CalculateField_management(point_layer, "FacilityID", "!ORIG_FID! + 1", "PYTHON3" )
         table = arcpy.AddJoin_management(sa_layer, "FacilityID", point_layer, "FacilityID", "KEEP_COMMON")
         out_SAjoin = "SAJoinedTable"
         if arcpy.Exists(out_SAjoin):
@@ -77,7 +131,7 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
     
     later = datetime.datetime.now()
     elapsed = later - now
-    print("Completed spatial analysis for {0} by {1} in {2} in {3} completed with {4} seconds...".format(service, 
+    print("Completed spatial analysis for {0} by {1} in {2} in {3} completed with {4} timesteps...".format(service, 
                                                                                                    travel_mode, 
                                                                                                    AOI, 
                                                                                                    str(year), 
