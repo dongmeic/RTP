@@ -32,7 +32,13 @@ def AccessibilityEquityArea(service = "Jobs",
         BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]
         EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
         
-        newfield = 'weighted_' + jobfields[years.index(year)]
+        if service == "Jobs":
+            targetfield = layerNames[years.index(year)] + "_" + jobfields[years.index(year)]
+            newfield = 'weighted_' + jobfields[years.index(year)]
+        else:
+            targetfield = "Join_Count"
+            newfield = 'weighted_count'
+            
         fieldList = arcpy.ListFields(layer_name)
         field_names = [f.name for f in fieldList]
         if newfield in field_names:
@@ -41,15 +47,15 @@ def AccessibilityEquityArea(service = "Jobs",
             arcpy.AddField_management(layer_name, newfield, "FLOAT", "", "", 50)
         
         hhfield = hhfields[years.index(year)]
-        targetfield = layerNames[years.index(year)] + "_" + jobfields[years.index(year)]
+            
         arcpy.management.CalculateField(layer_name, newfield, "!{0}! * !{1}!".format(hhfield, targetfield), "PYTHON3")
         input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                  "NEW_SELECTION", "NOT_INVERT")
         
         HHsum = arcpy.da.TableToNumPyArray(input_layer, hhfield, skip_nulls=True)
-        WgtJobsSum = arcpy.da.TableToNumPyArray(input_layer, newfield, skip_nulls=True)
+        Weighted = arcpy.da.TableToNumPyArray(input_layer, newfield, skip_nulls=True)
         
-        acc = round(WgtJobsSum[newfield].sum() / HHsum[hhfield].sum())
+        acc = round(Weighted[newfield].sum() / HHsum[hhfield].sum())
         EFA_ID = EquityAreaID['EquityArea'].values[i]
         print("Got the accessibility number for {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
         byYear.append(acc)
