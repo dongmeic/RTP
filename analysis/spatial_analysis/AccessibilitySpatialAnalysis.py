@@ -18,6 +18,82 @@ jobfields = ["ojobs", "jobs"]
 years = [2020, 2045]
 hhfields = ["ohh", "hh"]
 
+
+def AccessibilitySpatialJoin_HH(AOI = "MPO",
+                             service = "Jobs",
+                             travel_mode = "Biking",
+                             year = 2020):
+    
+    print("Spatial analysis for {0} by {1} in {2} in {3}...".format(service, travel_mode, AOI, str(year)))
+    
+    now = datetime.datetime.now()
+    
+    
+    if service == "Jobs":
+        if year == 2020:
+            layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
+            count_field = "ojobs"
+        else:
+            layer_for_spatial_join = "forecast" + service + "_FeatureToPoint"
+            count_field = "jobs"
+    else:
+        layer_for_spatial_join = os.path.join(input_folder, "PerformanceAnalysis", 
+                                                 "service_transit_equity", "service_stops.shp")
+            
+        print("Getting a join table between household service area and household points...")
+        oldFieldList = [f.name for f in arcpy.ListFields(sa_layer)]
+        oldField = [i for i in oldFieldList if re.search(r'FacilityID', i)][0]
+        newField = "FacilityID"
+        if oldField != newField:
+            arcpy.AlterField_management(sa_layer, oldField, newField)
+        Fields = [f.name for f in arcpy.ListFields(point_layer)]
+        
+        if newField in Fields:
+            pass
+        else:
+            arcpy.AddField_management(point_layer, newField, "LONG")
+            
+        arcpy.CalculateField_management(point_layer, newField, "!ORIG_FID! + 1", "PYTHON3" )
+        
+        
+    out_layer = AOI + service + travel_mode + str(year) + "HH_SA"
+    
+    MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
+    if AOI == "MPO":
+        print("Getting the {0} points within the MPO boundary...".format(service))
+        input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", MPObound, None, 
+                                                                     "New_SELECTION", "NOT_INVERT")
+    elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
+        print("Getting the {0} points within the equity focused areas...".format(service))
+        EFAbound = os.path.join(input_folder, "PerformanceAnalysis", 
+                                                 "service_transit_equity", "equity_area.shp")
+        input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                 "NEW_SELECTION", "NOT_INVERT")
+        if AOI == "NEFA":
+            print("Switching the {0} points to the non-equtiy focused areas within MPO...".format(service))
+            input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                     "SWITCH_SELECTION", "NOT_INVERT")
+            input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", MPObound, None, 
+                                                                     "SUBSET_SELECTION", "NOT_INVERT")
+    
+    print("Getting a spatial join between the household service area joined table and the selected {0} points...".format(service))
+    # keep all the fields in the household points
+    if service == "Jobs":
+        arcpy.analysis.SpatialJoin(out_SAjoin, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON",'hh "hh" true true false 8 Double 0 0,First,#,{0},hh,-1,-1;ohh "ohh" true true false 8 Double 0 0,First,#,{0},ohh,-1,-1;{1}_{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{1}_{2},-1,-1;Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,{3},Shape_Length,-1,-1;Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,{3},Shape_Area,-1,-1'.format(point_layer, layer_for_spatial_join, count_field, input_layer), 
+                       "COMPLETELY_CONTAIN", None, '')
+    else:
+        arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON",'hh "hh" true true false 8 Double 0 0,First,#,{0},hh,-1,-1;ohh "ohh" true true false 8 Double 0 0,First,#,{0},ohh,-1,-1;Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,{1},Shape_Length,-1,-1;Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,{1},Shape_Area,-1,-1'.format(layer_for_spatial_join, sa_layer), "COMPLETELY_CONTAIN", None, '')
+            
+    
+    later = datetime.datetime.now()
+    elapsed = later - now
+    print("Completed spatial analysis for {0} by {1} in {2} in {3} completed with {4} timesteps...".format(service, 
+                                                                                                   travel_mode, 
+                                                                                                   AOI, 
+                                                                                                   str(year), 
+                                                                                                   elapsed))
+    
+
 def AccessibilityEquityArea(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
@@ -93,7 +169,7 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
             arcpy.AlterField_management(sa_layer, oldField, newField)
         arcpy.AddField_management(point_layer, "FacilityID", "LONG")
         arcpy.CalculateField_management(point_layer, "FacilityID", "!ORIG_FID! + 1", "PYTHON3" )
-        table = arcpy.AddJoin_management(sa_layer, "FacilityID", point_layer, "FacilityID", "KEEP_COMMON")
+        table = arcpy.AddJoin_management(sa_layer, "FacilityID", point_layer, "FacilityID", "KEEP_ALL")
         out_SAjoin = "SAJoinedTable"
         if arcpy.Exists(out_SAjoin):
             arcpy.Delete_management(out_SAjoin)
@@ -109,7 +185,8 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
                                                                      "New_SELECTION", "NOT_INVERT")
     elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
         print("Getting the household points within the equity focused areas...")
-        EFAbound = r"T:\MPO\RTP\FY20 2045 Update\Data and Resources\PerformanceAnalysis\service_transit_equity\equity_area.shp"
+        EFAbound = os.path.join(input_folder, "PerformanceAnalysis", 
+                                         "service_transit_equity", "equity_area.shp")
         input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                  "NEW_SELECTION", "NOT_INVERT")
         if AOI == "NEFA":
@@ -142,5 +219,3 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
                                                                                                    AOI, 
                                                                                                    str(year), 
                                                                                                    elapsed))
-
-
