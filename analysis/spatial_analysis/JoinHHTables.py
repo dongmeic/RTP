@@ -37,8 +37,10 @@ def renameCols(x):
 
 def JoinHHTables(year = 2020, travel_mode = 'Biking'):
     now = datetime.datetime.now()
+    
+    sa_layer = "SA" + travel_mode + "HH"
     if year == 2020:
-        sa_layer = "SA" + travel_mode + "HH"
+        sa_layer = sa_layer
         point_layer = "baseyearHH_FeatureToPoint"
         targetField = 'ohh'
     else:
@@ -69,4 +71,4 @@ def JoinHHTables(year = 2020, travel_mode = 'Biking'):
     print("Exported the features with the joined table!")
     later = datetime.datetime.now()
     elapsed = later - now
-    print("Used time: {}").format(elapsed)
+    print("Used time: {0}".format(elapsed))

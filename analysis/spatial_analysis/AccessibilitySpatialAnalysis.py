@@ -28,7 +28,12 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
     
     now = datetime.datetime.now()
     
-    
+    sa_layer = "SA" + travel_mode + "HH"
+    if year == 2020:
+        sa_layer = os.path.join(input_folder, sa_layer + ".shp")
+    else:
+        sa_layer = os.path.join(input_folder, sa_layer + str(year) + ".shp")
+        
     if service == "Jobs":
         if year == 2020:
             layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
@@ -39,23 +44,7 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
     else:
         layer_for_spatial_join = os.path.join(input_folder, "PerformanceAnalysis", 
                                                  "service_transit_equity", "service_stops.shp")
-            
-        print("Getting a join table between household service area and household points...")
-        oldFieldList = [f.name for f in arcpy.ListFields(sa_layer)]
-        oldField = [i for i in oldFieldList if re.search(r'FacilityID', i)][0]
-        newField = "FacilityID"
-        if oldField != newField:
-            arcpy.AlterField_management(sa_layer, oldField, newField)
-        Fields = [f.name for f in arcpy.ListFields(point_layer)]
-        
-        if newField in Fields:
-            pass
-        else:
-            arcpy.AddField_management(point_layer, newField, "LONG")
-            
-        arcpy.CalculateField_management(point_layer, newField, "!ORIG_FID! + 1", "PYTHON3" )
-        
-        
+                 
     out_layer = AOI + service + travel_mode + str(year) + "HH_SA"
     
     MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
