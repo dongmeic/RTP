@@ -35,8 +35,13 @@ def renameCols(x):
         print("The column name is too long.")
     return colnm
 
-def UpateHHTables(AOI = "MPO", service = "Jobs", year = 2020, travel_mode = 'Biking'):
-    sa_layer = AOI + service + travel_mode + str(year) + "HH_SA"
+def UpateHHTables(AOI = "MPO", service = "Jobs", year = 2020, travel_mode = 'Biking', 
+                  EFA_ID = 5, EFA = False):
+    if EFA:
+        sa_layer = AOI + str(EFA_ID) + service + travel_mode + str(year)
+    else:
+        sa_layer = AOI + service + travel_mode + str(year) + "HH_SA"
+    
     if year == 2020:
         point_layer = "baseyearHH_FeatureToPoint"
         targetField = 'ohh'
@@ -67,7 +72,6 @@ def UpateHHTables(AOI = "MPO", service = "Jobs", year = 2020, travel_mode = 'Bik
     
 def JoinHHTables(year = 2020, travel_mode = 'Biking'):
     now = datetime.datetime.now()
-    
     sa_layer = "SA" + travel_mode + "HH"
     if year == 2020:
         sa_layer = sa_layer

@@ -25,18 +25,23 @@ def AccessibilityEquityArea_HH(service = "Jobs",
     EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
     AOI = "EFA"
 
+#     sa_layer = "SA" + travel_mode + "HH"
+#     if year == 2020:
+#         sa_layer_n =
+#         sa_layer = sa_layer
+#         point_layer = "baseyearHH_FeatureToPoint"
+#     else:
+#         sa_layer = sa_layer + str(year)
+#         point_layer = "forecastHH_FeatureToPoint"
     sa_layer = "SA" + travel_mode + "HH"
     if year == 2020:
-        sa_layer = sa_layer
-        point_layer = "baseyearHH_FeatureToPoint"
-        target_field = 'ohh'
+        sa_layer_name = sa_layer
+        sa_layer = os.path.join(input_folder, sa_layer + ".shp")
     else:
-        sa_layer = sa_layer + str(year)
-        point_layer = "forecastHH_FeatureToPoint"
-        target_field = 'hh'
+        sa_layer_name = sa_layer + str(year)
+        sa_layer = os.path.join(input_folder, sa_layer + str(year) + ".shp")
 
     if service == "Jobs":
-        newfield = 'weighted_' + count_field
         if year == 2020:
             layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
             count_field = "ojobs"
@@ -47,10 +52,7 @@ def AccessibilityEquityArea_HH(service = "Jobs",
         layer_for_spatial_join = os.path.join(input_folder, "PerformanceAnalysis", 
                                                  "service_transit_equity", "service_stops.shp")
         count_field = "Join_Count"
-        newfield = 'weighted_count' 
-        
-    byYear = []
-    colnm = []
+
     for i in EquityAreaID.index:
         BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]
         EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
@@ -62,21 +64,11 @@ def AccessibilityEquityArea_HH(service = "Jobs",
         out_layer = AOI + str(EFA_ID) + service + travel_mode + str(year)
         
         if service == "Jobs":
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1;{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{2},-1,-1'.format(sa_layer, target_field, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
+            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer_name, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
         else:                
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1'.format(sa_layer, target_field), "COMPLETELY_CONTAINS", None, '')   
-            
-            
-            
+            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1'.format(sa_layer_name), "COMPLETELY_CONTAINS", None, '')   
 
-        HHsum = arcpy.da.TableToNumPyArray(out_layer, target_field, skip_nulls=True)
-        Weighted = arcpy.da.TableToNumPyArray(out_layer, newfield, skip_nulls=True)
-        
-        acc = round(Weighted[newfield].sum() / HHsum[target_field].sum())
-        print("Got the accessibility number for {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
-        byYear.append(acc)
-        colnm.append(AOI + str(EFA_ID) + "_" + str(year))
-    return byYear, colnm
+        print("Got summarized {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
 
 
 def AccessibilitySpatialJoin_HH(AOI = "MPO",
