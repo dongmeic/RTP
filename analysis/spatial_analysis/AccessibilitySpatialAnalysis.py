@@ -18,11 +18,82 @@ jobfields = ["ojobs", "jobs"]
 years = [2020, 2045]
 hhfields = ["ohh", "hh"]
 
+def AccessibilityEquityArea_HH(service = "Jobs",
+                            travel_mode = "Biking",
+                            year = 2020):
+    
+    EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
+    AOI = "EFA"
+    layer_name = AOI + service + travel_mode + str(year)
+    
+    byYear = []
+    colnm = []
+    for i in EquityAreaID.index:
+        BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]
+        EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
+        
+        now = datetime.datetime.now()
+    
+        sa_layer = "SA" + travel_mode + "HH"
+        if year == 2020:
+            sa_layer_name = sa_layer
+            sa_layer = os.path.join(input_folder, sa_layer + ".shp")
+            target_field = 'ohh'
+        else:
+            sa_layer_name = sa_layer + str(year)
+            sa_layer = os.path.join(input_folder, sa_layer + str(year) + ".shp")
+            target_field = 'hh'
+
+        if service == "Jobs":
+            if year == 2020:
+                layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
+                count_field = "ojobs"
+            else:
+                layer_for_spatial_join = "forecast" + service + "_FeatureToPoint"
+                count_field = "jobs"
+        else:
+            layer_for_spatial_join = os.path.join(input_folder, "PerformanceAnalysis", 
+                                                     "service_transit_equity", "service_stops.shp")
+        
+        
+        
+        
+        if service == "Jobs":
+            targetfield = layerNames[years.index(year)] + "_" + jobfields[years.index(year)]
+            newfield = 'weighted_' + jobfields[years.index(year)]
+        else:
+            targetfield = "Join_Count"
+            newfield = 'weighted_count'
+            
+        fieldList = arcpy.ListFields(layer_name)
+        field_names = [f.name for f in fieldList]
+        if newfield in field_names:
+            pass
+        else:
+            arcpy.AddField_management(layer_name, newfield, "FLOAT", "", "", 50)
+        
+        hhfield = hhfields[years.index(year)]
+            
+        arcpy.management.CalculateField(layer_name, newfield, "!{0}! * !{1}!".format(hhfield, targetfield), "PYTHON3")
+        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                 "NEW_SELECTION", "NOT_INVERT")
+        
+        HHsum = arcpy.da.TableToNumPyArray(input_layer, hhfield, skip_nulls=True)
+        Weighted = arcpy.da.TableToNumPyArray(input_layer, newfield, skip_nulls=True)
+        
+        acc = round(Weighted[newfield].sum() / HHsum[hhfield].sum())
+        EFA_ID = EquityAreaID['EquityArea'].values[i]
+        print("Got the accessibility number for {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
+        byYear.append(acc)
+        colnm.append(AOI + str(EFA_ID) + "_" + str(year))
+    return byYear, colnm
+
 
 def AccessibilitySpatialJoin_HH(AOI = "MPO",
                              service = "Jobs",
                              travel_mode = "Biking",
-                             year = 2020):
+                             year = 2020, 
+                             keep = "all"):
     
     print("Spatial analysis for {0} by {1} in {2} in {3}...".format(service, travel_mode, AOI, str(year)))
     
