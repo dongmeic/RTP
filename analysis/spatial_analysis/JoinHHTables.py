@@ -35,6 +35,36 @@ def renameCols(x):
         print("The column name is too long.")
     return colnm
 
+def UpateHHTables(AOI = "MPO", service = "Jobs", year = 2020, travel_mode = 'Biking'):
+    sa_layer = AOI + service + travel_mode + str(year) + "HH_SA"
+    if year == 2020:
+        point_layer = "baseyearHH_FeatureToPoint"
+        targetField = 'ohh'
+        jobField = 'ojobs'
+    else:
+        point_layer = "forecastHH_FeatureToPoint"
+        targetField = 'hh'
+        jobField = 'jobs'
+        
+    countField = 'Join_Count' 
+    IDField = 'FacilityID'
+    
+    hhSA = gpd.read_file(path, layer = sa_layer)
+    hhpts = gpd.read_file(path, layer = point_layer)
+    
+    hhSA_df = pd.DataFrame(hhSA)
+    hhpts_df = pd.DataFrame(hhpts)
+    
+    hhpts_df[IDField] = hhpts_df['ORIG_FID'] + 1
+    hhpts_df = hhpts_df[[targetField, IDField]]
+    
+    if service == "Jobs":
+        hhSAJoined = hhSA[[IDField, jobField]].merge(hhpts_df, on=IDField, how='left')
+    else:
+        hhSAJoined = hhSA[[IDField, countField]].merge(hhpts_df, on=IDField, how='left')
+    return hhSAJoined
+    
+    
 def JoinHHTables(year = 2020, travel_mode = 'Biking'):
     now = datetime.datetime.now()
     
