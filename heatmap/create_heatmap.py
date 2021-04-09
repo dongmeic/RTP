@@ -31,7 +31,8 @@ def createHeatmap(yrbuilt = 2021, field = "nnsqft", cellSize = 100,
         s = intableName.split("_")
         outLayer = os.path.join(outpath, s[0] + s[1][2:4] + "prj.shp")
         outRaster = os.path.join(outpath, method + s[0] + s[1][2:4] + "_" + str(cellSize) + ".tif")
-        print("creating raster data for heatmap...")
+        print("creating raster data for {0} heatmap in {1} using {2} Density with a cell size {3}...".format(s[0], s[1], 
+                                                                                                               method, str(cellSize)))
         with arcpy.EnvManager(mask=MPOBound):
             if method == 'Point':
                 arcpy.gp.PointDensity_sa(outLayer, "NONE", outRaster, 
@@ -45,7 +46,7 @@ def createHeatmap(yrbuilt = 2021, field = "nnsqft", cellSize = 100,
         print("converting parcel polygons to centroid points...")
         parcelCentroid = arcpy.FeatureToPoint_management(in_features=os.path.join(path, 'output', 'newDevAnn' + str(yrbuilt) +'.shp'), 
                                     out_feature_class="newDevCentroid", point_location="INSIDE")
-        print("creating raster data for heatmap...")
+        print("creating raster data for {0} heatmap in {1}...".format(field, str(yrbuilt)))
         outRaster = os.path.join(path, 'output', "KernelD_" + field + "_" + str(yrbuilt) + ".tif")
         with arcpy.EnvManager(mask=MPOBound):
             arcpy.gp.KernelDensity_sa(parcelCentroid, field, outRaster,
