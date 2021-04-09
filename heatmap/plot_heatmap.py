@@ -15,7 +15,8 @@ path = r'T:\Models\Heatmap'
 MPObd = gpd.read_file("V:/Data/Transportation/MPO_Bound.shp")
 
 def plotHeatmap(year = 2045, data = "jobs", dataName = 'Employment', method = 'Kernel',  
-                cellSize = 100, colormap = 'Reds', export = False):
+                cellSize = 100, colormap = 'Reds', export = False, 
+                outpath = r"C:\Users\clid1852\OneDrive - lanecouncilofgovernments\UrbanSim\maps\heatmap"):
     fileName = method + data + str(year)[2:4] + "_" + str(cellSize)
     file = os.path.join(path, fileName + ".tif")
     src = rasterio.open(file)
@@ -41,6 +42,6 @@ def plotHeatmap(year = 2045, data = "jobs", dataName = 'Employment', method = 'K
     ax.axis("off");
     if export:
         imageName = fileName + ".png"
-        plt.savefig(os.path.join(path, imageName), transparent=True, bbox_inches='tight')
+        plt.savefig(os.path.join(outpath, imageName), transparent=True, bbox_inches='tight')
         print("Saved image " + imageName + "...")
     src.close()
