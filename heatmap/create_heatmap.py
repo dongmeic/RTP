@@ -19,14 +19,17 @@ def convertXYpoints(intableName = "jobs_2045_xy"):
     outLayer = os.path.join(outpath, s[0] + s[1][2:4] + ".shp")
     arcpy.management.XYTableToPoint(intable, outLayer, "x", "y", None, "GEOGCS['GCS_WGS_1984',DATUM['D_WGS_1984',SPHEROID['WGS_1984',6378137.0,298.257223563]],PRIMEM['Greenwich',0.0],UNIT['Degree',0.0174532925199433]];-400 -400 1000000000;-100000 10000;-100000 10000;8.98315284119521E-09;0.001;0.001;IsHighPrecision")
     print("created output {0}".format(outLayer))
-    
+  
+    prj_layer = os.path.join(outpath, s[0] + s[1][2:4] + "prj.shp")
+    arcpy.management.Project(outLayer, prj_layer, "PROJCS['WGS_1984_Web_Mercator_Auxiliary_Sphere',GEOGCS['GCS_WGS_1984',DATUM['D_WGS_1984',SPHEROID['WGS_1984',6378137.0,298.257223563]],PRIMEM['Greenwich',0.0],UNIT['Degree',0.0174532925199433]],PROJECTION['Mercator_Auxiliary_Sphere'],PARAMETER['False_Easting',0.0],PARAMETER['False_Northing',0.0],PARAMETER['Central_Meridian',0.0],PARAMETER['Standard_Parallel_1',0.0],PARAMETER['Auxiliary_Sphere_Type',0.0],UNIT['Meter',1.0]]", None, "GEOGCS['GCS_WGS_1984',DATUM['D_WGS_1984',SPHEROID['WGS_1984',6378137.0,298.257223563]],PRIMEM['Greenwich',0.0],UNIT['Degree',0.0174532925199433]]", "NO_PRESERVE_SHAPE", None, "NO_VERTICAL")
+    print("reproject output {0}".format(prj_layer))
     
 def createHeatmap(yrbuilt = 2021, field = "nnsqft", cellSize = 100, 
                   intableName = "jobs_2045_xy", method = 'Kernel', xypoint = False):
     
     if xypoint:
         s = intableName.split("_")
-        outLayer = os.path.join(outpath, s[0] + s[1][2:4] + ".shp")
+        outLayer = os.path.join(outpath, s[0] + s[1][2:4] + "prj.shp")
         outRaster = os.path.join(outpath, method + s[0] + s[1][2:4] + "_" + str(cellSize) + ".tif")
         print("creating raster data for heatmap...")
         with arcpy.EnvManager(mask=MPOBound):
