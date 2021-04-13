@@ -15,9 +15,10 @@ path = r'T:\Models\Heatmap'
 MPObd = gpd.read_file("V:/Data/Transportation/MPO_Bound.shp")
 
 def plotHeatmap(year = 2045, data = "jobs", dataName = 'Employment', method = 'Kernel',  
-                cellSize = 100, colormap = 'Reds', export = False, 
-                outpath = r"C:\Users\clid1852\OneDrive - lanecouncilofgovernments\UrbanSim\maps\heatmap"):
-    fileName = method + data + str(year)[2:4] + "_" + str(cellSize)
+                cellSize = 100, searchRadius = 1000, colormap = 'Reds', export = False, 
+                outpath = r"C:\Users\clid1852\OneDrive - lanecouncilofgovernments\UrbanSim\maps\heatmap",
+                changeFileNm = False):
+    fileName = method + data + str(year)[2:4] + "_" + str(cellSize) + "_" + str(searchRadius)
     file = os.path.join(path, fileName + ".tif")
     src = rasterio.open(file)
     fig, ax = plt.subplots(1, figsize=(28, 24))
@@ -32,8 +33,14 @@ def plotHeatmap(year = 2045, data = "jobs", dataName = 'Employment', method = 'K
                  cmap=colormap)
     MPObd.plot(ax=ax, facecolor="none", edgecolor="black", linestyle='--')
     ctx.add_basemap(ax, source=ctx.providers.Stamen.TonerLite, alpha=0.3)
-    ax.set_title(dataName + " " + method + " Heatmap in " + str(year) + " Size: " + str(cellSize), 
+    
+    if method == 'Kernel':
+        ax.set_title(dataName + " " + method + " Heatmap in " + str(year) + " Size: " + str(cellSize) + " Radius: " + str(searchRadius), 
                  fontsize=50, fontname="Palatino Linotype", color="grey", loc = 'center')
+    else:
+        ax.set_title(dataName + " " + method + " Heatmap in " + str(year) + " Size: " + str(cellSize), 
+                     fontsize=50, fontname="Palatino Linotype", color="grey", loc = 'center')
+    
     image_hidden = ax.imshow(ndata,cmap=colormap)
     fmt = mpl.ticker.ScalarFormatter(useMathText=True)
     fmt.set_powerlimits((0, 0))
@@ -41,6 +48,8 @@ def plotHeatmap(year = 2045, data = "jobs", dataName = 'Employment', method = 'K
     mpl.rcParams.update({'font.size': 20})
     ax.axis("off");
     if export:
+        if changeFileNm:
+            fileName = fileName + "_" + colormap
         imageName = fileName + ".png"
         plt.savefig(os.path.join(outpath, imageName), transparent=True, bbox_inches='tight')
         print("Saved image " + imageName + "...")
