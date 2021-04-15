@@ -18,48 +18,6 @@ jobfields = ["ojobs", "jobs"]
 years = [2020, 2045]
 hhfields = ["ohh", "hh"]
 
-# NOT RUN: this approach is wrong
-def AccessibilityTAZ(AOI = "MPO",
-                     service = "Jobs",
-                     travel_mode = "Biking",
-                     year = 2020):
-    
-    MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
-    level = "KateTAZ"
-    
-    if service == "Jobs":
-        layer_name = level + "_FeatureToPoint"
-    else:
-        layer_name = os.path.join(input_folder, "PerformanceAnalysis", 
-                                                 "service_transit_equity", "service_stops.shp")
-        
-    if AOI == "MPO":
-        print("Getting the {0} points within the MPO boundary...".format(service))
-        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", MPObound, None, 
-                                                                     "New_SELECTION", "NOT_INVERT")
-    elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
-        print("Getting the {0} points within the equity focused areas...".format(service))
-        EFAbound = os.path.join(input_folder, "PerformanceAnalysis", 
-                                         "service_transit_equity", "equity_area.shp")
-        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
-                                                                 "NEW_SELECTION", "NOT_INVERT")
-        if AOI == "NEFA":
-            print("Switching the {0} points to the non-equtiy focused areas within MPO...".format(service))
-            input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", EFAbound, None, 
-                                                                     "SWITCH_SELECTION", "NOT_INVERT")
-            input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", MPObound, None, 
-                                                                     "SUBSET_SELECTION", "NOT_INVERT")
-    
-    sa_layer = "SA" + travel_mode + level
-    out_layer = AOI + service + travel_mode + str(year) + "TAZ"
-    input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", sa_layer, None, 
-                                                         "SUBSET_SELECTION", "NOT_INVERT")
-    
-    if arcpy.Exists(out_layer):
-        arcpy.Delete_management(out_layer)
-    arcpy.CopyFeatures_management(input_layer, out_layer)
-    print("Got the targeted TAZ points and saved as {0}".format(out_layer))
-
 
 def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
@@ -68,14 +26,6 @@ def AccessibilityEquityArea_HH(service = "Jobs",
     EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
     AOI = "EFA"
 
-#     sa_layer = "SA" + travel_mode + "HH"
-#     if year == 2020:
-#         sa_layer_n =
-#         sa_layer = sa_layer
-#         point_layer = "baseyearHH_FeatureToPoint"
-#     else:
-#         sa_layer = sa_layer + str(year)
-#         point_layer = "forecastHH_FeatureToPoint"
     sa_layer = "SA" + travel_mode + "HH"
     if year == 2020:
         sa_layer_name = sa_layer
