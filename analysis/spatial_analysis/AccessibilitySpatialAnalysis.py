@@ -24,44 +24,60 @@ def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
     
-    EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
+    EFA_HH_layer = "EFA_HH" + str(year)
     AOI = "EFA"
+    ID_Field = "FacilityID"
+    outTablepath = os.path.join(input_folder, 'Network_Analysis')
+    spatialJoin_out_name = service + travel_mode + str(year) + "HH_SA"
+    SAcsv = spatialJoin_out_name + '.csv'
 
-    sa_layer = "SA" + travel_mode + "HH"
-    if year == 2020:
-        sa_layer_name = sa_layer
-        sa_layer = os.path.join(input_folder, sa_layer + ".shp")
+    file = os.path.join(outTablepath, SAcsv)
+    if path.exists(file):
+        print("Read the spatial join table...")
+        SDdf = pd.read_csv(file)
     else:
-        sa_layer_name = sa_layer + str(year)
-        sa_layer = os.path.join(input_folder, sa_layer + str(year) + ".shp")
-
+        print("Need to create the spatial join table...")
+        
     if service == "Jobs":
         if year == 2020:
-            layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
             count_field = "ojobs"
+            target_field = "ohh"
         else:
-            layer_for_spatial_join = "forecast" + service + "_FeatureToPoint"
             count_field = "jobs"
+            target_field = "hh"
     else:
-        layer_for_spatial_join = os.path.join(input_folder, "PerformanceAnalysis", 
-                                                 "service_transit_equity", "service_stops.shp")
         count_field = "Join_Count"
+        if year == 2020:
+            target_field = "ohh"
+        else:
+            target_field = "hh"   
 
     for i in EquityAreaID.index:
-        BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]
-        EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
-        
-        input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", EFAbound, None, 
-                                                                     "NEW_SELECTION", "NOT_INVERT")
-        
+        BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]   
         EFA_ID = EquityAreaID['EquityArea'].values[i]
-        out_layer = AOI + str(EFA_ID) + service + travel_mode + str(year)
         
-        if service == "Jobs":
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer_name, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
-        else:                
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1'.format(sa_layer_name), "COMPLETELY_CONTAINS", None, '')   
-
+        HHcsv = AOI + str(EFA_ID) + "_HH" + str(year) + '.csv'
+        file = os.path.join(outTablepath, HHcsv)
+        if path.exists(file):
+            print("Got the selected household points table...")
+            HHdf = pd.read_csv(file)
+        else:
+            print("Selecting target household points...")
+            input_layer = arcpy.management.SelectLayerByAttribute(EFA_HH_layer, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
+            # export the table from the selected household points
+            HHtable = arcpy.conversion.TableToTable(input_layer, outTablepath, HHcsv, '', '', '')
+            HHdf = pd.read_csv(HHtable[0])
+       
+        EFA_ID = EquityAreaID['EquityArea'].values[i]
+        out_name = AOI + str(EFA_ID) + service + travel_mode + str(year) + '.csv'
+        outCSV = os.path.join(input_folder, 'Network_Analysis', out_name)
+        if path.exists(outCSV):
+            print("Got the final data table...")
+        else:
+            df = SDdf[[count_field, ID_Field]].merge(HHdf[[target_field, ID_Field]], how='inner', on = ID_Field)
+            df.to_csv(outCSV, index=False)    
+            print("Got the final output table to include only the required fields...")
+ 
         print("Got summarized {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
 
 
@@ -94,7 +110,7 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
     
     # change the identifier field name in the household point layer for table join
     oldFieldList = [f.name for f in arcpy.ListFields(hh_point_layer)]
-    if oldField not in oldFieldList:
+    if newField not in oldFieldList:
         arcpy.AddField_management(hh_point_layer, "FacilityID", "LONG")
         arcpy.CalculateField_management(hh_point_layer, "FacilityID", "!ORIG_FID! + 1", "PYTHON3" )
       
@@ -110,42 +126,45 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
                                                  "service_transit_equity", "service_stops.shp")
         count_field = 'Join_Count'
                  
-    out_layer = AOI + service + travel_mode + str(year) + "HH_SA"
+    spatialJoin_out_name = service + travel_mode + str(year) + "HH_SA" 
     outTablepath = os.path.join(input_folder, 'Network_Analysis')
-    SAcsv = out_layer + '.csv'
+    SAcsv = spatialJoin_out_name + '.csv'
     
     file = os.path.join(outTablepath, SAcsv)
     if path.exists(file):
         print("Got the spatial join table...")
+        SDdf = pd.read_csv(file)
     else:
         print("Getting a spatial join between the household service areas and the {0} points...".format(service))
     
         if service == "Jobs":
             if keep == "all":
                 # keep all the fields in the household service area
-                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
+                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, spatialJoin_out_name, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
             else:
                 # keep the target fields only
-                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
+                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, spatialJoin_out_name, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 8 Double 0 0,Sum,#,{2},{1},-1,-1'.format(sa_layer, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
         else:
             if keep == "all":
                 # keep all the fields in the household service area
-                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1'.format(sa_layer), "COMPLETELY_CONTAINS", None, '')
+                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, spatialJoin_out_name, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1'.format(sa_layer), "COMPLETELY_CONTAINS", None, '')
 
             else:
                 # keep the target fields only
-                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1'.format(sa_layer), "COMPLETELY_CONTAINS", None, '')
+                arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, spatialJoin_out_name, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1'.format(sa_layer), "COMPLETELY_CONTAINS", None, '')
                 
-        oldFieldList = [f.name for f in arcpy.ListFields(out_layer)]
+        oldFieldList = [f.name for f in arcpy.ListFields(spatialJoin_out_name)]
         if target_field in oldFieldList:
-            arcpy.management.DeleteField(out_layer, target_field)
+            arcpy.management.DeleteField(spatialJoin_out_name, target_field)
         # export the table from service area
-        SAtable = arcpy.conversion.TableToTable(out_layer, outTablepath, SAcsv, '', '', '')
+        SAtable = arcpy.conversion.TableToTable(spatialJoin_out_name, outTablepath, SAcsv, '', '', '')
+        SDdf = pd.read_csv(SAtable[0])
     
     HHcsv = AOI + "_HH" + str(year) + '.csv'  
     file = os.path.join(outTablepath, HHcsv)
     if path.exists(file):
         print("Got the selected household points table...")
+        HHdf = pd.read_csv(file)
     else:
         print("Selecting target household points...")
         
@@ -161,6 +180,12 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
                                                      "service_transit_equity", "equity_area.shp")
             input_layer = arcpy.management.SelectLayerByLocation(hh_point_layer, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                      "NEW_SELECTION", "NOT_INVERT")
+            selected_hh_efa = "EFA_HH" + str(year)
+            if arcpy.Exists(selected_hh_efa):
+                print("Got the selected household points in {0}...".format(str(year)))
+            else:
+                # for the analysis in each equity-focused area
+                arcpy.CopyFeatures_management(input_layer, selected_hh_efa)
             if AOI == "NEFA":
                 print("Switching the household points to the non-equtiy focused areas within MPO...")
                 input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", EFAbound, None, 
@@ -176,27 +201,29 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
         print("About {0}% of household points are selected within the area of interest...".format(str(round(selcnt/totcnt*100))))
 
         # keep only the required fields from the household points
-        dropFields = [f.name for f in arcpy.ListFields(hh_point_layer)]
-        keepFields = ['OBJECTID', 'Shape',  target_field, newField]
-        for field in keepFields:
-            dropFields.remove(field)
+        oldFieldList = [f.name for f in arcpy.ListFields(hh_point_layer)]
+        if len(oldFieldList) <= 4:
+            print("The fields in the {0} household points are {1}".format(str(year), oldFieldList))
+        else:
+            dropFields = oldFieldList
+            keepFields = ['OBJECTID', 'Shape',  target_field, newField]
+            for field in keepFields:
+                dropFields.remove(field)
 
-        for field in dropFields:
-            arcpy.management.DeleteField(input_layer, field)
+            for field in dropFields:
+                arcpy.management.DeleteField(input_layer, field)
    
         # export the table from the selected household points
         HHtable = arcpy.conversion.TableToTable(input_layer, outTablepath, HHcsv, '', '', '')
+        HHdf = pd.read_csv(HHtable[0])
     
-    outCSV = os.path.join(input_folder, 'Network_Analysis', out_layer + '_df' + '.csv')
+    out_name = AOI + spatialJoin_out_name
+    outCSV = os.path.join(input_folder, 'Network_Analysis', out_name + '.csv')
     if path.exists(outCSV):
         print("Got the final data table...")
     else:
-        SDdf = pd.read_csv(SAtable[0])
-        HHdf = pd.read_csv(HHtable[0])
-
         df = SDdf[[count_field, newField]].merge(HHdf[[target_field, newField]], how='inner', on = newField)
-        df.to_csv(outCSV, index=False)
-    
+        df.to_csv(outCSV, index=False)    
         print("Got the final output table to include only the required fields...")
     
     later = datetime.datetime.now()
