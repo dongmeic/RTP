@@ -76,14 +76,28 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
     
     sa_layer = "SA" + travel_mode + "HH"
     if year == 2020:
-        sa_layer_name = sa_layer
-        sa_layer = os.path.join(input_folder, sa_layer + ".shp")
+        sa_layer = sa_layer
+        hh_point_layer = "baseyearHH_FeatureToPoint"
         target_field = 'ohh'
     else:
-        sa_layer_name = sa_layer + str(year)
-        sa_layer = os.path.join(input_folder, sa_layer + str(year) + ".shp")
+        sa_layer = sa_layer + str(year)
+        hh_point_layer = "forecastHH_FeatureToPoint"
         target_field = 'hh'
-        
+    
+    # change the identifier field name in the household service area for table join
+    oldFieldList = [f.name for f in arcpy.ListFields(sa_layer)]
+    oldField = [i for i in oldFieldList if re.search(r'FacilityID', i)][0]
+    newField = "FacilityID"
+    if oldField != newField:
+        arcpy.AlterField_management(sa_layer, oldField, newField)
+    
+    # change the identifier field name in the household point layer for table join
+    oldFieldList = [f.name for f in arcpy.ListFields(hh_point_layer)]
+    newField = "FacilityID"
+    if oldField not in oldFieldList:
+        arcpy.AddField_management(hh_point_layer, "FacilityID", "LONG")
+        arcpy.CalculateField_management(hh_point_layer, "FacilityID", "!ORIG_FID! + 1", "PYTHON3" )
+      
     if service == "Jobs":
         if year == 2020:
             layer_for_spatial_join = "baseyear" + service + "_FeatureToPoint"
@@ -97,39 +111,53 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
                  
     out_layer = AOI + service + travel_mode + str(year) + "HH_SA"
     
+    print("Getting a spatial join between the household service area and the {0} points...".format(service))
+    
+    # keep all the fields in the household points
+    if service == "Jobs":
+        if keep == "all":
+            arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1;{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{2},-1,-1'.format(sa_layer_name, target_field, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
+        else:
+            arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1;{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{2},-1,-1'.format(sa_layer_name, target_field, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
+    else:
+        if keep == "all":
+            arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1'.format(sa_layer_name, target_field), "COMPLETELY_CONTAINS", None, '')
+            
+        else:
+            arcpy.analysis.SpatialJoin(sa_layer, layer_for_spatial_join, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1'.format(sa_layer_name, target_field), "COMPLETELY_CONTAINS", None, '')
+    
+    # select the target households in AOI
     MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
     if AOI == "MPO":
-        print("Getting the {0} points within the MPO boundary...".format(service))
-        input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", MPObound, None, 
+        print("Getting the household points within the MPO boundary...")
+        input_layer = arcpy.management.SelectLayerByLocation(hh_point_layer, "COMPLETELY_WITHIN", MPObound, None, 
                                                                      "New_SELECTION", "NOT_INVERT")
     elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
-        print("Getting the {0} points within the equity focused areas...".format(service))
+        print("Getting the household points within the equity focused areas...")
         EFAbound = os.path.join(input_folder, "PerformanceAnalysis", 
                                                  "service_transit_equity", "equity_area.shp")
-        input_layer = arcpy.management.SelectLayerByLocation(layer_for_spatial_join, "COMPLETELY_WITHIN", EFAbound, None, 
+        input_layer = arcpy.management.SelectLayerByLocation(hh_point_layer, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                  "NEW_SELECTION", "NOT_INVERT")
         if AOI == "NEFA":
-            print("Switching the {0} points to the non-equtiy focused areas within MPO...".format(service))
+            print("Switching the household points to the non-equtiy focused areas within MPO...")
             input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", EFAbound, None, 
                                                                      "SWITCH_SELECTION", "NOT_INVERT")
             input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", MPObound, None, 
                                                                      "SUBSET_SELECTION", "NOT_INVERT")
     
-    print("Getting a spatial join between the household service area joined table and the selected {0} points...".format(service))
-    # keep all the fields in the household points
-    if service == "Jobs":
-        if keep == "all":
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1;{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{2},-1,-1'.format(sa_layer_name, target_field, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
-        else:
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1;{2} "{2}" true true false 8 Double 0 0,Sum,#,{3},{2},-1,-1'.format(sa_layer_name, target_field, count_field, layer_for_spatial_join), "COMPLETELY_CONTAINS", None, '')
-    else:
-        if keep == "all":
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;SAPolyName "SAPolyName" true true false 80 Text 0 0,First,#,{0},SAPolyName,0,80;FromBreak "FromBreak" true true false 24 Double 15 23,First,#,{0},FromBreak,-1,-1;ToBreak "ToBreak" true true false 24 Double 15 23,First,#,{0},ToBreak,-1,-1;ObjectID "ObjectID" true true false 18 Double 0 18,First,#,{0},ObjectID,-1,-1;FaciliName "FaciliName" true true false 80 Text 0 0,First,#,{0},FaciliName,0,80;SourceID "SourceID" true true false 18 Double 0 18,First,#,{0},SourceID,-1,-1;SourceOID "SourceOID" true true false 18 Double 0 18,First,#,{0},SourceOID,-1,-1;PosAlong "PosAlong" true true false 24 Double 15 23,First,#,{0},PosAlong,-1,-1;SideOfEdge "SideOfEdge" true true false 18 Double 0 18,First,#,{0},SideOfEdge,-1,-1;CurApp "CurApp" true true false 18 Double 0 18,First,#,{0},CurApp,-1,-1;Status "Status" true true false 18 Double 0 18,First,#,{0},Status,-1,-1;SnapX "SnapX" true true false 24 Double 15 23,First,#,{0},SnapX,-1,-1;SnapY "SnapY" true true false 24 Double 15 23,First,#,{0},SnapY,-1,-1;SnapZ "SnapZ" true true false 24 Double 15 23,First,#,{0},SnapZ,-1,-1;DTNIM "DTNIM" true true false 24 Double 15 23,First,#,{0},DTNIM,-1,-1;AttrLength "AttrLength" true true false 24 Double 15 23,First,#,{0},AttrLength,-1,-1;BreLen "BreLen" true true false 80 Text 0 0,First,#,{0},BreLen,0,80;Length "Length" true true false 24 Double 15 23,First,#,{0},Length,-1,-1;Area "Area" true true false 24 Double 15 23,First,#,{0},Area,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1'.format(sa_layer_name, target_field), "COMPLETELY_CONTAINS", None, '')
-            
-        else:
-            arcpy.analysis.SpatialJoin(sa_layer, input_layer, out_layer, "JOIN_ONE_TO_ONE", "KEEP_COMMON", 'FacilityID "FacilityID" true true false 18 Double 0 18,First,#,{0},FacilityID,-1,-1;{1} "{1}" true true false 24 Double 15 23,First,#,{0},{1},-1,-1'.format(sa_layer_name, target_field), "COMPLETELY_CONTAINS", None, '')
-            
+    # total household counts
+    totcnt = int(arcpy.GetCount_management(hh_point_layer)[0])
+    # selected household counts
+    selcnt = int(arcpy.GetCount_management(input_layer)[0])
     
+    print("About {0}% of household points are selected within the area of interest...".format(str(round(selcnt/totcnt*100))))
+    
+    oldFieldList = [f.name for f in arcpy.ListFields(out_layer)]
+    if target_field in oldFieldList:
+        arcpy.management.DeleteField(out_layer, target_field)
+    
+    
+    table = arcpy.AddJoin_management(out_layer, "FacilityID", hh_point_layer, "FacilityID", "KEEP_COMMON")
     later = datetime.datetime.now()
     elapsed = later - now
     print("Completed spatial analysis for {0} by {1} in {2} in {3} completed with {4} timesteps...".format(service, 
@@ -264,3 +292,47 @@ def AccessibilitySpatialJoin(layer_name = "baseyearHH_FeatureToPoint",
                                                                                                    AOI, 
                                                                                                    str(year), 
                                                                                                    elapsed))
+
+    
+    ######################################## Below are discarded codes #######################################
+    # NOT RUN: this approach is wrong
+def AccessibilityTAZ(AOI = "MPO",
+                     service = "Jobs",
+                     travel_mode = "Biking",
+                     year = 2020):
+    
+    MPObound = r"V:\Data\Transportation\MPO_Boundary.shp"
+    level = "KateTAZ"
+    
+    if service == "Jobs":
+        layer_name = level + "_FeatureToPoint"
+    else:
+        layer_name = os.path.join(input_folder, "PerformanceAnalysis", 
+                                                 "service_transit_equity", "service_stops.shp")
+        
+    if AOI == "MPO":
+        print("Getting the {0} points within the MPO boundary...".format(service))
+        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", MPObound, None, 
+                                                                     "New_SELECTION", "NOT_INVERT")
+    elif AOI == "EFA" or AOI == "NEFA": # Equity Focused Areas OR Non-Equity Focused Areas
+        print("Getting the {0} points within the equity focused areas...".format(service))
+        EFAbound = os.path.join(input_folder, "PerformanceAnalysis", 
+                                         "service_transit_equity", "equity_area.shp")
+        input_layer = arcpy.management.SelectLayerByLocation(layer_name, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                 "NEW_SELECTION", "NOT_INVERT")
+        if AOI == "NEFA":
+            print("Switching the {0} points to the non-equtiy focused areas within MPO...".format(service))
+            input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                     "SWITCH_SELECTION", "NOT_INVERT")
+            input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", MPObound, None, 
+                                                                     "SUBSET_SELECTION", "NOT_INVERT")
+    
+    sa_layer = "SA" + travel_mode + level
+    out_layer = AOI + service + travel_mode + str(year) + "TAZ"
+    input_layer = arcpy.management.SelectLayerByLocation(input_layer, "COMPLETELY_WITHIN", sa_layer, None, 
+                                                         "SUBSET_SELECTION", "NOT_INVERT")
+    
+    if arcpy.Exists(out_layer):
+        arcpy.Delete_management(out_layer)
+    arcpy.CopyFeatures_management(input_layer, out_layer)
+    print("Got the targeted TAZ points and saved as {0}".format(out_layer))
