@@ -24,20 +24,14 @@ def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
     
+    # set-up
+    EFAbound = os.path.join(input_folder, "PerformanceAnalysis", "service_transit_equity", "equity_area.shp")
     EFA_HH_layer = "EFA_HH" + str(year)
     AOI = "EFA"
     ID_Field = "FacilityID"
     outTablepath = os.path.join(input_folder, 'Network_Analysis')
     spatialJoin_out_name = service + travel_mode + str(year) + "HH_SA"
     SAcsv = spatialJoin_out_name + '.csv'
-
-    file = os.path.join(outTablepath, SAcsv)
-    if path.exists(file):
-        print("Read the spatial join table...")
-        SDdf = pd.read_csv(file)
-    else:
-        print("Need to create the spatial join table...")
-        
     if service == "Jobs":
         if year == 2020:
             count_field = "ojobs"
@@ -51,6 +45,15 @@ def AccessibilityEquityArea_HH(service = "Jobs",
             target_field = "ohh"
         else:
             target_field = "hh"   
+ 
+    file = os.path.join(outTablepath, SAcsv)
+    if path.exists(file):
+        print("Read the spatial join table...")
+        # get the existing spatial join table
+        SDdf = pd.read_csv(file)
+    else:
+        # need to run AccessibilitySpatialJoin_HH first
+        print("Need to create the spatial join table...")
 
     for i in EquityAreaID.index:
         BlkGrp10 = EquityAreaID['BlkGrp10'].values[i]   
@@ -63,7 +66,10 @@ def AccessibilityEquityArea_HH(service = "Jobs",
             HHdf = pd.read_csv(file)
         else:
             print("Selecting target household points...")
-            input_layer = arcpy.management.SelectLayerByAttribute(EFA_HH_layer, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
+            # select the target household points
+            EFAbound = arcpy.management.SelectLayerByAttribute(EFAbound, "NEW_SELECTION", "BlkGrp10 = '{0}'".format(BlkGrp10), None)
+            input_layer = arcpy.management.SelectLayerByLocation(EFA_HH_layer, "COMPLETELY_WITHIN", EFAbound, None, 
+                                                                     "NEW_SELECTION", "NOT_INVERT")
             # export the table from the selected household points
             HHtable = arcpy.conversion.TableToTable(input_layer, outTablepath, HHcsv, '', '', '')
             HHdf = pd.read_csv(HHtable[0])
