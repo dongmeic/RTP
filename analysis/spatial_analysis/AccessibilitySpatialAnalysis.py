@@ -19,11 +19,60 @@ jobfields = ["ojobs", "jobs"]
 years = [2020, 2045]
 hhfields = ["ohh", "hh"]
 
-def GetAccessTable():
+######################################## A. Household-based service area approach #######################################
+# get the accessibility numbers for specific EFAs
+# inputs are from AccessibilityEquityArea_HH
+def GetEFA_numbers_HH(service = "Jobs", travel_mode = 'Biking', year = 2020):
+    AOI = "EFA"
+    byYear = []
+    colnm = []
+    for i in EquityAreaID.index:
+        EFA_ID = EquityAreaID['EquityArea'].values[i]
+        file = AOI + str(EFA_ID) + service + travel_mode + str(year) + '.csv'
+        access = pd.read_csv(os.path.join(input_folder, "Network_Analysis", file))
+        if service == "Jobs":
+            targetfield = jobfields[years.index(year)]
+            newfield = 'weighted_' + jobfields[years.index(year)]
+        else:
+            targetfield = "Join_Count"
+            newfield = 'weighted_count'
+
+        hhfield = hhfields[years.index(year)]
+        if access.shape[0] == 0:
+            acc = 0
+        else:
+            access[newfield] = access[targetfield] * access[hhfield]
+            acc = round(access[newfield].sum()/access[hhfield].sum())
+
+        print("Got the accessibility number for {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
+        byYear.append(acc)
+        colnm.append(AOI + str(EFA_ID) + "_" + str(year))
+    return byYear, colnm
+
+# get the accessibility numbers for the three main AOIs
+# inputs are from AccessibilitySpatialJoin_HH
+def calculateAccessibility(service = "Jobs",
+                  travel_mode = "Biking",
+                  year = 2020,
+                  AOI = "MPO"):
+
+    file = AOI + service + travel_mode + str(year) + "HH_SA.csv"
+    access = pd.read_csv(os.path.join(input_folder, "Network_Analysis", file))
     
+    if service == "Jobs":
+        targetfield = jobfields[years.index(year)]
+        newfield = 'weighted_' + jobfields[years.index(year)]
+    else:
+        targetfield = "Join_Count"
+        newfield = 'weighted_count'
+    
+    hhfield = hhfields[years.index(year)]
+    access[newfield] = access[targetfield] * access[hhfield]
+    acc = round(access[newfield].sum()/access[hhfield].sum())
+    
+    return acc
 
-
-
+                         
 def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
@@ -242,8 +291,9 @@ def AccessibilitySpatialJoin_HH(AOI = "MPO",
                                                                                                    travel_mode, 
                                                                                                    AOI, 
                                                                                                    str(year), 
-                                                                                                   elapsed))    
-
+                                                                                                   elapsed))
+    
+    ######################################## B. Job/service-based service area approach #######################################
 def AccessibilityEquityArea(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
