@@ -19,6 +19,10 @@ jobfields = ["ojobs", "jobs"]
 years = [2020, 2045]
 hhfields = ["ohh", "hh"]
 
+def GetAccessTable():
+    
+
+
 
 def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
