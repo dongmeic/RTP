@@ -72,7 +72,7 @@ def calculateAccessibility(service = "Jobs",
     
     return acc
 
-                         
+# get a table that contains the required fields for each EFA to calculate accessibility                       
 def AccessibilityEquityArea_HH(service = "Jobs",
                             travel_mode = "Biking",
                             year = 2020):
@@ -140,6 +140,7 @@ def AccessibilityEquityArea_HH(service = "Jobs",
         print("Got summarized {0} in {1} by {2} in {3}...".format(service, AOI + str(EFA_ID), travel_mode, year))
 
 
+# get a table that contains the required fields for the three main AOIs to calculate accessibility 
 def AccessibilitySpatialJoin_HH(AOI = "MPO",
                              service = "Jobs",
                              travel_mode = "Biking",
