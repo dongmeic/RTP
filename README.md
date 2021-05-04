@@ -15,7 +15,7 @@ The repo is to collect data for RTP travel model and mapping
 
 6. Title VI category 3 and 4
 
-The MPO facilities include bikeways and sidewalks. The steps are listed in 1) coburg_sidewalks_bike_lanes; 2) sidewalks_MPO; 3) bikeways_MPO; and 4) facilities in the 'RTP/data' folder. 
+The MPO facilities include bikeways and sidewalks. The steps for performance analysis are listed in 1) coburg_sidewalks_bike_lanes; 2) sidewalks_MPO; 3) bikeways_MPO; and 4) facilities in the 'RTP/data' folder and 5) system_completeness in the RTP/analysis folder.
 
 # Required datasets for web-mapping
 ## Transportation
