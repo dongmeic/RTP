@@ -1,5 +1,5 @@
 # RTP
-The repo is to collect data for RTP travel model and mapping
+The repo is to collect data for RTP performance analysis and mapping
 
 # Required datasets for performance analysis
 
@@ -17,7 +17,7 @@ The repo is to collect data for RTP travel model and mapping
 
 The MPO facilities include bikeways and sidewalks. The steps for performance analysis are listed in 1) coburg_sidewalks_bike_lanes; 2) sidewalks_MPO; 3) bikeways_MPO; and 4) facilities in the 'RTP/data' folder and 5) system_completeness in the RTP/analysis folder.
 
-# Required datasets for web-mapping
+# Required datasets for [web-mapping](https://arcg.is/0L8azS)
 ## Transportation
 
 ·        Roads (interstate, state freeways, arterials)
@@ -82,3 +82,6 @@ o   Stream preservation
 ## Land use
 
 ## Plan designations (future land use)
+
+# RTP map series
+## [Scale-based RTP mapping](https://arcg.is/yL0nb) 
