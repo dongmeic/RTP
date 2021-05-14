@@ -85,3 +85,5 @@ o   Stream preservation
 
 # RTP map series
 ## [Scale-based RTP mapping](https://arcg.is/yL0nb) 
+
+Steps to update RTP maps:
