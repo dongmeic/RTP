@@ -4,6 +4,13 @@ import re, fiona
 import numpy as np
 
 
+def targetLayers(patterns = ['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed']):
+    targetLayers = []
+    for pattern in patterns:
+        layers = [item for item in getLayernames(pattern=pattern) if 'P1' not in item]
+        targetLayers += layers
+    return targetLayers
+
 def matchID(rtpid_table, rtpid_layer):
     newRTPid = [a for a in rtpid_table if a not in rtpid_layer]
     missedRTPid = [a for a in rtpid_layer if a not in rtpid_table]
@@ -16,7 +23,7 @@ def getIDs(excel='Working DRAFT 2045 Project List.xlsx',
     sheetNames = getSheetnames(pattern=Tablepattern)
     rtpid_table = []
     for sheetName in sheetNames:
-        print(sheetName)
+        #print(sheetName)
         xl = pd.ExcelFile(excel)
         df = xl.parse(sheetName)
         if df.shape[0] != 0:
@@ -26,7 +33,7 @@ def getIDs(excel='Working DRAFT 2045 Project List.xlsx',
     layers = [item for item in getLayernames(pattern=Layerpattern) if 'P1' not in item]
     rtpid_layer = []
     for layer in layers:
-        print(layer)
+        #print(layer)
         l = LayerRTPid(layer = layer)
         rtpid_layer += l
     
