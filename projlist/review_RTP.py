@@ -4,6 +4,53 @@ import re, fiona
 import numpy as np
 
 
+
+def readTable2040(table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx',
+              sheetName='Auto Constrained - Arterial Lin'):
+    xl = pd.ExcelFile(table)
+    
+    if sheetName == 'Transit Constrained':
+        df1 = xl.parse(sheetName, skiprows=3, nrows=6)
+        df1 = addCategory(df1)
+        columns = df1.columns
+        
+        df2 = xl.parse(sheetName, skiprows=10, nrows=8)
+        df2.columns = list(columns[0:(len(columns)-1)])
+        df2 = addCategory(df2)
+        
+        df3 = xl.parse(sheetName, skiprows=20, nrows=6)
+        df3.columns = list(columns[0:(len(columns)-1)])
+        df3 = addCategory(df3)       
+    
+        df = pd.concat([df1, df2, df3], ignore_index=True)
+        df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
+    else:
+        df = xl.parse(sheetName)
+        if len([col for col in df.columns if 'Unnamed' in col]) > 2:
+            df = xl.parse(sheetName,  skiprows=3)
+        if sheetName in ['Auto Constrained - Study', 'Bike Constrained - wRd', 
+                         'Bike Constrained - onstreet w', 'Bike Constrained - onstreet wou',
+                         'Bike Illustrative - woutRD', 'Bike Illustrative - onstreet w',
+                         'Bike Illustrative onstreet wout']:
+            df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
+        elif sheetName == 'Transit Illustrative':
+            df.rename(columns={"Unnamed: 7": "Year of Construction Cost Max"}, inplace=True)
+        else:
+            df.rename(columns={"Unnamed: 9": "Year of Construction Cost Max"}, inplace=True)
+        df = addCategory(df)
+    df.rename(columns={"Year of Construction\nCost Range": "Year of Construction Cost Min"}, inplace=True)
+    df = df[df.columns.drop(list(df.filter(regex='Unnamed')))]
+    return df  
+
+def addCategory(df):
+    name = df['Name'][0].split(":")[1].lstrip()
+    df = df.drop(labels=0, axis=0)
+    df = df[df.Name.astype(str) != 'nan']
+    #df = df[df.columns.drop(list(df.filter(regex='Unnamed')))]
+    s = pd.Series([name])
+    df['Category'] = list(s.repeat(df.shape[0]))
+    return df
+
 def targetLayers(patterns = ['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed']):
     targetLayers = []
     for pattern in patterns:
