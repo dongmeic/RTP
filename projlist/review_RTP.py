@@ -4,43 +4,116 @@ import re, fiona
 import numpy as np
 
 
+def modifyRTP(df):
+    rtplist = df.RTP.unique()
+    strlist = [item for item in rtplist if type(item) is str]
+    df = df[~df.RTP.isin(strlist)]
+    df = df[~df.RTP.astype(float).isna()]
+    df.RTP = df.RTP.astype(int)
+    return df
 
-def readTable2040(table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx',
-              sheetName='Auto Constrained - Arterial Lin'):
+def combineTables(year=2040):
+    if year == 2040:
+        table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
+    else:
+        table='Working DRAFT 2045 Project List.xlsx'
+        
+    xl = pd.ExcelFile(table)
+    sheetNames = xl.sheet_names
+    sheetNames = [sheetnm for sheetnm in sheetNames if sheetnm != 'Table Data']
+    for sheetName in sheetNames:
+        #print(sheetName)
+        if sheetName == sheetNames[0]:
+            df = readTable(sheetName=sheetName, year=year)
+        else:
+            ndf = readTable(sheetName=sheetName, year=year)
+            if ndf.shape[0] == 0:
+                pass
+            else:
+                selectedColumns = [a for a in list(ndf.columns) if a in list(df.columns)]
+                ndf = ndf[selectedColumns]
+                df = df[selectedColumns]
+                df = df.append(ndf, ignore_index=True)
+    return df
+
+def readTable(sheetName='Auto Constrained - Arterial Lin',
+              year=2040):
+    if year == 2040:
+        table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
+    else:
+        table='Working DRAFT 2045 Project List.xlsx'
+        
     xl = pd.ExcelFile(table)
     
     if sheetName == 'Transit Constrained':
-        df1 = xl.parse(sheetName, skiprows=3, nrows=6)
-        df1 = addCategory(df1)
-        columns = df1.columns
-        
-        df2 = xl.parse(sheetName, skiprows=10, nrows=8)
-        df2.columns = list(columns[0:(len(columns)-1)])
-        df2 = addCategory(df2)
-        
-        df3 = xl.parse(sheetName, skiprows=20, nrows=6)
-        df3.columns = list(columns[0:(len(columns)-1)])
-        df3 = addCategory(df3)       
-    
+        if year == 2040:
+            df1 = xl.parse(sheetName, skiprows=3, nrows=6)
+            df1 = addCategory(df1)
+            columns = df1.columns
+
+            df2 = xl.parse(sheetName, skiprows=10, nrows=9)
+            df2.columns = list(columns[0:(len(columns)-1)])
+            df2 = addCategory(df2)
+
+            df3 = xl.parse(sheetName, skiprows=20, nrows=6)
+            df3.columns = list(columns[0:(len(columns)-1)])
+            df3 = addCategory(df3)       
+        else:
+            df1 = xl.parse(sheetName, nrows=5)
+            df1 = addCategory(df1)
+            columns = df1.columns
+
+            df2 = xl.parse(sheetName, skiprows=7, nrows=9)
+            df2.columns = list(columns[0:(len(columns)-1)])
+            df2 = addCategory(df2)
+
+            df3 = xl.parse(sheetName, skiprows=17, nrows=6)
+            df3.columns = list(columns[0:(len(columns)-1)])
+            df3 = addCategory(df3)       
+
         df = pd.concat([df1, df2, df3], ignore_index=True)
         df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
+        
     else:
         df = xl.parse(sheetName)
-        if len([col for col in df.columns if 'Unnamed' in col]) > 2:
+        if len([col for col in df.columns if 'Unnamed' in col]) > 5:
             df = xl.parse(sheetName,  skiprows=3)
-        if sheetName in ['Auto Constrained - Study', 'Bike Constrained - wRd', 
-                         'Bike Constrained - onstreet w', 'Bike Constrained - onstreet wou',
-                         'Bike Illustrative - woutRD', 'Bike Illustrative - onstreet w',
-                         'Bike Illustrative onstreet wout']:
-            df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
-        elif sheetName == 'Transit Illustrative':
-            df.rename(columns={"Unnamed: 7": "Year of Construction Cost Max"}, inplace=True)
+        if year == 2045:
+            if sheetName in ['Bike Illustrative - withRd', 'Bike Illustrative - onstreet w', 
+                             'Bike Illustrative - onstreet w', 'Bike Illustrative onstreet wout']:
+                df.rename(columns={"Unnamed: 7": "Year of Construction Cost Max"}, inplace=True)
+            else:
+                df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
         else:
-            df.rename(columns={"Unnamed: 9": "Year of Construction Cost Max"}, inplace=True)
-        df = addCategory(df)
-    df.rename(columns={"Year of Construction\nCost Range": "Year of Construction Cost Min"}, inplace=True)
+            if sheetName in ['Auto Constrained - Study', 'Bike Constrained - wRd', 
+                             'Bike Constrained - onstreet w', 'Bike Constrained - onstreet wou',
+                             'Bike Illustrative - woutRD', 'Bike Illustrative - onstreet w',
+                             'Bike Illustrative onstreet wout']:
+                df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
+            elif sheetName == 'Transit Illustrative':
+                df.rename(columns={"Unnamed: 7": "Year of Construction Cost Max"}, inplace=True)
+            else:
+                df.rename(columns={"Unnamed: 9": "Year of Construction Cost Max"}, inplace=True)
+        if df.shape[0] == 0:
+            pass
+        else:
+            df = addCategory(df)
+    if year == 2040:    
+        df.rename(columns={"Year of Construction\nCost Range": "Year of Construction Cost Min"}, inplace=True)
+    else:
+        df.rename(columns={"Year of Construction Range": "Year of Construction Cost Min",
+                           "Year of Construction\nCost Range": "Year of Construction Cost Min",
+                           "Year of Construction \nCost Range": "Year of Construction Cost Min"}, inplace=True)
+            
     df = df[df.columns.drop(list(df.filter(regex='Unnamed')))]
-    return df  
+    df.columns = df.columns.str.replace(' ', '')
+    df.columns = df.columns.str.replace('\n', '')
+    if 'EstimatedYearofStudy(4-YearWindow)' in list(df.columns):
+        df.rename(columns={"EstimatedYearofStudy(4-YearWindow)": "EstimatedYearofConstruction(4-YearWindow)"}, 
+                  inplace=True) 
+    df.rename(columns={"RTP#": "RTP"}, inplace=True) 
+    df.rename(columns={"GeogrpahicLimits": "GeographicLimits"}, inplace=True)
+    return df
 
 def addCategory(df):
     name = df['Name'][0].split(":")[1].lstrip()
