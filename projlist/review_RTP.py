@@ -3,6 +3,36 @@ import geopandas as gpd
 import re, fiona
 import numpy as np
 
+def checkDiff(export=True):
+    df = modifyRTP(combineTables())
+    df45 = modifyRTP(combineTables(year=2045))
+    outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
+    if export:
+        df.to_csv(os.path.join(outpath, 'project_2040.csv'), index=False)
+        df45.to_csv(os.path.join(outpath, 'project_2045.csv'), index=False)
+    df['ID'] = df[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
+    df45['ID'] = df45[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
+    cols = [col for col in list(df.columns) if (col in list(df45.columns)) and (col != 'ID')]
+    df.columns = df.columns + '40'
+    df.rename(columns={"ID40": "ID"}, inplace = True)
+    df45.columns = df45.columns + '45'
+    df45.rename(columns={"ID45": "ID"}, inplace = True)
+    data = df.merge(df45, on='ID')
+    data = data.drop(['ID'], axis=1)
+    for col in cols:
+        data[col+'Diff'] = data[[col+'40', col+'45']].apply(lambda row: compareDiff(row[col+'40'], row[col+'45']), axis = 1)
+    if export:
+        data.to_csv(os.path.join(outpath, 'project_review.csv'), index=False)
+    return data
+
+def compareDiff(a, b):
+    if type(a) is float and type(b) is float:
+        res = b - a
+    elif a != b:
+        res = 999
+    else:
+        res = 0
+    return res
 
 def modifyRTP(df):
     rtplist = df.RTP.unique()
