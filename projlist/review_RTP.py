@@ -88,10 +88,8 @@ def readTable(sheetName='Auto Constrained - Arterial Lin',
             if sheetName in ['Auto Constrained - Study', 'Bike Constrained - wRd', 
                              'Bike Constrained - onstreet w', 'Bike Constrained - onstreet wou',
                              'Bike Illustrative - woutRD', 'Bike Illustrative - onstreet w',
-                             'Bike Illustrative onstreet wout']:
+                             'Bike Illustrative onstreet wout', 'Transit Illustrative']:
                 df.rename(columns={"Unnamed: 8": "Year of Construction Cost Max"}, inplace=True)
-            elif sheetName == 'Transit Illustrative':
-                df.rename(columns={"Unnamed: 7": "Year of Construction Cost Max"}, inplace=True)
             else:
                 df.rename(columns={"Unnamed: 9": "Year of Construction Cost Max"}, inplace=True)
         if df.shape[0] == 0:
@@ -111,8 +109,12 @@ def readTable(sheetName='Auto Constrained - Arterial Lin',
     if 'EstimatedYearofStudy(4-YearWindow)' in list(df.columns):
         df.rename(columns={"EstimatedYearofStudy(4-YearWindow)": "EstimatedYearofConstruction(4-YearWindow)"}, 
                   inplace=True) 
-    df.rename(columns={"RTP#": "RTP"}, inplace=True) 
+    df.rename(columns={"RTP#": "RTP", "EstimatedYearofConstruction(4-YearWindow)":"EstimatedYearofConstruction"}, inplace=True) 
     df.rename(columns={"GeogrpahicLimits": "GeographicLimits"}, inplace=True)
+    df.rename(columns={'EstimatedCost(2016)': 'EstimatedCost',
+                       'EstimatedCost(2020)': 'EstimatedCost',
+                       'EstimatedCost(2021)': 'EstimatedCost',
+                       'EstimatedCost(20XX)': 'EstimatedCost'}, inplace=True)
     return df
 
 def addCategory(df):
