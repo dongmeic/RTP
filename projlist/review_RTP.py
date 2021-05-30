@@ -1,6 +1,6 @@
 import pandas as pd
 import geopandas as gpd
-import re, fiona
+import re, fiona, os
 import numpy as np
 
 def checkDiff(export=True):
@@ -42,7 +42,7 @@ def modifyRTP(df):
     df.RTP = df.RTP.astype(int)
     return df
 
-def combineTables(year=2040):
+def combineTables(year=2040, excludeTransit = False):
     if year == 2040:
         table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
     else:
@@ -51,6 +51,8 @@ def combineTables(year=2040):
     xl = pd.ExcelFile(table)
     sheetNames = xl.sheet_names
     sheetNames = [sheetnm for sheetnm in sheetNames if sheetnm != 'Table Data']
+    if excludeTransit:
+        sheetNames = [sheetnm for sheetnm in sheetNames if 'Transit' not in sheetnm]
     for sheetName in sheetNames:
         #print(sheetName)
         if sheetName == sheetNames[0]:
@@ -145,6 +147,7 @@ def readTable(sheetName='Auto Constrained - Arterial Lin',
                        'EstimatedCost(2020)': 'EstimatedCost',
                        'EstimatedCost(2021)': 'EstimatedCost',
                        'EstimatedCost(20XX)': 'EstimatedCost'}, inplace=True)
+
     return df
 
 def addCategory(df):

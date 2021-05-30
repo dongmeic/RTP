@@ -84,6 +84,10 @@ o   Stream preservation
 ## Plan designations (future land use)
 
 # RTP map series
-## [Scale-based RTP mapping](https://arcg.is/yL0nb) 
+## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb) 
 
-Steps to update RTP maps:
+## Mapping RTP projects (2045)
+
+1. Reivew project lists and compare between years 2040 and 2045
+
+2. Modify GIS data from year 2040 for 2045
