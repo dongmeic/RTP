@@ -3,6 +3,7 @@ import geopandas as gpd
 import re, fiona, os
 import numpy as np
 
+# review the differences in multiple columns before and after changes over years
 def checkDiff(export=True):
     df = modifyRTP(combineTables())
     df45 = modifyRTP(combineTables(year=2045))
@@ -25,6 +26,7 @@ def checkDiff(export=True):
         data.to_csv(os.path.join(outpath, 'project_review.csv'), index=False)
     return data
 
+# compare the values before and after changes over years
 def compareDiff(a, b):
     if type(a) is float and type(b) is float:
         res = b - a
@@ -34,6 +36,7 @@ def compareDiff(a, b):
         res = 0
     return res
 
+# clearn RTP format
 def modifyRTP(df):
     rtplist = df.RTP.unique()
     strlist = [item for item in rtplist if type(item) is str]
@@ -42,6 +45,8 @@ def modifyRTP(df):
     df.RTP = df.RTP.astype(int)
     return df
 
+# combine spreadsheets in one dataframe
+# edit parts of the spreadsheet to have consistent formats
 def combineTables(year=2040, excludeTransit = False):
     if year == 2040:
         table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
@@ -68,6 +73,7 @@ def combineTables(year=2040, excludeTransit = False):
                 df = df.append(ndf, ignore_index=True)
     return df
 
+# read each spreadsheet and convert it to dataframe
 def readTable(sheetName='Auto Constrained - Arterial Lin',
               year=2040):
     if year == 2040:
@@ -150,6 +156,7 @@ def readTable(sheetName='Auto Constrained - Arterial Lin',
 
     return df
 
+# add category to the dataframe
 def addCategory(df):
     name = df['Name'][0].split(":")[1].lstrip()
     df = df.drop(labels=0, axis=0)
@@ -159,6 +166,7 @@ def addCategory(df):
     df['Category'] = list(s.repeat(df.shape[0]))
     return df
 
+# get targeted layers to modify GIS data
 def targetLayers(patterns = ['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed']):
     targetLayers = []
     for pattern in patterns:
@@ -166,49 +174,56 @@ def targetLayers(patterns = ['Constrained_Roadway', 'Illustrative_Roadway', 'Con
         targetLayers += layers
     return targetLayers
 
+# match IDs between the table and GIS data
 def matchID(rtpid_table, rtpid_layer):
     newRTPid = [a for a in rtpid_table if a not in rtpid_layer]
     missedRTPid = [a for a in rtpid_layer if a not in rtpid_table]
     commonid = [a for a in rtpid_table if a in rtpid_layer]
     return newRTPid, missedRTPid, commonid
 
-def getIDs(excel='Working DRAFT 2045 Project List.xlsx',
+# get RTP IDs from both spreadsheets and layers
+def getIDs(excel='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx',#Working DRAFT 2045 Project List.xlsx
            Tablepattern='Auto Constrained',
            Layerpattern='Constrained_Roadway'):
-    sheetNames = getSheetnames(pattern=Tablepattern)
+    sheetNames = getSheetnames(excel=excel, pattern=Tablepattern)
     rtpid_table = []
     for sheetName in sheetNames:
-        #print(sheetName)
+        print(sheetName)
         xl = pd.ExcelFile(excel)
         df = xl.parse(sheetName)
         if df.shape[0] != 0:
-            l = getRTPid(sheet_name=sheetName)[1]
+            l = getRTPid(excel=excel, sheet_name=sheetName)[1]
             rtpid_table += l
     
     layers = [item for item in getLayernames(pattern=Layerpattern) if 'P1' not in item]
     rtpid_layer = []
     for layer in layers:
-        #print(layer)
+        print(layer)
         l = LayerRTPid(layer = layer)
         rtpid_layer += l
     
     return rtpid_table, rtpid_layer
 
+# get RTP ID from the layers
 def LayerRTPid(gdb_file = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb',
                layer='Constrained_Roadway_lines_P1'):
     gpdfile = gpd.read_file(gdb_file, layer=layer)
     a = gpdfile.RTP_ID.unique()
     return a[~np.isnan(a)].astype(int).tolist()
 
+# get layer names
 def getLayernames(gdb_file = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb',
                   pattern='Constrained_Roadway'):
     layers = fiona.listlayers(gdb_file)
     return [layer for layer in layers if re.match(pattern, layer)]
 
+# get RTP ID from the table
 def getRTPid(excel='Working DRAFT 2045 Project List.xlsx',
              sheet_name='Auto Constrained - Arterial Lin'):
     xl = pd.ExcelFile(excel)
     df = xl.parse(sheet_name)
+    if len([col for col in df.columns if 'Unnamed' in col]) > 5:
+            df = xl.parse(sheet_name,  skiprows=3)
     if df.shape[0] != 0:
         name = df['Name'][0].split(":")[1].lstrip()
         df = df.drop(labels=0, axis=0)
@@ -222,6 +237,7 @@ def getRTPid(excel='Working DRAFT 2045 Project List.xlsx',
         res = [int(ele) for ele in b if ele > 0]
     return name, res
 
+# get spreadsheet names from the table file
 def getSheetnames(excel='Working DRAFT 2045 Project List.xlsx',
                  pattern='Auto Constrained'):
     xl = pd.ExcelFile(excel)

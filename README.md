@@ -90,4 +90,6 @@ o   Stream preservation
 
 1. Reivew project lists and compare between years 2040 and 2045
 
+The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data. 
+
 2. Modify GIS data from year 2040 for 2045
