@@ -3,27 +3,133 @@ import geopandas as gpd
 import re, fiona, os
 import numpy as np
 
-# review the differences in multiple columns before and after changes over years
-def checkDiff(export=True):
-    df = modifyRTP(combineTables())
-    df45 = modifyRTP(combineTables(year=2045))
+# review RTP projects in all spreadsheets in a loop
+def projectReviebyTable(sheetNames):
+    outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'    
+    sheetComplete=[]
+    sheetEmpty=[]
+    sheet2Review=[]
+    for sheetName in sheetNames:
+            res = checkDiffbyTable(sheetName=sheetName, export=True)
+            if isinstance(res, pd.DataFrame):
+                sheet2Review.append(sheetName)        
+            elif res == 0:
+                sheetEmpty.append(sheetName)              
+            else:
+                sheetComplete.append(sheetName)
+    with open(os.path.join(outpath, "review_by_table.txt"), 'a') as f:
+        print("\n", file=f)
+        print("Need to review these tables:", file=f)
+        print(sheet2Review, file=f)
+
+# review RTP project in each spreadsheet between the tables 2040 and 2045
+def checkDiffbyTable(sheetName='Auto Constrained - Arterial Lin', export=False):
     outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
-    if export:
-        df.to_csv(os.path.join(outpath, 'project_2040.csv'), index=False)
-        df45.to_csv(os.path.join(outpath, 'project_2045.csv'), index=False)
-    df['ID'] = df[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
-    df45['ID'] = df45[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
-    cols = [col for col in list(df.columns) if (col in list(df45.columns)) and (col != 'ID')]
-    df.columns = df.columns + '40'
-    df.rename(columns={"ID40": "ID"}, inplace = True)
-    df45.columns = df45.columns + '45'
-    df45.rename(columns={"ID45": "ID"}, inplace = True)
-    data = df.merge(df45, on='ID')
-    data = data.drop(['ID'], axis=1)
-    for col in cols:
-        data[col+'Diff'] = data[[col+'40', col+'45']].apply(lambda row: compareDiff(row[col+'40'], row[col+'45']), axis = 1)
-    if export:
-        data.to_csv(os.path.join(outpath, 'project_review.csv'), index=False)
+    df40r = readTable(sheetName=sheetName)
+    df45r = readTable(sheetName=sheetName, year=2045)
+    file = os.path.join(outpath, "review_by_table.txt")
+    with open(file, 'a') as f:
+        print("\n", file=f)
+        print(sheetName, file=f)
+        print("Dimension in 2040 data:", file=f)
+        print(df40r.shape, file=f)
+        print("Dimension in 2045 data:", file=f)
+        print(df45r.shape, file=f)
+        if df40r.shape[0] != 0 and df45r.shape[0] != 0:
+            keepcols = [col for col in df40r.columns if col in df45r.columns]
+            df40 = modifyRTP(df40r[keepcols])
+            df45 = modifyRTP(df45r[keepcols])
+            RTPex40 = len(df40r.RTP.unique()) - len(df40.RTP.unique())
+            RTPex45 = len(df45r.RTP.unique()) - len(df45.RTP.unique())
+
+            print("In 2040, there is {0} RTP in {1} items excluded in the match; In 2045, there is {2} RTP in {3} items excluded in the match.".format(RTPex40, df40r.shape[0] - df40.shape[0], RTPex45, df45r.shape[0] - df45.shape[0]), file=f)
+            
+            df40.columns = df40.columns + '40'
+            df40.rename(columns={"RTP40": "RTP"}, inplace = True)
+            df45.columns = df45.columns + '45'
+            df45.rename(columns={"RTP45": "RTP"}, inplace = True)
+            df40.drop_duplicates(subset='RTP', keep=False, inplace=True)
+            df45.drop_duplicates(subset='RTP', keep=False, inplace=True)
+            data = df40.merge(df45, on='RTP')
+            keepcols.remove('RTP')
+            if data.shape[0] != 0:
+                for col in keepcols:
+                    data[col+'Diff'] = data[[col+'40', col+'45']].apply(lambda row: compareDiff(row[col+'40'], row[col+'45']), axis = 1)
+                data = data.reindex(sorted(data.columns), axis=1)
+                if export:
+                    outname = sheetName.replace(' ', '')                                                                                                                                      
+                    data.to_csv(os.path.join(outpath, outname + '.csv'), index=False)
+                if 'GeographicLimitsDiff' in data.columns:
+                    print("Changes in geographic limits:", file=f)
+                    print(data['GeographicLimitsDiff'].value_counts(), file=f)
+
+                if 'LengthDiff' in data.columns:
+                    print("Changes in length:", file=f)
+                    print(data['LengthDiff'].value_counts(), file=f)
+
+                print("Data include:", file=f)                
+                print(data.columns, file=f)
+                print(data[['RTP', 'Name40', 'Name45']].head(), file=f)
+                if data.shape[0] == df40r.shape[0] == df45r.shape[0]:
+                    res = 'ALL'
+                    return data, res
+                else:
+                    if len([a for a in list(df40.RTP.unique()) if a not in list(data.RTP.unique())]) > 0:
+                        df40[~df40.RTP.isin(list(data.RTP.unique()))].to_csv(os.path.join(outpath, outname + '40.csv'), index=False)
+                    
+                    if len([a for a in list(df45.RTP.unique()) if a not in list(data.RTP.unique())]) > 0:
+                        df45[~df45.RTP.isin(list(data.RTP.unique()))].to_csv(os.path.join(outpath, outname + '45.csv'), index=False)
+                    return data
+        else:
+            print("At least one of the two tables is empty or there is no match!", file=f)
+            return 0
+
+# review the differences in multiple columns before and after changes over years with all spreadsheets included
+def checkDiff(export=True, excludeTransit = False, by="ID"):
+    outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
+    if excludeTransit:
+        df = modifyRTP(combineTables(excludeTransit = True))
+        df45 = modifyRTP(combineTables(year=2045, excludeTransit = True))
+        if export:
+            df.to_csv(os.path.join(outpath, 'project_2040_excludeTransit.csv'), index=False)
+            df45.to_csv(os.path.join(outpath, 'project_2045_excludeTransit.csv'), index=False)
+    else:
+        df = modifyRTP(combineTables())
+        df45 = modifyRTP(combineTables(year=2045))
+        if export:
+            df.to_csv(os.path.join(outpath, 'project_2040.csv'), index=False)
+            df45.to_csv(os.path.join(outpath, 'project_2045.csv'), index=False)
+    
+    if by == "ID":
+        df['ID'] = df[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
+        df45['ID'] = df45[['Name', 'GeographicLimits', 'Description', 'EstimatedYearofConstruction']].apply(lambda row: str(row.Name) + str(row.GeographicLimits) + str(row.Description) + str(row.EstimatedYearofConstruction), axis=1)
+        cols = [col for col in list(df.columns) if (col in list(df45.columns)) and (col != 'ID')]
+        df.columns = df.columns + '40'
+        df.rename(columns={"ID40": "ID"}, inplace = True)
+        df45.columns = df45.columns + '45'
+        df45.rename(columns={"ID45": "ID"}, inplace = True)
+        data = df.merge(df45, on='ID')
+        data = data.drop(['ID'], axis=1)
+        for col in cols:
+            data[col+'Diff'] = data[[col+'40', col+'45']].apply(lambda row: compareDiff(row[col+'40'], row[col+'45']), axis = 1)
+        if export:
+            data.to_csv(os.path.join(outpath, 'project_review.csv'), index=False)
+    else:
+        df = df[df.columns.drop(["EstimatedCost", "YearofConstructionCostMin", "YearofConstructionCostMax"])]
+        df45 = df45[df45.columns.drop(["EstimatedCost", "YearofConstructionCostMin", "YearofConstructionCostMax"])]
+        cols = [col for col in list(df.columns) if (col in list(df45.columns)) and (col != 'RTP')]
+        df.columns = df.columns + '40'
+        df.rename(columns={"RTP40": "RTP"}, inplace = True)
+        df45.columns = df45.columns + '45'
+        df45.rename(columns={"RTP45": "RTP"}, inplace = True)
+        df.drop_duplicates(subset='RTP', keep=False, inplace=True)
+        df45.drop_duplicates(subset='RTP', keep=False, inplace=True)
+        data = df.merge(df45, on='RTP')
+        for col in cols:
+            data[col+'Diff'] = data[[col+'40', col+'45']].apply(lambda row: compareDiff(row[col+'40'], row[col+'45']), axis = 1)
+        if export:
+            data.to_csv(os.path.join(outpath, 'project_review_RTP.csv'), index=False)
+        
     return data
 
 # compare the values before and after changes over years
@@ -36,7 +142,7 @@ def compareDiff(a, b):
         res = 0
     return res
 
-# clearn RTP format
+# clean RTP format
 def modifyRTP(df):
     rtplist = df.RTP.unique()
     strlist = [item for item in rtplist if type(item) is str]
