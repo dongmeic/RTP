@@ -10,11 +10,23 @@ sheetList = xl.sheet_names
 # update the sheet list
 sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained', 'Transit Illustrative', 'Table Data']]
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
-allfilePaths = glob.glob(os.path.join(path, '*.csv'))
-filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
+
+# for the shapefile column name length limit 10
+def shortenColnames(df):
+    df.rename(columns={'AirQualityStatus': 'AirQuaSta',
+                      'Description': 'Narration',
+                      'EstimatedCost': 'RoughCost',
+                      'EstimatedYearofConstruction': 'YearRange',
+                      'FunctionalClass': 'FunctClass',
+                      'GeographicLimits': 'GeoLimits',
+                      'JurisdictionalProject#': 'JurisProjN',
+                      'PrimaryJurisdiction': 'PrimJurisd',
+                      'YearofConstructionCostMax': 'CostMax', 
+                      'YearofConstructionCostMin': 'CostMin',
+                      'RTP': 'RTP_ID'}, inplace = True)
 
 # get combined tables 
-def getCombinedTables(cat='added', export=False):
+def getCombinedTables(cat='added', export=False, byCategory=False, category='AutoConstrained'):
     if cat == 'added':
         filePaths = glob.glob(os.path.join(path, '*45.csv'))
         # the last file is project_2045.csv
@@ -22,8 +34,13 @@ def getCombinedTables(cat='added', export=False):
         data = combineProjectReviewTable(filePaths)
         data.columns = data.columns.str.replace('45', '')    
     elif cat == 'common':
-        allfilePaths = glob.glob(os.path.join(path, '*.csv'))
-        filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
+        if byCategory:
+            filePaths = glob.glob(os.path.join(path, category+'*.csv'))
+            exclude = re.compile(r'.*[0-9]{2}.csv')
+            filePaths = [f for f in filePaths if not exclude.match(f)]
+        else:
+            allfilePaths = glob.glob(os.path.join(path, '*.csv'))
+            filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
         df = combineProjectReviewTable(filePaths)
         sel = df.columns.map(lambda x: bool(re.search('45',x)))
         cols = list(df.columns[sel].values)
@@ -39,7 +56,10 @@ def getCombinedTables(cat='added', export=False):
         data = combineProjectReviewTable(filePaths)
         data.columns = data.columns.str.replace('40', '') 
     if export:
-        data.to_csv(os.path.join(path, cat + 'Projects.csv'), index=False)
+        if byCategory:
+            data.to_csv(os.path.join(path, cat + category + 'Projects.csv'), index=False)
+        else:
+            data.to_csv(os.path.join(path, cat + 'Projects.csv'), index=False)
     if cat == 'common':
         return df, data
     else:
