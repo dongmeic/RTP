@@ -14,32 +14,36 @@ allfilePaths = glob.glob(os.path.join(path, '*.csv'))
 filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
 
 # get combined tables 
-def getCombinedTables(cat='new'):
-    if cat == 'new':
+def getCombinedTables(cat='added', export=False):
+    if cat == 'added':
         filePaths = glob.glob(os.path.join(path, '*45.csv'))
         # the last file is project_2045.csv
         filePaths.pop()
         data = combineProjectReviewTable(filePaths)
-        data.columns = data.columns.str.replace('45', '')
-        data.to_csv(os.path.join(path, 'addedProjects.csv'), index=False)
+        data.columns = data.columns.str.replace('45', '')    
     elif cat == 'common':
         allfilePaths = glob.glob(os.path.join(path, '*.csv'))
         filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
-        data = combineProjectReviewTable(filePaths)
-        sel = data.columns.map(lambda x: bool(re.search('45',x)))
-        data = data[data.columns[sel]]
+        df = combineProjectReviewTable(filePaths)
+        sel = df.columns.map(lambda x: bool(re.search('45',x)))
+        cols = list(df.columns[sel].values)
+        cols.append('RTP')
+        data = df[cols]
         # another way to select columns with certain string pattern: 
-        # data[data.columns[data.columns.to_series().str.contains('45')]].head()
+        # df[df.columns[df.columns.to_series().str.contains('45')]].head()
         data.columns = data.columns.str.replace('45', '')
-        data.to_csv(os.path.join(path, 'commonProjects.csv'), index=False)
     elif cat == 'missing':
         filePaths = glob.glob(os.path.join(path, '*40.csv'))
         # the last file is project_2045.csv
         filePaths.pop()
         data = combineProjectReviewTable(filePaths)
-        data.columns = data.columns.str.replace('40', '')
-        data.to_csv(os.path.join(path, 'missingProjects.csv'), index=False)
-    return data
+        data.columns = data.columns.str.replace('40', '') 
+    if export:
+        data.to_csv(os.path.join(path, cat + 'Projects.csv'), index=False)
+    if cat == 'common':
+        return df, data
+    else:
+        return data
     
 # combine tables from the project review step
 def combineProjectReviewTable(filePaths):
@@ -48,10 +52,11 @@ def combineProjectReviewTable(filePaths):
             df = pd.read_csv(filePath)
         else:
             ndf = pd.read_csv(filePath)
-            selectedColumns = [a for a in list(ndf.columns) if a in list(df.columns)]
-            ndf = ndf[selectedColumns]
-            df = df[selectedColumns]
-            df = df.append(ndf, ignore_index=True)
+            if 'RTP' in ndf.columns:
+                selectedColumns = [a for a in list(ndf.columns) if a in list(df.columns)]
+                ndf = ndf[selectedColumns]
+                df = df[selectedColumns]
+                df = df.append(ndf, ignore_index=True)
     return df
                               
 # review RTP projects in all spreadsheets in a loop
