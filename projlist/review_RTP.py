@@ -1,8 +1,59 @@
 import pandas as pd
 import geopandas as gpd
-import re, fiona, os
+import re, fiona, os, glob
 import numpy as np
 
+
+excel='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
+xl = pd.ExcelFile(excel)
+sheetList = xl.sheet_names
+# update the sheet list
+sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained', 'Transit Illustrative', 'Table Data']]
+path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
+allfilePaths = glob.glob(os.path.join(path, '*.csv'))
+filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
+
+# get combined tables 
+def getCombinedTables(cat='new'):
+    if cat == 'new':
+        filePaths = glob.glob(os.path.join(path, '*45.csv'))
+        # the last file is project_2045.csv
+        filePaths.pop()
+        data = combineProjectReviewTable(filePaths)
+        data.columns = data.columns.str.replace('45', '')
+        data.to_csv(os.path.join(path, 'addedProjects.csv'), index=False)
+    elif cat == 'common':
+        allfilePaths = glob.glob(os.path.join(path, '*.csv'))
+        filePaths = [os.path.join(path, sheetName.replace(' ', '') + '.csv') for sheetName in sheetList if os.path.join(path, sheetName.replace(' ', '') + '.csv') in allfilePaths]
+        data = combineProjectReviewTable(filePaths)
+        sel = data.columns.map(lambda x: bool(re.search('45',x)))
+        data = data[data.columns[sel]]
+        # another way to select columns with certain string pattern: 
+        # data[data.columns[data.columns.to_series().str.contains('45')]].head()
+        data.columns = data.columns.str.replace('45', '')
+        data.to_csv(os.path.join(path, 'commonProjects.csv'), index=False)
+    elif cat == 'missing':
+        filePaths = glob.glob(os.path.join(path, '*40.csv'))
+        # the last file is project_2045.csv
+        filePaths.pop()
+        data = combineProjectReviewTable(filePaths)
+        data.columns = data.columns.str.replace('40', '')
+        data.to_csv(os.path.join(path, 'missingProjects.csv'), index=False)
+    return data
+    
+# combine tables from the project review step
+def combineProjectReviewTable(filePaths):
+    for filePath in filePaths:
+        if filePath == filePaths[0]:
+            df = pd.read_csv(filePath)
+        else:
+            ndf = pd.read_csv(filePath)
+            selectedColumns = [a for a in list(ndf.columns) if a in list(df.columns)]
+            ndf = ndf[selectedColumns]
+            df = df[selectedColumns]
+            df = df.append(ndf, ignore_index=True)
+    return df
+                              
 # review RTP projects in all spreadsheets in a loop
 def projectReviebyTable(sheetNames):
     outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'    
@@ -21,6 +72,12 @@ def projectReviebyTable(sheetNames):
         print("\n", file=f)
         print("Need to review these tables:", file=f)
         print(sheet2Review, file=f)
+        print("\n", file=f)
+        print("These tables are empty:", file=f)
+        print(sheetEmpty, file=f)
+        print("\n", file=f)
+        print("These tables are complete:", file=f)
+        print(sheetComplete, file=f)
 
 # review RTP project in each spreadsheet between the tables 2040 and 2045
 def checkDiffbyTable(sheetName='Auto Constrained - Arterial Lin', export=False):
