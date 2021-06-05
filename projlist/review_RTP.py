@@ -13,18 +13,33 @@ path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 newPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData'
 inpath = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb'
 
+# get mapped IDs
+def getMappedIDs(year=2040):
+    Layers = targetLayers()
+    IDs = []
+    for layer in Layers:
+        if year == 2040:
+            gdf = gpd.read_file(inpath, layer=layer)
+        else:
+            gdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))      
+        IDs.extend(gdf.RTP_ID.values)
+    return set(IDs)
+        
 # projects with multiple IDs or without an ID in the tables
-toMap = pd.read_csv(os.path.join(path, 'projects_wo_unique_IDs.csv'))
-dropInd = toMap[(toMap.GeographicLimits.isin(['Various Locations', 'Citywide']))| 
-             (toMap.Category == 'Study')|
-            ((toMap.Name == 'Bob Straub Parkway') & (toMap.Category == 'Multi-Use Paths With Road Project'))].index
-toMap.drop(dropInd, inplace = True)
-
+def getToMap():
+    toMap = pd.read_csv(os.path.join(path, 'projects_wo_unique_IDs.csv'))
+    dropInd = toMap[(toMap.GeographicLimits.isin(['Various Locations', 'Citywide']))| 
+                 (toMap.Category == 'Study')|
+                ((toMap.Name == 'Bob Straub Parkway') & (toMap.Category == 'Multi-Use Paths With Road Project'))].index
+    toMap.drop(dropInd, inplace = True)
+    return toMap
+    
 def reviewIDbyName(layer= 'Constrained_Roadway_lines'):
     ngdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))
     gdf = gpd.read_file(inpath, layer=layer)
+    toMap = getToMap()
     toMapNames = toMap.Name.unique()
-    totalN = len(toMapNames)
+    totalN = toMap.shape[0]
     mappedNames = []
     sel = [name for name in toMapNames if name in gdf.NAME.unique()]
     # update ID by comparing the names
