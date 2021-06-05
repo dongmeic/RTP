@@ -11,6 +11,36 @@ sheetList = xl.sheet_names
 sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained', 'Transit Illustrative', 'Table Data']]
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 
+# review the repeatedly-used ID in the different spreadsheets
+# modified version of the function combineTables
+def reviewRepeatedIDs(year=2040, excludeTransit = False):
+    if year == 2040:
+        table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
+    else:
+        table='Working DRAFT 2045 Project List.xlsx'
+        
+    xl = pd.ExcelFile(table)
+    sheetNames = xl.sheet_names
+    sheetNames = [sheetnm for sheetnm in sheetNames if sheetnm != 'Table Data']
+    if excludeTransit:
+        sheetNames = [sheetnm for sheetnm in sheetNames if 'Transit' not in sheetnm]
+    for sheetName in sheetNames:
+        if sheetName == sheetNames[0]:
+            df = readTable(sheetName=sheetName, year=year)
+            RTPlist = list(df.RTP.unique())
+        else:
+            ndf = readTable(sheetName=sheetName, year=year)
+            if ndf.shape[0] == 0:
+                pass
+            else:
+                nRTPlist = list(ndf.RTP.unique())
+                repeatedIDs = [ID for ID in nRTPlist if ID in RTPlist]
+                if len(repeatedIDs) > 0:
+                    print("The IDs {0} in {1} are in {2}".format(repeatedIDs, sheetName, 
+                                                                      sheetNames[sheetNames.index(sheetName) - 1]))
+                RTPlist.extend(nRTPlist)
+    return RTPlist
+
 # for the shapefile column name length limit 10
 def shortenColnames(df):
     df.rename(columns={'AirQualityStatus': 'AirQuaSta',
@@ -70,8 +100,10 @@ def combineProjectReviewTable(filePaths):
     for filePath in filePaths:
         if filePath == filePaths[0]:
             df = pd.read_csv(filePath)
+            df['In'] = np.repeat(filePath.split('\\')[-1].split('-')[0], df.shape[0])
         else:
             ndf = pd.read_csv(filePath)
+            ndf['In'] = np.repeat(filePath.split('\\')[-1].split('-')[0], ndf.shape[0])
             if 'RTP' in ndf.columns:
                 selectedColumns = [a for a in list(ndf.columns) if a in list(df.columns)]
                 ndf = ndf[selectedColumns]
