@@ -10,6 +10,73 @@ sheetList = xl.sheet_names
 # update the sheet list
 sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained', 'Transit Illustrative', 'Table Data']]
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
+newPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData'
+inpath = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb'
+
+# projects with multiple IDs or without an ID in the tables
+toMap = pd.read_csv(os.path.join(path, 'projects_wo_unique_IDs.csv'))
+dropInd = toMap[(toMap.GeographicLimits.isin(['Various Locations', 'Citywide']))| 
+             (toMap.Category == 'Study')|
+            ((toMap.Name == 'Bob Straub Parkway') & (toMap.Category == 'Multi-Use Paths With Road Project'))].index
+toMap.drop(dropInd, inplace = True)
+
+def reviewIDbyName(layer= 'Constrained_Roadway_lines'):
+    ngdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))
+    gdf = gpd.read_file(inpath, layer=layer)
+    toMapNames = toMap.Name.unique()
+    totalN = len(toMapNames)
+    mappedNames = []
+    sel = [name for name in toMapNames if name in gdf.NAME.unique()]
+    # update ID by comparing the names
+    with open(os.path.join(path, "review_projects_wo_unique_IDs.txt"), 'a') as f:
+        #print("-"*100, file=f)
+        
+        if layer == 'Constrained_Roadway_lines':
+            print("\n", file=f)
+            print("There are {0} projects to map, and they are {1}".format(totalN, 
+                                                                           toMapNames), file=f)                     
+        newN = len(sel)
+        if newN > 0:
+            print("\n", file=f)
+            mappedNames.extend(sel)
+            print("Found matched project names {0}".format(sel), file=f)
+            print("\n", file=f)
+            print(layer, file=f)
+            print("\n", file=f)      
+            print("The existing GIS data shows:", file=f)
+            if "lines" in layer:
+                # review existing GIS data
+                print(gdf[gdf.NAME.isin(sel)][['RTP_ID', 'NAME', 'LIMITS', 'CATEGORY', 'LENGTH', 'JURISDICTI']], file=f)
+            elif "points" in layer:
+                print(gdf[gdf.NAME.isin(sel)][['RTP_ID', 'NAME', 'LIMITS', 'Category', 'JURIS']], file=f)
+            else:
+                print(gdf[gdf.NAME.isin(sel)][['RTP_ID', 'NAME', 'LIMITS', 'Category', 'LENGTH', 'JURIS']], file=f)
+                
+            # compare the projects to-map
+            print("\n", file=f)
+            print("The projects to map are:", file=f)
+            print(toMap[toMap.Name.isin(sel)][[ 'RTP', 'Name', 'GeographicLimits', 'Category', 'Length', 'PrimaryJurisdiction']], file=f)
+            # are they mapped yet with IDs?
+            print("\n", file=f)
+            print("The new GIS data shows:", file=f)
+            print(ngdf[ngdf.Name.isin(sel)][['RTP_ID', 'Name', 'GeoLimits', 'Category', 'Length', 'PrimJurisd']], file=f)
+            #for name in sel:
+                #toMap.loc[toMap.Name == name, 'RTP'] = gdf[gdf.NAME == name]['RTP_ID'].values[0]
+            commondf = getCombinedTables(cat='common')[0]
+            commonIDs = sorted(commondf['RTP'].unique())
+            if len([i for i in gdf[gdf.NAME.isin(sel)].RTP_ID if i in commonIDs]) > 0:
+                print("\n", file=f)
+                print("The tables with common IDs show these records:", file=f)
+                print(commondf[commondf.RTP.isin(gdf[gdf.NAME.isin(sel)].RTP_ID)][['RTP',
+                                                                                   'Name40','Name45', 'In',
+                                                                                   'Category40', 
+                                                                                   'Category45',
+                                                                                   'GeographicLimits40', 
+                                                                                   'GeographicLimits45',
+                                                                                   'PrimaryJurisdiction40',
+                                                                                   'PrimaryJurisdiction45',
+                                                                                   'Length40', 'Length45']], file=f)
+    return mappedNames, newN
 
 def reviewIDinGIS(layer= 'Constrained_Roadway_lines', IDs=[924, 333]):
     gdf = gpd.read_file(r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb', layer=layer)
@@ -26,7 +93,7 @@ def reviewIDforGIS(year=2040, export=False):
 
 # review the repeatedly-used ID in the different spreadsheets
 # modified version of the function combineTables
-def reviewRepeatedIDs(year=2040, excludeTransit = False):
+def reviewRepeatedIDs(year=2040, excludeTransit = True):
     if year == 2040:
         table='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx'
     else:
