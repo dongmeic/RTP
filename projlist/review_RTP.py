@@ -87,7 +87,7 @@ def shortenColnames(df):
                       'YearofConstructionCostMin': 'CostMin',
                       'RTP': 'RTP_ID'}, inplace = True)
 
-# get combined tables 
+# get combined tables in 2045
 def getCombinedTables(cat='added', export=False, byCategory=False, category='AutoConstrained'):
     if cat == 'added':
         filePaths = glob.glob(os.path.join(path, '*45.csv'))
