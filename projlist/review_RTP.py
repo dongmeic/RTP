@@ -11,6 +11,19 @@ sheetList = xl.sheet_names
 sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained', 'Transit Illustrative', 'Table Data']]
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 
+def reviewIDinGIS(layer= 'Constrained_Roadway_lines', IDs=[924, 333]):
+    gdf = gpd.read_file(r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb', layer=layer)
+    return gdf[gdf.RTP_ID.isin(IDs)]
+
+# get information for ID review
+def reviewIDforGIS(year=2040, export=False):
+    df = pd.read_csv(os.path.join(path, str(year)+'repeatedRTPID.csv'))
+    df['Review'] = df[['Table1', 'Table2']].apply(lambda row: review(row.Table1, row.Table2)[0], axis = 1)
+    df['In'] = df[['Table1', 'Table2']].apply(lambda row: review(row.Table1, row.Table2)[1], axis = 1)
+    if export:
+        df.to_csv(os.path.join(path, str(year)+'repeatedRTPID.csv'), index=False)
+    return df[df.Review == 'yes']
+
 # review the repeatedly-used ID in the different spreadsheets
 # modified version of the function combineTables
 def reviewRepeatedIDs(year=2040, excludeTransit = False):
@@ -26,20 +39,39 @@ def reviewRepeatedIDs(year=2040, excludeTransit = False):
         sheetNames = [sheetnm for sheetnm in sheetNames if 'Transit' not in sheetnm]
     for sheetName in sheetNames:
         if sheetName == sheetNames[0]:
-            df = readTable(sheetName=sheetName, year=year)
+            df = modifyRTP(readTable(sheetName=sheetName, year=year))
             RTPlist = list(df.RTP.unique())
+            allrepeatedIDs = []
+            alllistIDs = []
         else:
-            ndf = readTable(sheetName=sheetName, year=year)
+            ndf = modifyRTP(readTable(sheetName=sheetName, year=year))
             if ndf.shape[0] == 0:
                 pass
             else:
                 nRTPlist = list(ndf.RTP.unique())
                 repeatedIDs = [ID for ID in nRTPlist if ID in RTPlist]
                 if len(repeatedIDs) > 0:
-                    print("The IDs {0} in {1} are in {2}".format(repeatedIDs, sheetName, 
-                                                                      sheetNames[sheetNames.index(sheetName) - 1]))
+                    tables = sheetNames[0:sheetNames.index(sheetName)]
+                    for table in tables:
+                        for ID in repeatedIDs:
+                            odf = modifyRTP(readTable(sheetName=table, year=year))
+                            oRTPlist = list(odf.RTP.unique())
+                            if ID in oRTPlist:
+                                listIDs = [ID, sheetName, table]
+                                alllistIDs.append(listIDs)
+                                print("ID {0}: {1}, {2}".format(ID, sheetName, table))                 
                 RTPlist.extend(nRTPlist)
-    return RTPlist
+                allrepeatedIDs.extend(repeatedIDs)
+            df = pd.DataFrame(alllistIDs, columns=['RTP_ID', 'Table1', 'Table2'])
+            df.to_csv(os.path.join(path, str(year)+'repeatedRTPID.csv'), index=False)
+    return RTPlist, allrepeatedIDs, df
+
+def review(string1, string2):
+    if string1.split("-")[0] == string2.split("-")[0]:
+        res = "yes"
+    else:
+        res = "no"
+    return res, string1.split("-")[0]
 
 # for the shapefile column name length limit 10
 def shortenColnames(df):
