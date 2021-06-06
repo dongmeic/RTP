@@ -13,12 +13,26 @@ path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 newPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData'
 inpath = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb'
 mapPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\RTP_Projects\RTP_Projects.gdb'
-newIDs = [488,460,144,382,390,411,470,492,149,353,193,170,173,410,299,216,136]
+newIDs = [488,460,144,382,390,411,470,492,149,353,193,170,173,410,299,216,136] # 488 is excluded and 492 is a point
 tablePatterns = np.array(['Auto Constrained', 'Auto Illustrative', 'Bike Constrained', 'Bike Illustrative'])
 layerPatterns = np.array(['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed'])
 
+# Step 5: add the final project 488
+# overwrite the shapefile
+def addFinal():
+    # last project
+    lastProj = gpd.read_file(mapPath, layer='Improvements_within_Jasper_Natron_Area')
+    toMap = getToMap().head(1)
+    toMap['RTP']= 57
+    toMap.rename(columns={'RTP': 'RTP_ID'}, inplace=True)
+    added_gdf = lastProj[['RTP_ID', 'geometry']].merge(toMap, on='RTP_ID')
+    shortenColnames(added_gdf)
+    newgdf = gpd.read_file(os.path.join(newPath, 'Updated', 'Constrained_Roadway_lines.shp'))
+    commonCols = [col for col in newgdf.columns if col in added_gdf.columns]
+    updatedgdf = newgdf[commonCols].append(added_gdf[commonCols])
+    updatedgdf.to_file(os.path.join(newPath, 'Updated', 'Constrained_Roadway_lines.shp'))   
+
 # Step 4: add newly mapped projects to the existing projects
-# overwrite data from Step 3
 def addNewgdf():
     Layers = targetLayers()
     lineProjs = getNewgdf()[0]
@@ -39,7 +53,7 @@ def addNewgdf():
         cols = [col for col in gdf.columns if col in toAdd.columns]
         gdf = gdf[cols].append(toAdd[cols])
         #print(gdf.tail())
-        gdf.to_file(os.path.join(newPath, layer+'.shp'))
+        gdf.to_file(os.path.join(newPath, 'Updated', layer+'.shp'))
         print("Added projects {0} to the layer {1}".format(toAdd.Name.values, layer))
         
 # Step 3: add previously dropped duplicated projects in either table with a review in GIS data
