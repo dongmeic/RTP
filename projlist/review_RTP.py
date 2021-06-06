@@ -487,6 +487,7 @@ def readTable(sheetName='Auto Constrained - Arterial Lin',
                        'EstimatedCost(2020)': 'EstimatedCost',
                        'EstimatedCost(2021)': 'EstimatedCost',
                        'EstimatedCost(20XX)': 'EstimatedCost'}, inplace=True)
+    df['In'] = np.repeat(sheetName.split('-')[0], df.shape[0])
 
     return df
 
