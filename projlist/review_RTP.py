@@ -12,6 +12,122 @@ sheetList = [sheet for sheet in sheetList if sheet not in ['Transit Constrained'
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 newPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData'
 inpath = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb'
+mapPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\RTP_Projects\RTP_Projects.gdb'
+newIDs = [488,460,144,382,390,411,470,492,149,353,193,170,173,410,299,216,136]
+tablePatterns = np.array(['Auto Constrained', 'Auto Illustrative', 'Bike Constrained', 'Bike Illustrative'])
+layerPatterns = np.array(['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed'])
+
+# Step 4: add newly mapped projects to the existing projects
+# overwrite data from Step 3
+def addNewgdf():
+    Layers = targetLayers()
+    lineProjs = getNewgdf()[0]
+    shortenColnames(lineProjs)
+    pointProjs = getNewgdf()[1]
+    shortenColnames(pointProjs)
+    for layer in Layers:
+        print(layer)
+        l = layer.split('_')
+        layerPattern = l[0] + '_' + l[1] 
+        i=np.min(np.where(layerPatterns == layerPattern))
+        tablePattern = tablePatterns[i]
+        if 'lines' in layer or 'BikePed' in layer and 'points' not in layer:
+            toAdd = lineProjs[lineProjs.In == tablePattern + ' ']
+        if 'points' in layer:
+            toAdd = pointProjs[pointProjs.In == tablePattern + ' ']                
+        gdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))
+        cols = [col for col in gdf.columns if col in toAdd.columns]
+        gdf = gdf[cols].append(toAdd[cols])
+        #print(gdf.tail())
+        gdf.to_file(os.path.join(newPath, layer+'.shp'))
+        print("Added projects {0} to the layer {1}".format(toAdd.Name.values, layer))
+        
+# Step 3: add previously dropped duplicated projects in either table with a review in GIS data
+# drop duplicated GIS records in this step
+# check if these added/duplicated projects are in the existing GIS data
+def addOldGISdata():
+    addedProjects = pd.read_csv(os.path.join(path, 'addedProjects.csv'))
+    Layers = targetLayers()
+    for ID in addedProjects.RTP:
+        tablePattern = re.sub(r"(\w)([A-Z])", r"\1 \2", addedProjects[addedProjects.RTP == ID]['In'].values[0])
+        i=np.min(np.where(tablePatterns == tablePattern))
+        layerPattern = layerPatterns[i]
+        layers = [layer for layer in Layers if re.search(r"^{0}".format(layerPattern), layer)]
+        for layer in layers:
+            gdf = gpd.read_file(inpath, layer=layer)
+            if ID in gdf.RTP_ID.values:
+                print("Project ID {0} is in the layer {1}".format(ID, layer))
+                if ID == 828 and layer == 'Constrained_Roadway_points':
+                    print("Pass RTP {0} for the layer {1}".format(ID, layer))
+                    pass
+                else:
+                    df = addedProjects[addedProjects.RTP == ID]
+                    shortenColnames(df)
+                    added_gdf = gdf[gdf.RTP_ID == ID][['RTP_ID', 'geometry']].merge(df, on='RTP_ID')
+                    newgdf = gpd.read_file(newPath, layer=layer)
+                    newgdf.drop_duplicates(inplace=True, ignore_index=True)
+                    commonCols = [col for col in newgdf.columns if col in added_gdf.columns]
+                    updatedgdf = newgdf[commonCols].append(added_gdf[commonCols])
+                    updatedgdf.to_file(os.path.join(newPath, layer+'.shp'))
+            else:
+                print("Project ID {0} is NOT in the layer {1}".format(ID, layer))              
+        
+# Step 2: match the 2045 GIS data from step 1 and common RTP IDs from tables compared between 2040 and 2045 in the same category
+# with a review on the duplicated IDs in the same category
+def updateOldGISdata():
+    path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data'
+    Layers = targetLayers()
+    for layer in Layers:
+        print(layer)
+        gdf = gpd.read_file(os.path.join(path, layer+'.shp'))
+        l = layer.split('_')
+        layerPattern = l[0] + '_' + l[1]
+        i=np.min(np.where(layerPatterns == layerPattern))
+        tablePattern = tablePatterns[i]  
+        df = getCombinedTables(cat='common', export=True, byCategory=True, category=tablePattern.replace(' ', ''))[1]
+        shortenColnames(df)
+        if layer == 'Constrained_Roadway_lines':
+            dropInd = df[((df.RTP_ID.isin([924, 333]) & (df.Category == 'New Collectors'))| 
+                         ((df.RTP_ID == 918) & (df.Category == 'Study'))|
+                         ((df.RTP_ID == 828) & (df.Category == 'Arterial Capacity Improvements'))|
+                         ((df.RTP_ID == 32) & (df.Category == 'Arterial Capacity Improvements')))].index
+            df.drop(dropInd, inplace = True)
+        if layer == 'Constrained_Roadway_points':
+            dropInd = df[(df.RTP_ID.isin([924, 333])) & (df.Category == 'New Collectors')].index
+            df.drop(dropInd, inplace = True)
+        newgdf = gdf[['RTP_ID', 'geometry']].merge(df, on='RTP_ID')
+        newgdf.to_file(os.path.join(path, 'GISData', layer+'.shp'))        
+              
+# Step 1: match ID between the 2040 GIS data and the 2045 table with common IDs in the same category
+# get GIS data for 2045 by selecting the spatial features with common ID
+def getOldGISdata():
+    Layers = targetLayers()
+    for layer in Layers:
+        print(layer)
+        gdf = gpd.read_file(inpath, layer=layer)
+        l = layer.split('_')
+        layerPattern = l[0] + '_' + l[1] 
+        i=np.min(np.where(layerPatterns == layerPattern))
+        tablePattern = tablePatterns[i]
+        res=getIDs(Tablepattern=tablePattern,
+               Layerpattern=layerPattern)
+        commonIDs=matchID(res[0], res[1])[2]
+        newgdf = gdf[gdf.RTP_ID.isin(commonIDs)]
+        path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data'
+        newgdf.to_file(os.path.join(path, layer+'.shp'))                
+              
+# merge newly mapped projects with new IDs
+def getNewgdf():
+    mappedNewProj = getToMap()
+    mappedNewProj.RTP = newIDs
+    lineProj_gdf = gpd.read_file(mapPath, layer='AddedLineProject2045')
+    lineProj_gdf.RTP_ID = lineProj_gdf.RTP_ID.astype(int)
+    mappedNewProj.rename(columns={"RTP": "RTP_ID"}, inplace=True)
+    lineProj_gdf = lineProj_gdf.merge(mappedNewProj, on="RTP_ID")
+    pointProj_gdf = gpd.read_file(mapPath, layer='AddedPointProject2045')
+    pointProj_gdf.RTP_ID = pointProj_gdf.RTP_ID.astype(int)
+    pointProj_gdf = pointProj_gdf.merge(mappedNewProj, on="RTP_ID")   
+    return lineProj_gdf, pointProj_gdf 
 
 # get mapped IDs
 def getMappedIDs(year=2040):
@@ -22,7 +138,7 @@ def getMappedIDs(year=2040):
             gdf = gpd.read_file(inpath, layer=layer)
         else:
             gdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))      
-        IDs.extend(gdf.RTP_ID.values)
+        IDs.extend(gdf.RTP_ID.unique())
     return set(IDs)
         
 # projects with multiple IDs or without an ID in the tables
@@ -523,7 +639,7 @@ def getIDs(excel='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx',
     sheetNames = getSheetnames(excel=excel, pattern=Tablepattern)
     rtpid_table = []
     for sheetName in sheetNames:
-        print(sheetName)
+        #print(sheetName)
         xl = pd.ExcelFile(excel)
         df = xl.parse(sheetName)
         if df.shape[0] != 0:
@@ -533,7 +649,7 @@ def getIDs(excel='2040 Project List_Consolidated draft with AQ (ORIGINAL).xlsx',
     layers = [item for item in getLayernames(pattern=Layerpattern) if 'P1' not in item]
     rtpid_layer = []
     for layer in layers:
-        print(layer)
+        #print(layer)
         l = LayerRTPid(layer = layer)
         rtpid_layer += l
     
