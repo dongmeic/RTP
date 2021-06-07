@@ -88,7 +88,7 @@ o   Stream preservation
 
 ## Mapping RTP projects (2045)
 
-1. Project review and GIS data update
+### Project review and GIS data update
 
 The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data. 
 
@@ -104,11 +104,11 @@ Step 4: review the projects that are with duplicated RTP IDs or without an ID, c
 
 The transit projects are excluded in the mapping, however, the tables are matched between the two years (2040 and 2045). There are 306 records in the 2040 table and 279 records in the 2045 table. There are 25 records without an unique ID, with 15 of them are mapped and 2 from the match with the existing GIS data by name. There are 224 unique RTP IDs shared between the 2040 and 2045 data and 30 unique RTP IDs from the 2040 data are not in the 2045 data. Finally, there are 255 unique IDs mapped in the existing GIS data and 222 unique IDs in the 2045 GIS data. Random and unique RTP IDs are generated for the newly mapped projects, however, these projects might have existed in the 2040 GIS data and were missed in the match due to absent RTP IDs or unmatched names in the 2045 data.  
 
-2. For future RTP project list update  
+### For future RTP project list update  
 
 There are issues with duplicated RTP IDs with in the same category and between categories. These records are documented in T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\2045repeatedRTPID.csv (or 2040repeatedRTPID.csv for the 2040 table). Duplicated names are also found in the tables. It would be easier to track GIS data if the tables can keep unique IDs and names on the projects. GIS data has issues on unclear column names and changing project names. 
 
-3. Links for webmap and data download
+### Links for webmap and data download
 
 [Webmap for the 2045 RTP projects](https://arcg.is/1jmOyr)
 
