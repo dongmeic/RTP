@@ -106,7 +106,7 @@ The transit projects are excluded in the mapping, however, the tables are matche
 
 ### For future RTP project list update  
 
-There are issues with duplicated RTP IDs with in the same category and between categories. These records are documented in T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\2045repeatedRTPID.csv (or 2040repeatedRTPID.csv for the 2040 table). Duplicated names are also found in the tables. It would be easier to track GIS data if the tables can keep unique IDs and names on the projects. GIS data has issues on unclear column names and changing project names. 
+There are issues with duplicated RTP IDs within the same category and between categories. These records are documented in T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\2045repeatedRTPID.csv (or 2040repeatedRTPID.csv for the 2040 table). Duplicated names are also found in the tables. It would be easier to track GIS data if the tables can keep unique IDs and names on the projects. GIS data has issues on unclear column names and changing project names. 
 
 ### Links for webmap and data download
 
