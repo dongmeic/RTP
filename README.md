@@ -18,7 +18,7 @@ The repo is to collect data for RTP performance analysis and mapping
 The MPO facilities include bikeways and sidewalks. The steps for performance analysis are listed in 1) coburg_sidewalks_bike_lanes; 2) sidewalks_MPO; 3) bikeways_MPO; and 4) facilities in the 'RTP/data' folder and 5) system_completeness in the RTP/analysis folder.
 
 # Required datasets for [web-mapping](https://arcg.is/0L8azS)
-## Transportation
+1. Transportation
 
 ·        Roads (interstate, state freeways, arterials)
 
@@ -26,7 +26,7 @@ The MPO facilities include bikeways and sidewalks. The steps for performance ana
 
 ·        Bike/Ped facilities
 
-## RTP
+2. RTP
 
 Project modes
 
@@ -36,7 +36,7 @@ Project modes
 
 ·        Bike/Ped
 
-## Recreation
+3. Recreation
 
 ·        Community centers 
 
@@ -57,19 +57,19 @@ o   Rural preservation
 o   Stream preservation
  
  
-## Access to opportunities (off-peak and peaking)
+4. Access to opportunities (off-peak and peaking)
 
 ·        Workplace accessibility auto
 
 ·        Workplace accessibility transit
 
-## Growth projections
+5. Growth projections
 
 ·        Population projections
 
 ·        Employment projections
 
-## Active transportation
+6. Active transportation
 
 ·        Planned pathways
 
@@ -79,14 +79,14 @@ o   Stream preservation
 
 ·        Existing bike on-street
 
-## Land use
+7. Land use
 
-## Plan designations (future land use)
+8. Plan designations (future land use)
 
 # RTP map series
 ## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb) 
 
-## Mapping RTP projects (2045)
+## [Mapping RTP projects (2045)](https://arcg.is/1jmOyr)
 
 ### Project review and GIS data update
 
