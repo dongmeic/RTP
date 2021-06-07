@@ -36,26 +36,7 @@ Project modes
 
 ·        Bike/Ped
 
-3. Recreation
-
-·        Community centers 
-
-·        Trails
-
-·        Parks
-
-·        Golf courses
-
-·        Green space
-
-o   Greenways
-
-o   Mountain preservation
-
-o   Rural preservation
-
-o   Stream preservation
- 
+3. Facilities
  
 4. Access to opportunities (off-peak and peaking)
 
@@ -63,21 +44,9 @@ o   Stream preservation
 
 ·        Workplace accessibility transit
 
-5. Growth projections
+5. Communities of concern
 
-·        Population projections
-
-·        Employment projections
-
-6. Active transportation
-
-·        Planned pathways
-
-·        Planned bike on-street
-
-·        Existing pathways
-
-·        Existing bike on-street
+6. Households and employment
 
 7. Land use
 
