@@ -13,26 +13,35 @@ path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview'
 newPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData'
 inpath = r'T:\MPO\RTP\FY16 2040 Update\Data\RTP_2040_Data.gdb'
 mapPath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\RTP_Projects\RTP_Projects.gdb'
-newIDs = [488,460,144,382,390,411,470,492,149,353,193,170,173,410,299,216,136] # 488 is excluded and 492 is a point
+newIDs = [488,460,144,382,390,411,470,492,149,353,193,170,173,410,299,216,136] # 488 and 136 are excluded and 492 is a point
 tablePatterns = np.array(['Auto Constrained', 'Auto Illustrative', 'Bike Constrained', 'Bike Illustrative'])
 layerPatterns = np.array(['Constrained_Roadway', 'Illustrative_Roadway', 'Constrained_BikePed', 'Illustrative_BikePed'])
-
-# Step 5: add the final project 488
+   
+# Step 4 - 2: add the project 57 and 738
 # overwrite the shapefile
-def addFinal():
-    # last project
-    lastProj = gpd.read_file(mapPath, layer='Improvements_within_Jasper_Natron_Area')
-    toMap = getToMap().head(1)
-    toMap['RTP']= 57
+def addProj(ID = 57):
+    if ID == 57:
+        shp = 'Constrained_Roadway_lines.shp'
+        # project 57 - Improvements within Jasper-Natron Area
+        Proj = gpd.read_file(mapPath, layer='Improvements_within_Jasper_Natron_Area')
+        toMap = getToMap().head(1)
+    else:
+        shp = 'Illustrative_BikePed.shp'          
+        # project 738 - Springfield Christian School Channel Path
+        gdf = gpd.read_file(inpath, layer='Illustrative_BikePed')
+        Proj = gdf[gdf.NAME == 'SCS Channel Path']
+        toMap = getToMap().tail(1)
+    
+    toMap['RTP']= ID
     toMap.rename(columns={'RTP': 'RTP_ID'}, inplace=True)
-    added_gdf = lastProj[['RTP_ID', 'geometry']].merge(toMap, on='RTP_ID')
+    added_gdf = Proj[['RTP_ID', 'geometry']].merge(toMap, on='RTP_ID')
     shortenColnames(added_gdf)
-    newgdf = gpd.read_file(os.path.join(newPath, 'Updated', 'Constrained_Roadway_lines.shp'))
+    newgdf = gpd.read_file(os.path.join(newPath, 'Updated', shp))
     commonCols = [col for col in newgdf.columns if col in added_gdf.columns]
     updatedgdf = newgdf[commonCols].append(added_gdf[commonCols])
-    updatedgdf.to_file(os.path.join(newPath, 'Updated', 'Constrained_Roadway_lines.shp'))   
+    updatedgdf.to_file(os.path.join(newPath, 'Updated', shp))   
 
-# Step 4: add newly mapped projects to the existing projects
+# Step 4 - 1: add newly mapped projects to the existing projects
 def addNewgdf():
     Layers = targetLayers()
     lineProjs = getNewgdf()[0]
@@ -151,7 +160,7 @@ def getMappedIDs(year=2040):
         if year == 2040:
             gdf = gpd.read_file(inpath, layer=layer)
         else:
-            gdf = gpd.read_file(os.path.join(newPath, layer+'.shp'))      
+            gdf = gpd.read_file(os.path.join(newPath, 'Updated', layer+'.shp'))      
         IDs.extend(gdf.RTP_ID.unique())
     return set(IDs)
         
