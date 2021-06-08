@@ -5,7 +5,7 @@ path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.
 outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership'
 
 # review common IDs
-def reviewCommonIDs(ugb='EUG', export=False): 
+def reviewCommonIDs(ugb='EUG', export=False, commonIDonly=False): 
     CLstreets = gpd.read_file(path, layer='Centerlines')
     if ugb == 'EUG':
         IDcol = 'EUGID'
@@ -129,10 +129,16 @@ def reviewCommonIDs(ugb='EUG', export=False):
         print("In the common IDs, {0} {1} IDs and {2} CL IDs have more than one feature, and {3} IDs have one feature only in both.".format(len([ID for ID in comIDs if Citystreets[Citystreets[IDcol] == ID].shape[0] > 1]), ugb, len([ID for ID in comIDs if CLstreets[CLstreets[CLIDcol] == ID].shape[0] > 1]), len([ID for ID in comIDs if Citystreets[Citystreets[IDcol] == ID].shape[0] == 1 and CLstreets[CLstreets[CLIDcol] == ID].shape[0] == 1])), file=f)
     
     if export:
-        Citystreets = Citystreets[Citystreets[IDcol].isin(diffOwners+CityDiffIDs)][[IDcol, *cols, 'geometry']]
-        CLstreets = CLstreets[CLstreets[CLIDcol].isin(diffOwners+CLDiffIDs)][[CLIDcol, *CLcols, 'geometry']]
-        Citystreets.to_file(os.path.join(outpath, ugb + "_diff_from_CL.shp"))
-        CLstreets.to_file(os.path.join(outpath, "CL_diff_from_{0}.shp".format(ugb)))
+        if commonIDonly:
+            Citystreets = Citystreets[Citystreets[IDcol].isin(diffOwners)][[IDcol, *cols, 'geometry']]
+            CLstreets = CLstreets[CLstreets[CLIDcol].isin(diffOwners)][[CLIDcol, *CLcols, 'geometry']]
+            Citystreets.to_file(os.path.join(outpath, ugb + "_diff_from_CL_commonIDs.shp"))
+            CLstreets.to_file(os.path.join(outpath, "CL_diff_from_{0}_commonIDs.shp".format(ugb)))
+        else:
+            Citystreets = Citystreets[Citystreets[IDcol].isin(diffOwners+CityDiffIDs)][[IDcol, *cols, 'geometry']]
+            CLstreets = CLstreets[CLstreets[CLIDcol].isin(diffOwners+CLDiffIDs)][[CLIDcol, *CLcols, 'geometry']]
+            Citystreets.to_file(os.path.join(outpath, ugb + "_diff_from_CL.shp"))
+            CLstreets.to_file(os.path.join(outpath, "CL_diff_from_{0}.shp".format(ugb)))
                                   
     return sameOwners, diffOwners, cityIDs, CLIDs, bothIDs
     

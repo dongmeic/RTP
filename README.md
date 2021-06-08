@@ -94,3 +94,24 @@ There are issues with duplicated RTP IDs within the same category and between ca
 [Illustrative_Roadway_lines](https://services5.arcgis.com/9s1YtFmLS0YTl10F/arcgis/rest/services/Illustrative_Roadway_lines/FeatureServer)
 
 [Illustrative_Roadway_points](https://services5.arcgis.com/9s1YtFmLS0YTl10F/arcgis/rest/services/Illustrative_Roadway_points/FeatureServer)
+
+# RTP data quality control
+## Centerline road ownership comparison among street data sets
+
+The webmap [Centerlines by Owner](https://arcg.is/101uXD) shows the results of the comparisons. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review the street data sets. 
+
+1. Data sources
+
+1) Central lane road centerlines from RLDGeo;
+
+2) Eugene street lines from the [City of Eugene Mapping HUB](https://mapping.eugene-or.gov/datasets/eugene-street-lines-hub/explore?location=44.063960%2C-123.125350%2C12.24&showTable=true); 
+
+3) Springfield streets from the Geodatabase *Springfield_Infrastructure_P*;
+
+The local functional class is excluded in all datasets in the comparison. 
+
+2. Data manipulation
+
+The owner names "CNTY" and "LANE" are changed to "LCPW" and "CITY" is changed to "SPR" in the Springfield streets data to keep the names consistent between the city street data and central lane data. The ID columns "COMPKEY" and "EUGID" in the Springfield and Eugene streets data are matched with the ID columns "sprid" and "eugid" respectively. Only the common IDs that are shared in both datasets in the comparing group are used in the comparison. The IDs that are not shared between datasets might share the same spatial features, caused by mismatches between IDs. Within the common IDs, features from both datasets in the comparison are selected by each ID one by one. There are four situations can happen in both selected datasets: only one feature in each, and one or both datasets has/have more than one feature. If both dataset matched by ID has one feature only and the owner information is the same, then it is considered as having same owner information, otherwise, the ID is included in the different-owner ID list. When the number of features are different, if any of differences exist, the ID is also included in the different-owner ID list. The features with an ID in the different-owner ID list or the ID list that excludes the common IDs are selected in each comparing dataset. 
+
+The quality control results are mapped to compare spatial features. The differences within common IDs show direct results of different owner information and the differences including mismatched IDs also show features that are with different IDs but the owner information can be consistent. Most of the road segments with different ownerships are relatively short except for Delta Highway, Northwest Expressway, and Ferry Street Bridge. 
