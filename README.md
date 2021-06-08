@@ -100,7 +100,7 @@ There are issues with duplicated RTP IDs within the same category and between ca
 
 The webmap [Centerlines by Owner](https://arcg.is/101uXD) shows the results of the comparisons. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review the street data sets. 
 
-1. Data sources
+### Data sources
 
 1) Central lane road centerlines from RLDGeo;
 
@@ -110,7 +110,7 @@ The webmap [Centerlines by Owner](https://arcg.is/101uXD) shows the results of t
 
 The local functional class is excluded in all datasets in the comparison. 
 
-2. Data manipulation
+### Data manipulation
 
 The owner names "CNTY" and "LANE" are changed to "LCPW" and "CITY" is changed to "SPR" in the Springfield streets data to keep the names consistent between the city street data and central lane data. The ID columns "COMPKEY" and "EUGID" in the Springfield and Eugene streets data are matched with the ID columns "sprid" and "eugid" respectively. Only the common IDs that are shared in both datasets in the comparing group are used in the comparison. The IDs that are not shared between datasets might share the same spatial features, caused by mismatches between IDs. Within the common IDs, features from both datasets in the comparison are selected by each ID one by one. 
 
