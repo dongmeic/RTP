@@ -98,7 +98,7 @@ There are issues with duplicated RTP IDs within the same category and between ca
 # RTP data quality control
 ## Centerline road ownership comparison among street data sets
 
-The webmap [Centerlines by Owner](https://arcg.is/101uXD) shows the results of the comparisons. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review the street data sets. 
+The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review the street data sets. 
 
 ### Data sources
 
