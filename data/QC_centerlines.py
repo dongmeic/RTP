@@ -5,8 +5,24 @@ path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.
 outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership'
 
 # review common IDs
-def reviewCommonIDs(ugb='EUG', export=False, commonIDonly=False): 
-    CLstreets = gpd.read_file(path, layer='Centerlines')
+def reviewCommonIDs(ugb='EUG', export=False, commonIDonly=False, update=False):
+    if update:
+        CLstreets = gpd.read_file(path, layer='CenterlinesUpdated')
+        outfile = os.path.join(outpath, "reviewCommonIDs"+ugb+"Updated.txt")
+        CityShp = "_diff_from_CL_commonIDsUpdated.shp"
+        LCshp = "CL_diff_from_{0}_commonIDsUpdated.shp".format(ugb)
+        CityShpDiff = "_diff_from_CL_updated.shp"
+        LCshpDiff = "CL_diff_from_{0}_updated.shp".format(ugb)
+    else:
+        CLstreets = gpd.read_file(path, layer='Centerlines')
+        outfile = os.path.join(outpath, "reviewCommonIDs"+ugb+".txt")
+        CityShp = "_diff_from_CL_commonIDs.shp"
+        LCshp = "CL_diff_from_{0}_commonIDs.shp".format(ugb)
+        CityShpDiff = "_diff_from_CL.shp"
+        LCshpDiff = "CL_diff_from_{0}.shp".format(ugb)
+    
+    CLstreets = CLstreets[CLstreets.ugbcity==ugb]
+    
     if ugb == 'EUG':
         IDcol = 'EUGID'
         CLIDcol = 'eugid'
@@ -26,7 +42,7 @@ def reviewCommonIDs(ugb='EUG', export=False, commonIDonly=False):
     cityIDs = []
     CLIDs = []
     bothIDs = []
-    outfile = os.path.join(outpath, "reviewCommonIDs"+ugb+".txt")
+    
     if os.path.exists(outfile):
           os.remove(outfile)
     with open(outfile, 'a') as f:
@@ -132,21 +148,25 @@ def reviewCommonIDs(ugb='EUG', export=False, commonIDonly=False):
         if commonIDonly:
             Citystreets = Citystreets[Citystreets[IDcol].isin(diffOwners)][[IDcol, *cols, 'geometry']]
             CLstreets = CLstreets[CLstreets[CLIDcol].isin(diffOwners)][[CLIDcol, *CLcols, 'geometry']]
-            Citystreets.to_file(os.path.join(outpath, ugb + "_diff_from_CL_commonIDs.shp"))
-            CLstreets.to_file(os.path.join(outpath, "CL_diff_from_{0}_commonIDs.shp".format(ugb)))
+            Citystreets.to_file(os.path.join(outpath, ugb + CityShp))
+            CLstreets.to_file(os.path.join(outpath, LCshp))
         else:
             Citystreets = Citystreets[Citystreets[IDcol].isin(diffOwners+CityDiffIDs)][[IDcol, *cols, 'geometry']]
             CLstreets = CLstreets[CLstreets[CLIDcol].isin(diffOwners+CLDiffIDs)][[CLIDcol, *CLcols, 'geometry']]
-            Citystreets.to_file(os.path.join(outpath, ugb + "_diff_from_CL.shp"))
-            CLstreets.to_file(os.path.join(outpath, "CL_diff_from_{0}.shp".format(ugb)))
+            Citystreets.to_file(os.path.join(outpath, ugb + CityShpDiff))
+            CLstreets.to_file(os.path.join(outpath, LCshpDiff))
                                   
     return sameOwners, diffOwners, cityIDs, CLIDs, bothIDs
     
 # compare the IDs and quantify the differences
-def diffInIDs():
+def diffInIDs(update=False):
     EUGstreets = gpd.read_file(path, layer='EUG_Streets')
     SPRstreets = gpd.read_file(path, layer='SPR_Streets')
-    CLstreets = gpd.read_file(path, layer='Centerlines')
+    if update:
+        CLstreets = gpd.read_file(path, layer='CenterlinesUpdated') 
+    else:  
+        CLstreets = gpd.read_file(path, layer='Centerlines') 
+        
     EUGcomIDs = [ID for ID in EUGstreets.EUGID.unique() if ID in CLstreets.eugid.unique()]
     SPRcomIDs = [ID for ID in CLstreets.sprid.unique() if ID in SPRstreets.COMPKEY.unique()]
     print("Comparison between Central Lane (CL) and Eugene (EUG) street data:\n")
