@@ -120,7 +120,7 @@ The quality control (QC) results are mapped using the same color schemes to comp
 
 Detailed QC output can be found in T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership. The text files *reviewCommonIDsEUG.txt* and *reviewCommonIDsSPR.txt* list the detailed differences in the two comparing groups. The ArcGIS Pro project *Centerline_Network.aprx* located at T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data displays most of the data except the difference data with common IDs only that was added directly to the web map. 
 
-## Data update
+### Data update
 
 The ArcGIS Pro project `T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.aprx` shows the changes before and after the updates of road ownership. The [main changes](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVIHdP4GmRNNtbSrdKh0HrYBXF19Qg7bQIDu921kZr_gtg?e=mB7QAR) in road ownership are in the Delta Highway, from LCPW to ODOT, Northwest Expreseeway, from EUG to LCPW, and Coburg Road (near E 2nd Ave), from EUG to ODOT, although some differences between the regional and local data still exist. The rest differences (not limited on road ownership difference) are shown in small segments, mainly in three conditions: 1) either the central lane centerlines or Eugene streets have extra segments, 2) the IDs are different, and 3) the IDs are the same but with different numbers of features.   
 
