@@ -98,13 +98,13 @@ There are issues with duplicated RTP IDs within the same category and between ca
 # RTP data quality control
 ## Centerline road ownership comparison among street data sets
 
-The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review the street data sets. 
+The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review and update the regional centerline network data. 
 
 ### Data sources
 
 1) Central lane road centerlines from RLDGeo;
 
-2) Eugene street lines from the [City of Eugene Mapping HUB](https://mapping.eugene-or.gov/datasets/eugene-street-lines-hub/explore?location=44.063960%2C-123.125350%2C12.24&showTable=true), on June 2nd, 2021.
+2) Eugene street lines from the [City of Eugene Mapping HUB](https://mapping.eugene-or.gov/datasets/eugene-street-lines-hub/explore?location=44.063960%2C-123.125350%2C12.24&showTable=true), downloaded on June 2nd, 2021.
 
 3) Springfield streets from the Geodatabase *Springfield_Infrastructure_P*, access on June 8th, 2021.
 
@@ -130,4 +130,4 @@ The ArcGIS Pro project `T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Cent
 
 The data can be downloaded [here](https://github.com/dongmeic/RTP/blob/main/data/download/Central_Lane_Centerline_Network.shp.zip). Note that the local functional class is excluded in this data. 
 
-To keep the road ownership consistent between the regional and city data, the adjustments are made firstly among the common IDs and then based on the length and geometry with a precision setting to make sure the exact one-on-one match. Some extra segments in either dataset and different road segments with the same ID on the same road cause the remaining mismatches. These mismatches are usually in small segments, which are considered minor issues and ignored. More work might need to be done to ensure the different road segments in either are necessarily matched.  
+To keep the road ownership consistent between the regional and city data, the adjustments are made firstly among the common IDs and then based on the length and geometry with a precision setting to make sure the exact one-on-one match. Some extra segments in either dataset and different road segments with the same ID on the same road cause the remaining mismatches. These mismatches are usually in small segments, which are considered minor issues and ignored. However, more work might be required to ensure the different road segments in either are necessarily matched.  
