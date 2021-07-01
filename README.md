@@ -104,9 +104,9 @@ The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of 
 
 1) Central lane road centerlines from RLDGeo;
 
-2) Eugene street lines from the [City of Eugene Mapping HUB](https://mapping.eugene-or.gov/datasets/eugene-street-lines-hub/explore?location=44.063960%2C-123.125350%2C12.24&showTable=true); 
+2) Eugene street lines from the [City of Eugene Mapping HUB](https://mapping.eugene-or.gov/datasets/eugene-street-lines-hub/explore?location=44.063960%2C-123.125350%2C12.24&showTable=true), on June 2nd, 2021.
 
-3) Springfield streets from the Geodatabase *Springfield_Infrastructure_P*;
+3) Springfield streets from the Geodatabase *Springfield_Infrastructure_P*, access on June 8th, 2021.
 
 The local functional class is excluded in all datasets in the comparison. 
 
