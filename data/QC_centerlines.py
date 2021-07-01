@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import numpy as np
 
+pd.options.mode.chained_assignment = None
+
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.gdb'
 outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership'
 
@@ -11,6 +13,7 @@ outpath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownershi
 # if it is different from the local data
 def updateRoadOwnership(RLIDlayer='CenterlinesUpdated', ugb='EUG', export=False, commonIDonly=True, second=False, first='EUG'):
     # run after the first update using a different input
+    # commonIDonly should run first
     if second:
         CLstreets = gpd.read_file(os.path.join(outpath, "{0}_{1}.shp".format(RLIDlayer, first)))
         CLstreets.rename(columns={'sponsor': 'contributor', 'road_segid': 'road_segment_gfid', 'ShpLength': 'Shape_Length'}, inplace=True)
@@ -25,9 +28,16 @@ def updateRoadOwnership(RLIDlayer='CenterlinesUpdated', ugb='EUG', export=False,
         IDcol = 'COMPKEY'
         CLIDcol = 'sprid'
         Citystreets = adjustSPRownerName()
-    CLcols = ['owner', 'name', 'type', 'rlidname', 'fclass']
+        
     Citystreets[IDcol] = Citystreets[Citystreets[IDcol].astype(str) != 'nan'][IDcol].astype(int)
-    CLstreets[CLIDcol] = CLstreets[CLstreets[CLIDcol].astype(str) != 'nan'][CLIDcol].astype(int)
+    if commonIDonly:
+        CLstreets[CLIDcol] = CLstreets[CLstreets[CLIDcol].astype(str) != 'nan'][CLIDcol].astype(int)
+    else:
+        if first=='EUG_SPR':
+            CLstreets[CLIDcol] = CLstreets[CLstreets[CLIDcol].astype(str) != 'None'][CLIDcol].astype(int)
+        else:
+            CLstreets[CLIDcol] = CLstreets[CLstreets[CLIDcol].astype(str) != 'nan'][CLIDcol].astype(int)
+    
     comIDs = [ID for ID in Citystreets[IDcol].unique() if ID in CLstreets[CLIDcol].unique()]
     
     if ugb == 'SPR':
@@ -35,28 +45,62 @@ def updateRoadOwnership(RLIDlayer='CenterlinesUpdated', ugb='EUG', export=False,
         
     cols = [var.lower() for var in list(Citystreets.columns)[:len(list(Citystreets.columns))-2]] + ['Shape_Length', 'geometry']
     Citystreets.columns = cols
-    for ID in comIDs:
-        cityOwners = list(Citystreets[Citystreets[CLIDcol] == ID].owner.values)
-        CLowners = list(CLstreets[CLstreets[CLIDcol] == ID].owner.values)
-        if len(cityOwners)==1:
-            if any([val not in cityOwners for val in CLowners]):
-                CLstreets.loc[CLstreets[CLIDcol] == ID, 'owner'] = cityOwners[0]
-        else:
-            if any([val not in CLowners for val in cityOwners]):
-                # common columns between the regional and local datasets
-                cols1 = [x for x in cols if x in list(CLstreets.columns)]
-                # columns that are not in the local datasets
-                cols2 = [x for x in list(CLstreets.columns) if x not in cols]
-                # repeat the same values for the columns that are not in the local dataset
-                df2 = CLstreets[CLstreets[CLIDcol] == ID][cols2]
-                newdf = pd.DataFrame(np.repeat(df2.values,len(cityOwners),axis=0))
-                newdf.columns = df2.columns
-                df1 = Citystreets[Citystreets[CLIDcol] == ID][cols1]
-                # combine the columns
-                ndf = pd.concat([newdf.reset_index(drop=True), df1.reset_index(drop=True)], axis=1)
-                # drop the row(s) in the regional dataset and add rows from the local dataset when ownership is different with 
-                # a different number of features
-                CLstreets = CLstreets[~(CLstreets[CLIDcol] == ID)].append(ndf[list(CLstreets.columns)], ignore_index=True)
+    Citystreets.drop_duplicates(inplace=True, ignore_index=True)
+    CLstreets.drop_duplicates(inplace=True, ignore_index=True)
+    Citystreets.drop_duplicates(subset='geometry', keep='last', inplace=True, ignore_index=True)
+    CLstreets.drop_duplicates(subset='geometry', keep='last', inplace=True, ignore_index=True)
+    
+    if commonIDonly:
+        for ID in comIDs:
+            cityOwners = list(Citystreets[Citystreets[CLIDcol] == ID].owner.values)
+            CLowners = list(CLstreets[CLstreets[CLIDcol] == ID].owner.values)
+            if len(cityOwners)==1:
+                if any([val not in cityOwners for val in CLowners]):
+                    CLstreets.loc[CLstreets[CLIDcol] == ID, 'owner'] = cityOwners[0]
+            else:
+                if any([val not in CLowners for val in cityOwners]):
+                    # common columns between the regional and local datasets
+                    cols1 = [x for x in cols if x in list(CLstreets.columns)]
+                    # columns that are not in the local datasets
+                    cols2 = [x for x in list(CLstreets.columns) if x not in cols]
+                    # repeat the same values for the columns that are not in the local dataset
+                    df2 = CLstreets[CLstreets[CLIDcol] == ID][cols2]
+                    newdf = pd.DataFrame(np.repeat(df2.values,len(cityOwners),axis=0))
+                    newdf.columns = df2.columns
+                    df1 = Citystreets[Citystreets[CLIDcol] == ID][cols1]
+                    # combine the columns
+                    ndf = pd.concat([newdf.reset_index(drop=True), df1.reset_index(drop=True)], axis=1)
+                    # drop the row(s) in the regional dataset and add rows from the local dataset when ownership is different with 
+                    # a different number of features
+                    CLstreets = CLstreets[~(CLstreets[CLIDcol] == ID)].append(ndf[list(CLstreets.columns)], ignore_index=True)
+    else:       
+        Citystreets = Citystreets.to_crs(epsg = 2914)
+        
+        # some common ids are broken down into different ids
+        #CLstreets1 = CLstreets[CLstreets[CLIDcol].isin(comIDs)]
+        #CLstreets = CLstreets[~CLstreets[CLIDcol].isin(comIDs)]  
+        #Citystreets = Citystreets[~Citystreets[CLIDcol].isin(comIDs)]
+        
+        for ind in CLstreets.index:
+            cnty_length = CLstreets[CLstreets.index==ind].Shape_Length.values[0]
+            cnty_bound = CLstreets[CLstreets.index==ind].geometry.values.bounds
+            city_length = Citystreets.Shape_Length.values
+            # set the length precision as 0.001, need to be as small as possible to have only one match
+            length_diff = abs(cnty_length - city_length) <= 0.001
+            if sum(length_diff)==1:
+                i = abs(Citystreets.Shape_Length-cnty_length) <= 0.001
+                city_bound = Citystreets[i].geometry.values.bounds
+                cnty_val = CLstreets[CLstreets.index==ind].owner.values[0]
+                city_val1 = Citystreets[i].owner.values[0]
+                city_val2 = Citystreets[i].maint.values[0]
+                # set the boundary precision as 1
+                bound_diff = abs(city_bound - cnty_bound) <= 1
+                if bound_diff.all() & (cnty_val != city_val1):
+                    CLstreets.loc[ind, 'owner'] = city_val1
+                    CLstreets.loc[ind, 'maint'] = city_val2
+       
+    #CLstreets = CLstreets1.append(CLstreets, ignore_index=True) 
+        
     if export:
         CLstreets.rename(columns={'contributor': 'sponsor', 'road_segment_gfid': 'road_segid', 'Shape_Length': 'ShpLength'}, inplace=True)
         if second:
@@ -64,7 +108,6 @@ def updateRoadOwnership(RLIDlayer='CenterlinesUpdated', ugb='EUG', export=False,
         else:
             CLstreets.to_file(os.path.join(outpath, "{0}_{1}.shp".format(RLIDlayer, ugb)))
         
-    
     return CLstreets
 
 # review common IDs
