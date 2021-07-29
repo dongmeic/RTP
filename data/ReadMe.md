@@ -48,7 +48,7 @@
 5. Watershed Boundaries and Stormwater Basins
 
 
-## Sensitive Habitats -- Part of Goal 5 Natural Resources
+## Sensitive Habitats -- Part of Goal 5
 
 1. Threatened/Endangered Species Habitats 
 
