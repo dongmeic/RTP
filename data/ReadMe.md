@@ -2,7 +2,7 @@
 
 ## Cultural and Natural Resources
 
-### Cultural Resources
+### Cultural Resources -- Part of Goal 5
 
 #### Historical Sites
 
@@ -20,7 +20,7 @@
 #### Goal 4 Forest Lands
 
 
-#### Goal 5 Natural Resources (Land) -- Part of Goal 5 Natural Resources
+#### Goal 5 Natural Resources (Land) -- Part of Goal 5
 
 1. Riparian corridors
 
@@ -35,7 +35,7 @@
 #### Goal 15 Willamette River Greenway 
 
 
-## Sensitive Water Resources -- Part of Goal 5 Natural Resources
+## Sensitive Water Resources -- Part of Goal 5
 
 1. DEQ 303d Listed Streams
 
