@@ -6,6 +6,10 @@
 
 #### Historical Sites
 
+1. Data sources
+
+Historic districts and sites in Eugene and Springfield were collected from the city GIS teams (see *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\ReadMe.txt*). 
+
 #### Historical Districts
 
 #### Open Space
