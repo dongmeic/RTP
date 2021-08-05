@@ -20,13 +20,13 @@ City of Eugene includes 155 national register historic sites and 81 local histor
 
 ##### 4. Combine national register sites from Eugene and SHPO data
 
-The columns on id, name, address, city, yrbuilt, and geometry are combined from cleaned Eugene and SHPO data. The duplicated Eugene data is removed with the same name and geometry. The ID columns are *cultural_r* and *resource_1*, the name columns are *historic_n* and *propName*, the yrbuilt columns are *constructi* and *yrBuilt*, from Eugene and SHPO data. The id column is kept to track the source data ('Eugene/CL_NR_HistoricSites_July2021.shp' and 'SHPO/HistoricSites-point.shp' in *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic*). 
+The columns on id, name, address, city, yrbuilt, and geometry are combined from cleaned Eugene and SHPO data. The duplicated Eugene data is removed with the same name and geometry. The ID columns are *cultural_r* and *resource_1*, the name columns are *historic_n* and *propName*, the yrbuilt columns are *constructi* and *yrBuilt*, from Eugene and SHPO data. The id column is kept to track the source data ('Eugene/CL_NR_HistoricSites_July2021.shp' and 'SHPO/HistoricSites-point.shp' in *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic*). The file T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\NationalRegisterHistoricSitesCLMPO.shp includes the combined national register sites.
 
 #### Historical Districts (polygon)
 
-There are totally five historic districts in CLMPO combining data from multiple sources (see [notes](https://github.com/dongmeic/RTP/tree/main/data#1-data-sources) above), including East Skinner Butte National Register Historic District and Blair Boulevard Historic Commercial Area in Eugene, Washburne Historic District and Dorris Ranch Historic District in Springfield, and Coburg Historic District. The boundary of Dorris Ranch Historic District was adjusted based on an excerpt from the Dorris Ranch Historic District submission shared by the City. 
+There are totally five historic districts in CLMPO combining data from multiple sources (see [notes](https://github.com/dongmeic/RTP/tree/main/data#1-data-sources) above), including East Skinner Butte National Register Historic District and Blair Boulevard Historic Commercial Area in Eugene, Washburne Historic District and Dorris Ranch Historic District in Springfield, and Coburg Historic District. The boundary of Dorris Ranch Historic District was adjusted based on an excerpt from the Dorris Ranch Historic District submission shared by the City. The file T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\NationalRegisterHistoricDistrictsCLMPO.shp includes the combined national register districts.
 
-#### Open Space
+<!-- #### Open Space
 
 #### Scenic Views and Sites
 
@@ -34,9 +34,7 @@ There are totally five historic districts in CLMPO combining data from multiple 
 
 #### Goal 3 Agricultural Lands
 
-
 #### Goal 4 Forest Lands
-
 
 #### Goal 5 Natural Resources (Land) -- Part of Goal 5
 
@@ -51,7 +49,7 @@ There are totally five historic districts in CLMPO combining data from multiple 
 5. Natural Areas
 
 #### Goal 15 Willamette River Greenway 
-
+ -->
 
 ## Sensitive Water Resources -- Part of Goal 5
 
@@ -63,8 +61,9 @@ There are totally five historic districts in CLMPO combining data from multiple 
 
 4. Wetlands (significant Goal 5 wetlands only)
 
-5. Watershed Boundaries and Stormwater Basins
+## Watershed
 
+Watershed Boundaries and Stormwater Basins
 
 ## Sensitive Habitats -- Part of Goal 5
 
