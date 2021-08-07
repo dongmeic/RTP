@@ -10,9 +10,9 @@
 
 Historic districts and sites in Eugene and Springfield were collected from the city GIS teams (see *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\ReadMe.txt*). The national register historic sites from the cities are compared with the data sets downloaded from [National Park Service (NPS)](https://mapservices.nps.gov/arcgis/rest/services/cultural_resources/nrhp_locations/MapServer) and [State Historic Preservation Offices (SHPO)](http://maps.prd.state.or.us/histsites/historicsites.html). The SHPO data or data from SHPO used by the City only includes the eligible/significant status. The historic district in Coburg remains the the same as the last RTP data (*T:\MPO\RTP\FY11 2035 Update\Environmental Coordination\Historic Properties\Historical_Districts.shp*). Historic sites in Coburg are from the SHPO data. Only national register historic sites are included in the GIS analysis for RTP due to the data uncertainty and potential irrelevance to RTP on the city/local historic sites. 
 
-##### 2. Data paths at LCOG station
+##### 2. Data paths
 
-All the raw and editted data sets on historic sites and districts are saved on the **Cultural Resources** map in *T:\MPO\RTP\FY20 2045 Update\Maps\Appendix F\Maps4AppendixF\Maps4AppendixF.aprx*. 
+All the raw and editted data sets on historic sites and districts are saved on the **Cultural Resources** map in *T:\MPO\RTP\FY20 2045 Update\Maps\Appendix F\Maps4AppendixF\Maps4AppendixF.aprx*.
 
 ##### 3. Notes on the comparisons of historic sites among NPS, SHPO and city data
 
@@ -20,7 +20,7 @@ City of Eugene includes 155 national register historic sites and 81 local histor
 
 ##### 4. Combine national register sites from Eugene and SHPO data
 
-The columns on id, name, address, city, yrbuilt, and geometry are combined from cleaned Eugene and SHPO data. The duplicated Eugene data is removed with the same name and geometry. The ID columns are *cultural_r* and *resource_1*, the name columns are *historic_n* and *propName*, the yrbuilt columns are *constructi* and *yrBuilt*, from Eugene and SHPO data. The id column is kept to track the source data ('Eugene/CL_NR_HistoricSites_July2021.shp' and 'SHPO/HistoricSites-point.shp' in *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic*). The file T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\NationalRegisterHistoricSitesCLMPO.shp includes the combined national register sites.
+The columns on id, name, address, city, yrbuilt, and geometry are combined from cleaned Eugene and SHPO data. The duplicated Eugene data is removed with the same name and geometry. The ID columns are *cultural_r* and *resource_1*, the name columns are *historic_n* and *propName*, the yrbuilt columns are *constructi* and *yrBuilt*, from Eugene and SHPO data. The id column is kept to track the source data ('Eugene/CL_NR_HistoricSites_July2021.shp' and 'SHPO/HistoricSites-point.shp' in *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic*). The file T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\NationalRegisterHistoricSitesCLMPO.shp includes the combined national register sites, from the script [historic_sites.ipynb](https://github.com/dongmeic/RTP/blob/main/data/historic_sites.ipynb), and the file T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\Historic\NationalRegisterHistoricDistrictsCLMPO.shp includes the combined national register districts, from the script [historic_districts.ipynb](https://github.com/dongmeic/RTP/blob/main/data/historic_districts.ipynb). 
 
 #### Historical Districts (polygon)
 
@@ -82,3 +82,6 @@ Watershed Boundaries and Stormwater Basins
 3. Fire Hazard
 
 
+## RTP projects
+
+The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility). 
