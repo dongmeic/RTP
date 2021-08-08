@@ -55,6 +55,8 @@ There are totally five historic districts in CLMPO combining data from multiple 
 
 1. DEQ 303d Listed Streams
 
+The Department of Environmental Quality (DEQ) lists water bodies with limited water quality that need TMDLs (Total Maximum Daily Loads), [303(d) list](https://www.deq.state.or.us/wq/assessment/rpt2010/search.asp#db). The data was downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=7bee41a81cdb4eb99d71cdd2217ee3da). 
+
 2. Southern Willamette Valley Groundwater Management Area
 
 3. Navigable Rivers
