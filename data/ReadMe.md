@@ -53,15 +53,15 @@ There are totally five historic districts in CLMPO combining data from multiple 
 
 ## Sensitive Water Resources -- Part of Goal 5
 
-1. DEQ 303d Listed Streams
+### 1. DEQ 303d Listed Streams
 
 The Department of Environmental Quality (DEQ) lists water bodies with limited water quality that need TMDLs (Total Maximum Daily Loads), [303(d) list](https://www.deq.state.or.us/wq/assessment/rpt2010/search.asp#db). The data was downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=7bee41a81cdb4eb99d71cdd2217ee3da). The streams with a listing status 'Cat 5: Water quality limited, 303(d) list, TMDL needed' or '303(d)' are included in the GIS analysis, although duplicated geometry founded in these assessments, which won't affect the analysis results. The data was not clipped into the CLMPO area.
 
-2. Southern Willamette Valley Groundwater Management Area
+### 2. Southern Willamette Valley Groundwater Management Area
 
-3. Navigable Rivers
+### 3. Navigable Rivers
 
-4. Wetlands (significant Goal 5 wetlands only)
+### 4. Wetlands (significant Goal 5 wetlands only)
 
 ## Watershed
 
