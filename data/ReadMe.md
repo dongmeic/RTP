@@ -59,9 +59,14 @@ The Department of Environmental Quality (DEQ) lists water bodies with limited wa
 
 ### 2. Southern Willamette Valley Groundwater Management Area
 
+The Southern Willamette Valley Groundwater Management Area data layer downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=ab957b8b4f7244b68fe902eb4f1dd6f5) remains the same as the last RTP data layer. 
+
 ### 3. Navigable Rivers
 
+The Oregon rivers layer downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=01606665b1034dc6877fbad58bb9879a) is considered as the navigable rivers layer for the RTP GIS analysis and mapping.
+
 ### 4. Wetlands (significant Goal 5 wetlands only)
+
 
 ## Watershed
 
