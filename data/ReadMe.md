@@ -55,7 +55,7 @@ There are totally five historic districts in CLMPO combining data from multiple 
 
 ### 1. DEQ 303d Listed Streams
 
-The Department of Environmental Quality (DEQ) lists water bodies with limited water quality that need TMDLs (Total Maximum Daily Loads), [303(d) list](https://www.deq.state.or.us/wq/assessment/rpt2010/search.asp#db). The data was downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=7bee41a81cdb4eb99d71cdd2217ee3da). The streams with a listing status 'Cat 5: Water quality limited, 303(d) list, TMDL needed' or '303(d)' are included in the GIS analysis (see the script [water_quality_303(d).ipynb](https://github.com/dongmeic/RTP/blob/main/data/water_quality_303(d).ipynb)), although duplicated geometry founded in these assessments, which won't affect the analysis results. The data was not clipped into the CLMPO area.
+The Department of Environmental Quality (DEQ) lists water bodies with limited water quality that need TMDLs (Total Maximum Daily Loads), [303(d) list](https://www.deq.state.or.us/wq/assessment/rpt2010/search.asp#db). The data was downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=7bee41a81cdb4eb99d71cdd2217ee3da). The streams with a listing status 'Cat 5: Water quality limited, 303(d) list, TMDL needed' or '303(d)' are included in the GIS analysis (see the script [DEQ303(d)ListedStreams.ipynb](https://github.com/dongmeic/RTP/blob/main/data/DEQ303(d)ListedStreams.ipynb)), although duplicated geometry founded in these assessments, which won't affect the analysis results. The data was not clipped into the CLMPO area.
 
 ### 2. Southern Willamette Valley Groundwater Management Area
 
@@ -63,10 +63,11 @@ The Southern Willamette Valley Groundwater Management Area data layer downloaded
 
 ### 3. Navigable Rivers
 
-The Oregon rivers layer downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=01606665b1034dc6877fbad58bb9879a) is considered as the navigable rivers layer for the RTP GIS analysis and mapping.
+The Oregon rivers layer downloaded from the [Oregon Spatial Data Library](https://spatialdata.oregonexplorer.info/geoportal/details;id=01606665b1034dc6877fbad58bb9879a) with a filter applied (Mckenzie River and Willamette River based on the list in [Navigable Riverways Within the State of Oregon](https://www.nwp.usace.army.mil/Portals/24/docs/regulatory/jurisdiction/Navigable_US_Waters_Oregon_1993.pdf?ver=b_nFSoXJ1YwCARFvh9kNbw%3D%3D)) is considered as the navigable rivers layer for the RTP GIS analysis and mapping.
 
-### 4. Wetlands (significant Goal 5 wetlands only)
+### 4. Wetlands
 
+The wetlands data layer are derived from the [national wetlands inventory (NWI)](https://www.fws.gov/wetlands/) and the [local wetlands inventories (LWI)](https://www.oregon.gov/dsl/WW/Pages/Inventories.aspx). After comparing the West Eugene LWI with the data layer from the last RTP, which covers larger areas, the West Eugene LWI remains the same as last RTP. The NWI and LWI layers are combined into a wetlands layer for CLMPO using the script [wetlands.ipynb]((https://github.com/dongmeic/RTP/blob/main/data/wetlands.ipynb)). 
 
 ## Watershed
 
