@@ -17,14 +17,19 @@ def RTP_counted_by_intersection(shapefile='Roadway_lines',
     rtp = rtp.set_geometry('buffered')
     rtp = rtp.to_crs(epsg=3857)
     env = gpd.read_file(os.path.join(datapath, folder, file))
+    if env.crs != 'EPSG:3857':
+        env = env.to_crs(epsg=3857)
     joined = gpd.tools.sjoin(rtp, env, how="inner")
     if transit:
         if ftn:
             joined = joined.drop_duplicates(subset=['route', 'geometry'])
             res = joined[['route', 'geometry']].groupby(['route']).agg('count')
-        else:
+        elif 'name_left' in joined.columns:
             joined = joined.drop_duplicates(subset=['name_left', 'geometry'])
             res = joined[['name_left', 'geometry']].groupby(['name_left']).agg('count')
+        else:
+            joined = joined.drop_duplicates(subset=['name', 'geometry'])
+            res = joined[['name', 'geometry']].groupby(['name']).agg('count')
     else:
         joined = joined.drop_duplicates(subset=['RTP_ID', 'geometry'])
         res = joined[['Category', 'geometry']].groupby(['Category']).agg('count')

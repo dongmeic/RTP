@@ -67,19 +67,25 @@ The Oregon rivers layer downloaded from the [Oregon Spatial Data Library](https:
 
 ### 4. Wetlands
 
-The wetlands data layer are derived from the [national wetlands inventory (NWI)](https://www.fws.gov/wetlands/) and the [local wetlands inventories (LWI)](https://www.oregon.gov/dsl/WW/Pages/Inventories.aspx). After comparing the West Eugene LWI with the data layer from the last RTP, which covers larger areas, the West Eugene LWI remains the same as last RTP. The NWI and LWI layers are combined into a wetlands layer for CLMPO using the script [wetlands.ipynb](https://github.com/dongmeic/RTP/blob/main/data/wetlands.ipynb). 
+The wetlands data layer are derived from the [national wetlands inventory (NWI)](https://www.fws.gov/wetlands/) and the [local wetlands inventories (LWI)](https://www.oregon.gov/dsl/WW/Pages/Inventories.aspx). After comparing the West Eugene LWI with the data layer from the last RTP, which covers larger areas, the West Eugene LWI remains the same as the last RTP. The NWI and LWI layers are combined into a wetlands layer for CLMPO using the script [wetlands.ipynb](https://github.com/dongmeic/RTP/blob/main/data/wetlands.ipynb). 
 
 ## Watershed
 
-Watershed Boundaries and Stormwater Basins
+[Watershed boundaries](https://spatialdata.oregonexplorer.info/geoportal/details;id=4b1b008d5a764a209b2df040689c0779) and stormwater basins are included in mapping only. The stormwater basins data layers are from the last RTP data. The major basin names in Eugene are shown in the [Stormwater Basin Master Plan](https://www.eugene-or.gov/DocumentCenter/View/2674/Stormwater-Basin-Master-Plan---Volume-4).
 
 ## Sensitive Habitats -- Part of Goal 5
 
-1. Threatened/Endangered Species Habitats 
+<!-- 1. Threatened/Endangered Species Habitats 
 
-2. Oregon Conservation Strategy
+2. Oregon Conservation Strategy -->
 
-3. ODFW Conservation Opportunity Areas
+1. ODFW Conservation Opportunity Areas
+
+This data layer is downloaded from the [Oregon Department of Fish and Wildlife (ODFW)](https://nrimp.dfw.state.or.us/dataclearinghouse/default.aspx?p=202&XMLname=897.xml) website. The layer is clipped using the CLMPO boundary for GIS analysis. 
+
+2. USFWS Critical Habitat
+
+
 
 ## Natural Hazards
 
