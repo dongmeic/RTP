@@ -93,7 +93,7 @@ This data layer is downloaded from the [U.S. Fish and Wildlife Service](https://
 
 ### 1. FEMA Flood Hazard
 
-The [FEMA map server](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer) includes the [flood hazard zones](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28). The flood data layer from V:\Data\Natural\Flood is applied while some server error occurred when downloading data from the rest point. The [100 and 500 year floodplains](https://spatialdata.oregonexplorer.info/geoportal/details;id=a0d39fedf55643fc9c2aa1f83b161c63) were not included. The FEMA flood layers are also available on the [DOGAMI MapServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/FEMA_Flood/MapServer).
+The [FEMA map server](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer) includes the [flood hazard zones](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28). The flood data layer from V:\Data\Natural\Flood is applied while some server error occurred when downloading data from the rest point. The [100 and 500-year floodplains](https://spatialdata.oregonexplorer.info/geoportal/details;id=a0d39fedf55643fc9c2aa1f83b161c63) were not included. The FEMA flood layers are also available on the [DOGAMI MapServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/FEMA_Flood/MapServer).
 
 ### 2. Seismic Hazard (e.g., liquefaction, landslide, expected shaking, etc.)
 
@@ -115,6 +115,6 @@ The environmental justice elements are derived from the Title VI data. The Title
 
 The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility).
 
-# GIS Analysis for Appendix F Tables
+# GIS Analysis for the Appendix F Tables
 
 The scripts [Analysis4AppendixF.py](https://github.com/dongmeic/RTP/blob/main/data/Analysis4AppendixF.py) and [analysis_for_AppendixF.ipynb](https://github.com/dongmeic/RTP/blob/main/data/analysis_for_AppendixF.ipynb) are used to calculate the number of projects intersected with the different environmental data layers (see the tables in the [Appendix F Outline & Mapping Needs.docx](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVbeSXT1cblKo1NnhEIi-ZoBDXXLeRCT48o4oPZ8ld_ycg?e=ACuriv)).
