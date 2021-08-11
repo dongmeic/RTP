@@ -89,17 +89,23 @@ This data layer is downloaded from the [U.S. Fish and Wildlife Service](https://
 
 ## Natural Hazards
 
-1. FEMA Flood Hazard
+### 1. FEMA Flood Hazard
 
 The [FEMA map server](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer) includes the [flood hazard zones](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28). The flood data layer from V:\Data\Natural\Flood is applied while some server error occurred when downloading data from the rest point. The [100 and 500 year floodplains](https://spatialdata.oregonexplorer.info/geoportal/details;id=a0d39fedf55643fc9c2aa1f83b161c63) were not included. The FEMA flood layers are also available on the [DOGAMI MapServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/FEMA_Flood/MapServer).
 
-2. Seismic Hazard (e.g., liquefaction, landslide, expected shaking, etc.)
+### 2. Seismic Hazard (e.g., liquefaction, landslide, expected shaking, etc.)
 
 The landside susceptibility data layer is downloaded from the [DOGAMI ImageServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/Landslide_Susceptibility/ImageServer). 
 
-3. Fire Hazard
+### 3. Fire Hazard
 
 The nationwide fire hazard data layer is downloaded from the [USFS ImageServer](https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WildfireHazardPotential_classified_2020/ImageServer) and clipped to Lane County.
+
+## Air Quality
+
+
+## Environmental Justice
+
 
 ## RTP projects
 
