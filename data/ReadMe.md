@@ -1,5 +1,7 @@
 # Data for Environmental Analysis Maps (Appendix F)
 
+The list of data sets applied is detailed in the [AppendixF_DataSources.xlsx](https://lanecouncilofgovernments-my.sharepoint.com/:x:/g/personal/dchen_lcog_org/ETvYwmozi9VDndxr9TPPGDEB7oElu_DHpgXZcPy45W1VuQ?e=W0fPG6).
+
 ## Cultural and Natural Resources
 
 ### Cultural Resources -- Part of Goal 5
@@ -103,10 +105,16 @@ The nationwide fire hazard data layer is downloaded from the [USFS ImageServer](
 
 ## Air Quality
 
+The air quality maintenance area is the Eugene-Springfield Urban Growth Boundaries from RLIDGeo.DBO.UGB. 
 
 ## Environmental Justice
 
+The environmental justice elements are derived from the Title VI data. The Title VI variables are explained [here](https://github.com/dongmeic/MPO_Data_Portal/tree/master/PopulationData#explanations-of-the-title-vi-variables).
 
 ## RTP projects
 
 The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility).
+
+# GIS Analysis for Appendix F Tables
+
+The scripts [Analysis4AppendixF.py](https://github.com/dongmeic/RTP/blob/main/data/Analysis4AppendixF.py) and [analysis_for_AppendixF.ipynb](https://github.com/dongmeic/RTP/blob/main/data/analysis_for_AppendixF.ipynb) are used to calculate the number of projects intersected with the different environmental data layers (see the tables in the [Appendix F Outline & Mapping Needs.docx](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVbeSXT1cblKo1NnhEIi-ZoBDXXLeRCT48o4oPZ8ld_ycg?e=ACuriv)).
