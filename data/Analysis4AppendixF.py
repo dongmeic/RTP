@@ -4,6 +4,7 @@ import os
 path = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData\Updated'
 datapath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF'
 
+# the results should be the same as the output from Select by Location in ArcGIS Pro
 def RTP_counted_by_intersection(shapefile='Roadway_lines',
                                 folder='Historic',
                                 file='NationalRegisterHistoricSitesCLMPO.shp',

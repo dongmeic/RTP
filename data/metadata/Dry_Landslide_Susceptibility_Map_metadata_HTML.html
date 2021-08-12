@@ -1,0 +1,2543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:res="http://www.esri.com/metadata/res/" xmlns:gmd="http://www.isotc211.org/2005/gmd">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <style type="text/css" id="internalStyle" xmlns="" xmlns:esri="http://www.esri.com/metadata/">
+    body {
+      font-family: Verdana, Gill, Helvetica, Sans-serif ;
+      font-size: 0.8em;
+      font-weight: 500;
+      color: #000020;
+      background-color: #FFFFFF;
+    }
+    div.itemDescription {
+      margin-right: 2em;
+      margin-bottom: 2em;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    h1.idHeading {
+      color: #008FAF;
+      text-align: center;
+    }
+    h1.gpHeading {
+      color: black;
+    }
+    span.idHeading {
+      color: #007799;
+      font-weight: bold;
+    }
+    .center {
+      text-align: center;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    img {
+      width: 210px;
+      border-width: 1px;
+      border-style: outset;
+    }
+    img.center {
+      text-align: center;
+      display: block;
+      border-color: #666666;
+    }
+    img.enclosed {
+      width: 60%;
+    }
+    img.gp {
+      width: auto;
+      border-style: none;
+      margin-top: -1.2em;
+    }
+    .noThumbnail {
+      color: #888888;
+      font-size: 1.2em;
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+      padding: 3em 3em;
+      position: relative;
+      text-align: center;
+      width: 210px;
+      height: 140px;
+    }
+    .noContent {
+      color: #888888;
+    }
+    .itemInfo p {
+      margin-top: -0.1em;
+    }
+    .itemInfo img {
+      width: auto;
+      border: none;
+    }
+    .gpItemInfo p {
+      margin-top: -1.2em;
+    }
+    div.box {
+      margin-left: 1em;
+    }
+    div.hide {
+      display: none;
+    }
+    div.show {
+      display: block;
+    }
+    span.hide {
+      display: none;
+    }
+    span.show {
+      display: inline-block;
+    }
+    .backToTop a {
+      color: #DDDDDD;
+      font-style: italic;
+      font-size: 0.85em;
+    }
+    h2 {
+      font-size: 1.2em;
+    }
+    h2.gp {
+      color: #00709C;
+    }
+    .gpsubtitle {
+      color: black;
+      font-size: 1.2em;
+	  font-weight: normal;
+    }
+    .gptags {
+      color: black;
+      font-size: 0.8em;
+	  font-weight: normal;
+    }
+    .head {
+      font-size: 1.3em;
+    }
+    a:link {
+      color: #098EA6;
+      font-weight: normal;
+      text-decoration: none;
+    }
+    a:visited {
+      color: #098EA6;
+      text-decoration: none;
+    }
+    a:link:hover, a:visited:hover {
+      color: #007799;
+      background-color: #C6E6EF;
+    }
+    h2.iso a {
+      color: #007799;
+      font-weight: bold;
+    }
+    .iso a:link {
+      color: #007799;
+      text-decoration: none;
+    }
+    .iso a:visited {
+      color: #007799;
+      text-decoration: none;
+    }
+    .iso a:link:hover, .iso a:visited:hover {
+      color: #006688;
+      background-color: #C6E6EF;
+    }
+    h2.fgdc a {
+      color: #888888;
+      font-weight: bold;
+    }
+    .fgdc a:link {
+      color: #888888;
+      text-decoration: none;
+    }
+    .fgdc a:visited {
+      color: #888888;
+      text-decoration: none;
+    }
+    .fgdc a:link:hover, .fgdc a:visited:hover {
+      color: #777777;
+      background-color: #C6E6EF;
+    }
+	h3 {
+		font-size: 1em; 
+		color: #00709C;
+	}
+    .backToTop {
+      color: #AAAAAA;
+      margin-left: 1em;
+    }
+    p.gp {
+      margin-top: .6em;
+      margin-bottom: .6em;
+    }
+    ul ul {
+      list-style-type: square;
+    }
+    ul li.iso19139heading {
+      margin-left: -3em;
+	  list-style: none;
+	  font-weight: bold;
+      color: #666666;
+    }
+    dl {
+      margin: 0;
+      padding: 0;
+    }
+    dl.iso {
+      background-color: #F2F9FF;
+    }
+    dl.esri {
+      background-color: #F2FFF9;
+    }
+    dl.subtype {
+      width: 40em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      padding: 0;
+    }
+    dt {
+      margin-left: 0.6em;
+      padding-left: 0.6em;
+      clear: left;
+    }
+    .subtype dt {
+      width: 60%;
+      float: left;
+      margin: 0;
+      padding: 0.5em 0.5em 0 0.75em;
+      border-top: 1px solid #006400;
+      clear: none;
+    }
+    .subtype dt.header {
+      padding: 0.5em 0.5em 0.5em 0;
+      border-top: none;
+    }
+    dd {
+      margin-left: 0.6em;
+      padding-left: 0.6em;
+      clear: left;
+    }
+    .subtype dd {
+      float: left;
+      width: 25%;
+      margin: 0;
+      padding: 0.5em 0.5em 0 0.75em;
+      border-top: 1px solid #006400;
+      clear: none;
+    }
+    .subtype dd.header {
+      padding: 0.5em 0.5em 0.5em 0;
+      border-top: none;
+    }
+    .isoElement {
+      font-variant: small-caps;
+      font-size: 0.9em;
+      font-weight: normal;
+      color: #006688;
+    }
+    .esriElement {
+      font-variant: small-caps;
+      font-size: 0.9em;
+      font-weight: normal;
+      color: #006688;
+    }
+    .element {
+      font-variant: small-caps;
+      font-size: 0.9em;
+      font-weight: normal;
+      color: #666666;
+    }
+    unknownElement {
+      font-variant: small-caps;
+      font-size: 0.9em;
+      font-weight: normal;
+      color: #333333;
+    }
+    .sync {
+      color: #006400;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    .syncOld {
+      color: #888888;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    .textOld {
+      color: #999999;
+    }
+    .code {
+      font-family: monospace;
+    }
+    pre.wrap {
+      width: 96%;
+      font-family: Verdana, Gill, Helvetica, Sans-serif ;
+      font-size: 1em;
+      margin: 0 0 0 0;
+      white-space: pre-wrap;       /* css-3 */
+      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+    pre.wrap p {
+      padding-bottom: 1em;
+    }
+    pre.wrap li {
+      padding-bottom: 1em;
+    }
+    pre.wrap br {
+      display: block;
+    }
+    pre.gp {
+      font-family: Courier New, Courier, monospace;
+      line-height: 1.2em;
+    }
+    .gpcode {
+      margin-left:15px;
+      border: 1px dashed #ACC6D8;
+      padding: 10px;
+      background-color:#EEEEEE;
+      height: auto;
+      overflow: scroll; 
+      width: 96%;
+    }
+    tr {
+      vertical-align: top;
+    }
+    th {
+      text-align: left;
+      background: #dddddd;
+      vertical-align: bottom;
+      font-size: 0.8em;
+    }
+    td {
+      background: #EEEEEE;
+      color: black;
+      vertical-align: top;
+      font-size: 0.8em;
+    }
+    td.description {
+      background: white;
+    }
+  </style>
+    <script type="text/javascript" xmlns="" xmlns:esri="http://www.esri.com/metadata/">
+	/*  */
+		function hideShow(divID) {
+			var item = document.getElementById(divID);
+			var itemShow = document.getElementById(divID + 'Show');
+			var itemHide = document.getElementById(divID + 'Hide');
+			if (item) {
+				if (item.className == 'hide') {
+					item.className='show';
+					itemShow.className='hide';
+					itemHide.className='show';
+				}
+				else {
+					item.className='hide';
+					itemShow.className='show';
+					itemHide.className='hide';
+				}
+			}
+		}
+	/*  */
+	</script>
+  </head>
+  <body oncontextmenu="return true">
+    <div class="itemDescription" id="overview" xmlns="" xmlns:esri="http://www.esri.com/metadata/" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+      <h1 class="idHeading">
+        
+      </h1>
+      <div class="center">
+        
+      </div>
+      <p class="center">
+        <span class="idHeading">Tags</span>
+        <br />
+        
+      </p>
+      <br />
+      <div class="itemInfo">
+        
+        <p>
+          
+        </p>
+      </div>
+      <div class="itemInfo">
+        
+        <p>
+          
+        </p>
+      </div>
+      <div class="itemInfo">
+        
+        <p>
+          
+        </p>
+      </div>
+      <div class="itemInfo">
+        
+        <p>
+          
+        </p>
+      </div>
+      <p>
+        
+        <br />
+        
+      </p>
+      <p>
+        <div>
+          
+        </div>
+        
+      </p>
+    </div>
+    <h2 class="iso head">
+      <a href="#arcgisMetadata" onclick="hideShow('arcgisMetadata')" title="Content created and managed in the Description tab">ArcGIS Metadata <span id="arcgisMetadataShow" class="hide">▼</span><span id="arcgisMetadataHide" class="hide">►</span></a>
+    </h2>
+    <div class="hide" id="arcgisMetadata" xmlns="" xmlns:esri="http://www.esri.com/metadata/" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+      <div class="box arcgis">
+        <div>
+          <a name="TopArcGIS" id="TopArcGIS" />
+        </div>
+        <h2 class="iso">
+          <a onclick="hideShow('ID0ECA')" href="#ID0ECA">Fields 
+			<span id="ID0ECAShow" class="hide">▼</span><span id="ID0ECAHide" class="show">►</span></a>
+        </h2>
+        <div class="show" id="ID0ECA">
+          <a onclick="hideShow('ID0EBCA')" href="#ID0EBCA">
+            <dt>
+              <span class="esriElement">Details for object</span> Dry_Landslide_Susceptibility_Map 
+					<span id="ID0EBCAShow" class="hide">▼</span><span id="ID0EBCAHide" class="show">►</span></dt>
+          </a>
+          <div class="show" id="ID0EBCA">
+            <dl>
+              <dt>
+                <span class="esriElement">Definition</span>
+              </dt>
+              <dl>
+                <dd>
+                  <pre class="wrap">Raster-that delineates dry landslide susceptibility for all parts of the map.</pre>
+                  <br />
+                </dd>
+              </dl>
+              <dt>
+                <span class="esriElement">Definition source</span>
+              </dt>
+              <dl>
+                <dd>
+                  <pre class="wrap">Oregon Department of Geology and Mineral Industries</pre>
+                  <br />
+                </dd>
+              </dl>
+              <br />
+              <br />
+              <a onclick="hideShow('ID0EABCA')" href="#ID0EABCA">
+                <dt>
+                  <span class="esriElement">Field</span> Value</dt> 
+		<span id="ID0EABCAShow" class="hide">▼</span><span id="ID0EABCAHide" class="show">►</span></a>
+              <div class="show" id="ID0EABCA">
+                <dl>
+                  <dt>
+                    <span class="esriElement">Field description</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">Dry landslide susceptibility classification based on three material groups and six slope classes: none=0 and 1-9</pre>
+                      <br />
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="esriElement">Description source</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">Oregon Department of Geology and Mineral Industries</pre>
+                      <br />
+                    </dd>
+                  </dl>
+                </dl>
+                <div class="backToTop">
+                  <a onclick="hideShow('ID0EABCA')" href="#ID0EABCA">Hide Field Value ▲</a>
+                </div>
+              </div>
+              <br />
+              <br />
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EBCA')" href="#ID0EBCA">Hide Details for object Dry_Landslide_Susceptibility_Map ▲</a>
+            </div>
+          </div>
+          <br />
+          <br />
+          <a onclick="hideShow('ID0EACA')" href="#ID0EACA">
+            <dt>
+              <span class="esriElement">Overview Description</span> 
+</dt>
+            <span id="ID0EACAShow" class="hide">▼</span>
+            <span id="ID0EACAHide" class="show">►</span>
+          </a>
+          <div class="show" id="ID0EACA">
+            <dl>
+              <dt>
+                <span class="esriElement">Entity and Attribute Overview</span>
+              </dt>
+              <dl>
+                <dd>
+                  <pre class="wrap">The following attribute is possible for records in the dry landslide susceptibility data: Value.  Appropriate values are filled in for each.</pre>
+                  <br />
+                </dd>
+              </dl>
+              <br />
+              <br />
+              <dt>
+                <span class="esriElement">Entity and Attribute Detail Citation</span>
+              </dt>
+              <dl>
+                <dd>
+                  <pre class="wrap">Oregon Department of Geology and Mineral Industries</pre>
+                  <br />
+                </dd>
+              </dl>
+              <br />
+              <br />
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EACA')" href="#ID0EACA">Hide Overview Description ▲</a>
+            </div>
+          </div>
+          <br />
+          <br />
+          <div class="backToTop" style="margin-left: 0;">
+            <a onclick="hideShow('ID0ECA')" href="#ID0ECA">Hide Fields ▲</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2 class="fgdc head">
+      <a href="#fgdcMetadata" onclick="hideShow('fgdcMetadata')" title="Content created in the 9.3.1 FGDC metadata editor, and managed with the USGS MP Metadata Translator tool. Upgrade to ArcGIS Metadata to manage this content here, in the Description tab.">FGDC Metadata (read-only) <span id="fgdcMetadataShow" class="show">▼</span><span id="fgdcMetadataHide" class="show">►</span></a>
+    </h2>
+    <div class="show" id="fgdcMetadata" xmlns="">
+      <div class="box fgdc">
+        <div>
+          <a name="TopFGDC" id="TopFGDC" />
+        </div>
+        <div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('ID0EFA')" href="#ID0EFA">Identification 
+			<span id="ID0EFAShow" class="hide">▼</span><span id="ID0EFAHide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="ID0EFA">
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Citation</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Citation Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                          <dt>
+                            <span class="element">Publication Date</span> <span class="textOld">2021</span></dt>
+                          <dt>
+                            <span class="element">Title</span>
+                          </dt>
+                          <dd>
+                            <span class="textOld">Dry landslide susceptibility for OSHD Release 1.0</span>
+                          </dd>
+                          <dt>
+                            <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">raster digital data</span></dt>
+                          <dt>
+                            <span class="element">Publication Information</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon, USA</span></dt>
+                              <dt>
+                                <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Online Linkage</span> <a target="viewer" href="http://www.oregongeology.org"><span class="textOld">http://www.oregongeology.org</span></a></dt>
+                          <dt>
+                            <span class="element">Larger Work Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2021</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Oregon Seismic Hazard Database Release 1.0</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">file geodatabase</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Open-File Report</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">OSHD Release 1.0</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon, USA</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="http://www.oregongeology.org/"><span class="textOld">http://www.oregongeology.org/</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Description</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Abstract</span>
+                      </dt>
+                      <dl>
+                        <dd>
+                          <pre class="wrap">
+                            <span class="textOld">This raster GIS dataset depicts the dry landslide susceptibility for the Oregon Seismic Hazard Database.</span>
+                          </pre>
+                        </dd>
+                      </dl>
+                      <dt>
+                        <span class="element">Purpose</span>
+                      </dt>
+                      <dl>
+                        <dd>
+                          <pre class="wrap">
+                            <span class="textOld">The dry landslide susceptibility in this study is used to for landslide probability and severity with the best available data to produce the first version of a comprehensive statewide earthquake hazard database. Which we hope will give emergency mangers, planners, and others a clearer picture of the hazard in their community.</span>
+                          </pre>
+                        </dd>
+                      </dl>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Time Period of Content</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Time Period Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Single Date/Time</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Calendar Date</span> <span class="textOld">2021</span></dt>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Status</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Progress</span> <span class="textOld">Complete</span></dt>
+                      <dt>
+                        <span class="element">Maintenance and Update Frequency</span> <span class="textOld">As needed</span></dt>
+                    </dl>
+                  </dd>
+                  <br />
+                  <dt>
+                    <span class="element">Spatial Domain</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Bounding Coordinates</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">West Bounding Coordinate</span> <span class="textOld">-124.812973</span></dt>
+                          <dt>
+                            <span class="element">East Bounding Coordinate</span> <span class="textOld">-116.415452</span></dt>
+                          <dt>
+                            <span class="element">North Bounding Coordinate</span> <span class="textOld">46.344754</span></dt>
+                          <dt>
+                            <span class="element">South Bounding Coordinate</span> <span class="textOld">41.919561</span></dt>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <br />
+                  <dt>
+                    <span class="element">Keywords</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Theme</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Theme Keyword Thesaurus</span> <span class="textOld">ISO 19115 Topic Category</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">geoscientificinformation</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Theme</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Theme Keyword Thesaurus</span> <span class="textOld">Oregon Geospatial Enterprise Office Metadata Keyword Thesaurus</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">Earthquake hazard </span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">geologic hazard</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">earthquake </span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">seismic hazard</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">remote sensing</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">lidar</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">natural disaster</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">amplification</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">soil</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">geologic map</span></dt>
+                          <dt>
+                            <span class="element">Theme Keyword</span> <span class="textOld">landslide</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Place</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Place Keyword Thesaurus</span> <span class="textOld">Oregon Geospatial Enterprise Office Metadata Keyword Thesaurus</span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">North America</span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">United States of America</span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Oregon</span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Baker </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Benton </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Clackamas </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Clatsop </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Columbia </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Coos </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Crook </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Curry </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Deschutes </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Douglas </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Gilliam </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Grant </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Harney </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Hood River </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Jackson </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Jefferson </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Josephine </span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Place</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Klamath </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Lake </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Lane </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Lincoln </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Linn </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Malheur </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Marion </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Morrow </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Multnomah </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Polk </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Sherman </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Tillamook </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Umatilla </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Union </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Wallowa </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Wasco </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Washington </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Wheeler </span></dt>
+                          <dt>
+                            <span class="element">Place Keyword</span> <span class="textOld">Yamhill ​</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Stratum</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Stratum Keyword Thesaurus</span> <span class="textOld">Oregon Geospatial Enterprise Office Metadata Keyword Thesaurus</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Temporal</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Temporal Keyword Thesaurus</span> <span class="textOld">Oregon Geospatial Enterprise Office Metadata Keyword Thesaurus</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Access Constraints</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">None</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Use Constraints</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">MAP DATA: This product is for informational purposes and may not have been prepared for or be suitable for legal, engineering, or surveying purposes. Users of this information should review or consult the primary data and information sources to ascertain the usability of the information. This publication cannot substitute for site-specific investigations by qualified practitioners. Site-specific data may give results that differ from the results shown in the publication.</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Point of Contact</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Contact Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Contact Organization Primary</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Contact Organization</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Contact Address</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Address Type</span> <span class="textOld">mailing and physical address</span></dt>
+                              <dt>
+                                <span class="element">Address</span> <span class="textOld">800 NE Oregon Street Suite 965</span></dt>
+                              <dt>
+                                <span class="element">City</span> <span class="textOld">Portland</span></dt>
+                              <dt>
+                                <span class="element">State or Province</span> <span class="textOld">Oregon</span></dt>
+                              <dt>
+                                <span class="element">Postal Code</span> <span class="textOld">97232</span></dt>
+                              <dt>
+                                <span class="element">Country</span> <span class="textOld">UNITED STATES</span></dt>
+                            </dl>
+                          </dd>
+                          <br />
+                          <dt>
+                            <span class="element">Contact Voice Telephone</span> <span class="textOld">1 971 673 1555</span></dt>
+                          <dt>
+                            <span class="element">Contact Facsimile Telephone</span> <span class="textOld">1 971 673 1562</span></dt>
+                          <dt>
+                            <span class="element">Contact Electronic Mail Address</span> <a href="mailto:dogami-info@oregon.gov?subject=">dogami-info@oregon.gov</a></dt>
+                          <dt>
+                            <span class="element">Contact Instructions</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">When contacting DOGAMI about this data set, please reference the data set title or other identifying information in your correspondence. DOGAMI publications can be downloaded from http://www.oregongeology.org</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Contact Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Contact Person Primary</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Contact Person</span> <span class="textOld">Ian Madin</span></dt>
+                              <dt>
+                                <span class="element">Contact Organization</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Contact Position</span> <span class="textOld">Senior Scientist and Earthquake Hazard Geologist</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Browse Graphic</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Browse Graphic File Type</span> <span class="textOld">jpeg image (.jpg)</span></dt>
+                    </dl>
+                  </dd>
+                  <br />
+                  <dt>
+                    <span class="element">Data Set Credit</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">Funding from Oregon Geospatial Enterprise Office, Framework Data Development Program</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Security Information</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Security Classification</span> <span class="textOld">Unclassified</span></dt>
+                    </dl>
+                  </dd>
+                  <br />
+                </dl>
+              </dd>
+            </dl>
+            <br />
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EFA')" href="#ID0EFA">Hide Identification  ▲</a>
+            </div>
+          </div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('ID0EEA')" href="#ID0EEA">Data Quality 
+			<span id="ID0EEAShow" class="hide">▼</span><span id="ID0EEAHide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="ID0EEA">
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Attribute Accuracy</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Attribute Accuracy Report</span>
+                      </dt>
+                      <dl>
+                        <dd>
+                          <pre class="wrap">
+                            <span class="textOld">Care was taken to limit categorical attribute errors in the geologic group. Attribute accuracy is codependent on topographic slope angles and geologic group. Attribute accuracy of the dataset was visually inspected to identify potential anomalies, which were investigated to ensure they were consistent with the underlying data.</span>
+                          </pre>
+                        </dd>
+                      </dl>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Logical Consistency Report</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">Dataset QA-QC was carried out, attributes fell within parameters.</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Completeness Report</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">The dry landslide susceptibility derived from HAZUS-MH methodology includes information for the state of Oregon and a small portion of input data from California. No attempt was made to test and compare different methods or data sources, which was beyond the scope of this project. One factor that may lead this map to underestimate susceptibility is that existing landslides are at high risk for reactivation during an earthquake, and the majority of landslides that exist in western Oregon are not represented in input datasets.</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Positional Accuracy</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Horizontal Positional Accuracy</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Horizontal Positional Accuracy Report</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">The geologic unit polygons have variable positional accuracies due to variable scales in compilations which in turn affects the positional accuracy of derivative rasters. However newest geologic maps were digitized on a lidar base at a 1:8000 scale. As a result the data set has a highly variable horizontal positional accuracy throughout the state of Oregon. Refer to the original source data for positional accuracy.</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                          <dt>
+                            <span class="element">Quantitative Horizontal Positional Accuracy Assessment</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Horizontal Positional Accuracy Value</span> <span class="textOld">30</span></dt>
+                              <dt>
+                                <span class="element">Horizontal Positional Accuracy Explanation</span>
+                              </dt>
+                              <dl>
+                                <dd>
+                                  <pre class="wrap">
+                                    <span class="textOld">maximum accuracy defined by raster resolution</span>
+                                  </pre>
+                                </dd>
+                              </dl>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Lineage</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2020</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Oregon geologic data compilation [OGDC], release 7 (statewide)</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Digital Data</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">OGDC-7</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/dds/p-OGDC-7.htm"><span class="textOld">https://www.oregongeology.org/pubs/dds/p-OGDC-7.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2020</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2020</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Statewide Landslide Information Database for Oregon release 4.2</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Digital Data</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">SLIDO 4.2</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/slido/"><span class="textOld">https://www.oregongeology.org/slido/</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2020</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2020</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Landslide Hazard and Risk Study of Tillamook County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Open-File Report</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">O-20-13</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/ofr/p-O-20-13.htm"><span class="textOld">https://www.oregongeology.org/pubs/ofr/p-O-20-13.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2020</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2020</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic Map of the Dog River and northern part of the Badger Lake 7.5’ Quadrangles, Hood River County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-126</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Other Citation Details</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">McClaughry, J.D., Scott, W.E., Duda, C.J.M., and Conrey, R.M., 2020a, Geologic Map of the Dog River and northern part of the Badger Lake 7.5’ Quadrangles, Hood River County, Oregon: Oregon Department of Geology and Mineral Industries Geologic Map Serie</span>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2020</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2020</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic map of the Burns Butte 7.5′ quadrangle, Harney County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-125</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/p-GMS-125.htm"><span class="textOld">https://www.oregongeology.org/pubs/gms/p-GMS-125.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2020</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2019</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic map of the Biggs Junction and Rufus 7.5ʹ quadrangles, Sherman and Gilliam Counties, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-124</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/p-GMS-124.htm"><span class="textOld">https://www.oregongeology.org/pubs/gms/p-GMS-124.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">240000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2019</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2019</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic map of the Poison Creek and Burns 7.5 quadrangles, Harney County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-123</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/p-GMS-123.htm"><span class="textOld">https://www.oregongeology.org/pubs/gms/p-GMS-123.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2019</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2018</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic map of the Devine Ridge North 7.5 quadrangle, Harney County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-121</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/p-GMS-121.htm"><span class="textOld">https://www.oregongeology.org/pubs/gms/p-GMS-121.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2018</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">2018</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Geologic map of the Devine Ridge South 7.5 quadrangle, Harney County, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-120</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/p-GMS-120.htm"><span class="textOld">https://www.oregongeology.org/pubs/gms/p-GMS-120.htm</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">2018</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Source Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Source Citation</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Citation Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Originator</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                  <dt>
+                                    <span class="element">Publication Date</span> <span class="textOld">1996</span></dt>
+                                  <dt>
+                                    <span class="element">Title</span>
+                                  </dt>
+                                  <dd>
+                                    <span class="textOld">Relative earthquake hazard maps of the Salem East and Salem West quadrangles, Marion and Polk Counties, Oregon</span>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Geospatial Data Presentation Form</span> <span class="textOld">vector digital data</span></dt>
+                                  <dt>
+                                    <span class="element">Series Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Series Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Geologic Map</span></dt>
+                                      <dt>
+                                        <span class="element">Issue Identification</span> <span class="textOld">GMS-105</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Publication Information</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Publication Place</span> <span class="textOld">Portland, Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Publisher</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Online Linkage</span> <a target="viewer" href="https://www.oregongeology.org/pubs/gms/GMS-105.zip"><span class="textOld">https://www.oregongeology.org/pubs/gms/GMS-105.zip</span></a></dt>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Source Scale Denominator</span> <span class="textOld">24000</span></dt>
+                          <dt>
+                            <span class="element">Source Time Period of Content</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Time Period Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Single Date/Time</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Calendar Date</span> <span class="textOld">1996</span></dt>
+                                    </dl>
+                                  </dd>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Source Currentness Reference</span>
+                              </dt>
+                              <dd>
+                                <span class="textOld">Publication</span>
+                              </dd>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Process Step</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Process Description</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">Data was derived from 4 source types.  A geologic map compilation (OGDC-7), updated with recently prepared or published geologic maps, older seismic hazard studies using 3D data, recent geohazard studies that are published or in preparation, and landslide polygon data from SLIDO-4.2.  For the OGDC and SLIDO 4.2 data, values were assigned based on a geologic unit, see report for further details.  Other geohazard studies provided data that was directly useable.  The various layers were stamped together in a specific order, described in the report.  The resulting polygon data set was converted to a 30m raster following topology review. Final datasets where then converted to 98.4ft rasters due to the Oregon statewide projection standard unit being feet.</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                          <dt>
+                            <span class="element">Process Description</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">To make the slope class map, we made a hybrid digital elevation model of Oregon by resampling all of the available lidar topographic data to 30 m (98.4 ft) resolution, and then filling in the gaps with 30 m DEM data from the current USGS National Elevation Database (NED)</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                          <dt>
+                            <span class="element">Process Description</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">Not all data sources are listed in this lineage. Please see the 2021 Oregon Seismic Hazard Database: Purpose, Methods, And Uses report for a complete list.</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                          <br />
+                          <br />
+                          <dt>
+                            <span class="element">Process Contact</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Contact Information</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Contact Organization Primary</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Contact Organization</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                                    </dl>
+                                  </dd>
+                                  <dt>
+                                    <span class="element">Contact Address</span>
+                                  </dt>
+                                  <dd>
+                                    <dl>
+                                      <dt>
+                                        <span class="element">Address Type</span> <span class="textOld">mailing and physical address</span></dt>
+                                      <dt>
+                                        <span class="element">Address</span> <span class="textOld">800 NE Oregon Street Suite 965</span></dt>
+                                      <dt>
+                                        <span class="element">City</span> <span class="textOld">Portland</span></dt>
+                                      <dt>
+                                        <span class="element">State or Province</span> <span class="textOld">Oregon</span></dt>
+                                      <dt>
+                                        <span class="element">Postal Code</span> <span class="textOld">97232</span></dt>
+                                      <dt>
+                                        <span class="element">Country</span> <span class="textOld">UNITED STATES</span></dt>
+                                    </dl>
+                                  </dd>
+                                  <br />
+                                  <dt>
+                                    <span class="element">Contact Voice Telephone</span> <span class="textOld">1 971 673 1555</span></dt>
+                                  <dt>
+                                    <span class="element">Contact Facsimile Telephone</span> <span class="textOld">1 971 673 1562</span></dt>
+                                  <dt>
+                                    <span class="element">Contact Electronic Mail Address</span> <a href="mailto:dogami-info@oregon.gov?subject=">dogami-info@oregon.gov</a></dt>
+                                  <dt>
+                                    <span class="element">Contact Instructions</span>
+                                  </dt>
+                                  <dl>
+                                    <dd>
+                                      <pre class="wrap">
+                                        <span class="textOld">When contacting DOGAMI about this data set, please reference the data set title or other identifying information in your correspondence. DOGAMI publications can be downloaded from http://www.oregongeology.org</span>
+                                      </pre>
+                                    </dd>
+                                  </dl>
+                                </dl>
+                              </dd>
+                              <br />
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+              </dd>
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EEA')" href="#ID0EEA">Hide Data Quality  ▲</a>
+            </div>
+          </div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('ID0EDA')" href="#ID0EDA">Spatial Reference 
+			<span id="ID0EDAShow" class="hide">▼</span><span id="ID0EDAHide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="ID0EDA">
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Horizontal Coordinate System Definition</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Planar</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Map Projection</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Map Projection Name</span> <span class="textOld">NAD 1983 2011 Oregon Statewide Lambert Ft Intl</span></dt>
+                              <dt>
+                                <span class="element">Lambert Conformal Conic</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Standard Parallel</span> <span class="textOld">43.0</span></dt>
+                                  <dt>
+                                    <span class="element">Standard Parallel</span> <span class="textOld">45.5</span></dt>
+                                  <dt>
+                                    <span class="element">Longitude of Central Meridian</span> <span class="textOld">-120.5</span></dt>
+                                  <dt>
+                                    <span class="element">Latitude of Projection Origin</span> <span class="textOld">41.75</span></dt>
+                                  <dt>
+                                    <span class="element">False Easting</span> <span class="textOld">1312335.958005249</span></dt>
+                                  <dt>
+                                    <span class="element">False Northing</span> <span class="textOld">0.0</span></dt>
+                                </dl>
+                              </dd>
+                            </dl>
+                          </dd>
+                          <br />
+                          <dt>
+                            <span class="element">Planar Coordinate Information</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Planar Coordinate Encoding Method</span> <span class="textOld">coordinate pair</span></dt>
+                              <dt>
+                                <span class="element">Coordinate Representation</span>
+                              </dt>
+                              <dd>
+                                <dl>
+                                  <dt>
+                                    <span class="element">Abscissa Resolution</span> <span class="textOld">0.0000000266012656346959</span></dt>
+                                  <dt>
+                                    <span class="element">Ordinate Resolution</span> <span class="textOld">0.0000000266012656346959</span></dt>
+                                </dl>
+                              </dd>
+                              <dt>
+                                <span class="element">Planar Distance Units</span> <span class="textOld">foot</span></dt>
+                            </dl>
+                          </dd>
+                          <br />
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="element">Geodetic Model</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Horizontal Datum Name</span> <span class="textOld">D NAD 1983 2011</span></dt>
+                          <dt>
+                            <span class="element">Ellipsoid Name</span> <span class="textOld">GRS 1980</span></dt>
+                          <dt>
+                            <span class="element">Semi-major Axis</span> <span class="textOld">6378137.0</span></dt>
+                          <dt>
+                            <span class="element">Denominator of Flattening Ratio</span> <span class="textOld">298.257222101</span></dt>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <br />
+                </dl>
+              </dd>
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EDA')" href="#ID0EDA">Hide Spatial Reference  ▲</a>
+            </div>
+          </div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('/metadata/eainfo//text()[1]')" href="#/metadata/eainfo//text()[1]">Entities and Attributes 
+				<span id="/metadata/eainfo//text()[1]Show" class="hide">▼</span><span id="/metadata/eainfo//text()[1]Hide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="/metadata/eainfo//text()[1]">
+            <a name="Entity and Attribute Information" id="Entity and Attribute Information" />
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Detailed Description</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Entity Type</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Entity Type Label</span> <span class="textOld">Dry_Landslide_Susceptibility_Map</span></dt>
+                          <dt>
+                            <span class="element">Entity Type Definition</span>
+                          </dt>
+                          <dd>
+                            <span class="textOld">Raster-that delineates dry landslide susceptibility for all parts of the map.</span>
+                          </dd>
+                          <dt>
+                            <span class="element">Entity Type Definition Source</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                      <dt>
+                        <span class="element">Attribute</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Attribute Label</span> <span class="textOld">Value</span></dt>
+                          <dt>
+                            <span class="element">Attribute Definition</span>
+                          </dt>
+                          <dd>
+                            <span class="textOld">Dry landslide susceptibility classification based on three material groups and six slope classes: none=0 and 1-9</span>
+                          </dd>
+                          <dt>
+                            <span class="element">Attribute Definition Source</span> <span class="textOld">Oregon Department of Geology and Mineral Industries</span></dt>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Overview Description</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Entity and Attribute Overview</span>
+                      </dt>
+                      <dl>
+                        <dd>
+                          <pre class="wrap">
+                            <span class="textOld">The following attribute is possible for records in the dry landslide susceptibility data: Value.  Appropriate values are filled in for each.</span>
+                          </pre>
+                        </dd>
+                      </dl>
+                      <dt>
+                        <span class="element">Entity and Attribute Detail Citation</span>
+                      </dt>
+                      <dl>
+                        <dd>
+                          <pre class="wrap">
+                            <span class="textOld">Oregon Department of Geology and Mineral Industries</span>
+                          </pre>
+                        </dd>
+                      </dl>
+                    </dl>
+                  </dd>
+                  <br />
+                </dl>
+              </dd>
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('/metadata/eainfo//text()[1]')" href="#/metadata/eainfo//text()[1]">Hide Entities and Attributes ▲</a>
+            </div>
+          </div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('ID0EBA')" href="#ID0EBA">Distribution Information 
+			<span id="ID0EBAShow" class="hide">▼</span><span id="ID0EBAHide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="ID0EBA">
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Distributor</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Contact Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Contact Organization Primary</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Contact Organization</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Contact Address</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Address Type</span> <span class="textOld">mailing and physical address</span></dt>
+                              <dt>
+                                <span class="element">Address</span> <span class="textOld">800 NE Oregon Street Suite 965</span></dt>
+                              <dt>
+                                <span class="element">City</span> <span class="textOld">Portland</span></dt>
+                              <dt>
+                                <span class="element">State or Province</span> <span class="textOld">Oregon</span></dt>
+                              <dt>
+                                <span class="element">Postal Code</span> <span class="textOld">97232</span></dt>
+                              <dt>
+                                <span class="element">Country</span> <span class="textOld">UNITED STATES</span></dt>
+                            </dl>
+                          </dd>
+                          <br />
+                          <dt>
+                            <span class="element">Contact Voice Telephone</span> <span class="textOld">1 971 673 1555</span></dt>
+                          <dt>
+                            <span class="element">Contact Facsimile Telephone</span> <span class="textOld">1 971 673 1562</span></dt>
+                          <dt>
+                            <span class="element">Contact Electronic Mail Address</span> <a href="mailto:dogami-info@oregon.gov?subject=">dogami-info@oregon.gov</a></dt>
+                          <dt>
+                            <span class="element">Contact Instructions</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">When contacting DOGAMI about this data set, please reference the data set title or other identifying information in your correspondence. DOGAMI publications can be downloaded from http://www.oregongeology.org</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Distribution Liability</span>
+                  </dt>
+                  <dl>
+                    <dd>
+                      <pre class="wrap">
+                        <span class="textOld">Although these data have been processed successfully on a computer system at the Oregon Department of Geology and Mineral Industries, no warranty expressed or implied is made by DOGAMI regarding the utility of the data on any other system, nor shall the act of distribution constitute any such warranty.</span>
+                      </pre>
+                    </dd>
+                  </dl>
+                  <dt>
+                    <span class="element">Standard Order Process</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Digital Form</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Digital Transfer Information</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Format Name</span> <span class="textOld">GDB Esri File Geodatabase</span></dt>
+                            </dl>
+                          </dd>
+                          <br />
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Available Time Period</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Time Period Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Single Date/Time</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Calendar Date</span> <span class="textOld">2021</span></dt>
+                            </dl>
+                          </dd>
+                        </dl>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <br />
+                  <br />
+                </dl>
+              </dd>
+            </dl>
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EBA')" href="#ID0EBA">Hide Distribution Information  ▲</a>
+            </div>
+          </div>
+          <h2 class="fgdc">
+            <a onclick="hideShow('ID0EAA')" href="#ID0EAA">Metadata Reference 
+			<span id="ID0EAAShow" class="hide">▼</span><span id="ID0EAAHide" class="show">►</span></a>
+          </h2>
+          <div class="show" id="ID0EAA">
+            <dl>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="element">Metadata Date</span> <span class="textOld">2021</span></dt>
+                  <dt>
+                    <span class="element">Metadata Contact</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Contact Information</span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="element">Contact Organization Primary</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Contact Organization</span> <span class="textOld">Oregon Department of Geology and Mineral Industries </span></dt>
+                            </dl>
+                          </dd>
+                          <dt>
+                            <span class="element">Contact Address</span>
+                          </dt>
+                          <dd>
+                            <dl>
+                              <dt>
+                                <span class="element">Address Type</span> <span class="textOld">mailing and physical address</span></dt>
+                              <dt>
+                                <span class="element">Address</span> <span class="textOld">800 NE Oregon Street Suite 965</span></dt>
+                              <dt>
+                                <span class="element">City</span> <span class="textOld">Portland</span></dt>
+                              <dt>
+                                <span class="element">State or Province</span> <span class="textOld">Oregon</span></dt>
+                              <dt>
+                                <span class="element">Postal Code</span> <span class="textOld">97232</span></dt>
+                              <dt>
+                                <span class="element">Country</span> <span class="textOld">UNITED STATES</span></dt>
+                            </dl>
+                          </dd>
+                          <br />
+                          <dt>
+                            <span class="element">Contact Voice Telephone</span> <span class="textOld">1 971 673 1555</span></dt>
+                          <dt>
+                            <span class="element">Contact Facsimile Telephone</span> <span class="textOld">1 971 673 1562</span></dt>
+                          <dt>
+                            <span class="element">Contact Electronic Mail Address</span> <a href="mailto:dogami-info@oregon.gov?subject=">dogami-info@oregon.gov</a></dt>
+                          <dt>
+                            <span class="element">Contact Instructions</span>
+                          </dt>
+                          <dl>
+                            <dd>
+                              <pre class="wrap">
+                                <span class="textOld">When contacting DOGAMI about this data set, please reference the data set title or other identifying information in your correspondence. DOGAMI publications can be downloaded from http://www.oregongeology.org</span>
+                              </pre>
+                            </dd>
+                          </dl>
+                        </dl>
+                      </dd>
+                      <br />
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="element">Metadata Standard Name</span> <span class="textOld">Oregon Department of Geology and Mineral Industries Metadata Standard</span></dt>
+                  <dt>
+                    <span class="element">Metadata Standard Version</span> <span class="textOld">1.4</span></dt>
+                  <br />
+                  <br />
+                  <dt>
+                    <span class="element">Metadata Access Constraints</span> <span class="textOld">None</span></dt>
+                  <dt>
+                    <span class="element">Metadata Use Constraints</span>
+                  </dt>
+                  <dd>
+                    <span class="textOld">None</span>
+                  </dd>
+                  <dt>
+                    <span class="element">Metadata Security Information</span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="element">Metadata Security Classification System</span> <span class="textOld">None</span></dt>
+                      <dt>
+                        <span class="element">Metadata Security Classification</span> <span class="textOld">None</span></dt>
+                      <dt>
+                        <span class="element">Metadata Security Handling Description</span>
+                      </dt>
+                      <dd>
+                        <span class="textOld">None</span>
+                      </dd>
+                    </dl>
+                  </dd>
+                  <br />
+                </dl>
+              </dd>
+            </dl>
+            <br />
+            <div class="backToTop">
+              <a onclick="hideShow('ID0EAA')" href="#ID0EAA">Hide Metadata Reference  ▲</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

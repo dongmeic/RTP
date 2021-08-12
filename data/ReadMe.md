@@ -97,7 +97,9 @@ The [FEMA map server](https://hazards.fema.gov/gis/nfhl/rest/services/public/NFH
 
 ### 2. Seismic Hazard (e.g., liquefaction, landslide, expected shaking, etc.)
 
-The landside susceptibility data layer is downloaded from the [DOGAMI ImageServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/Landslide_Susceptibility/ImageServer). 
+<!-- The landside susceptibility data layer is downloaded from the [DOGAMI ImageServer](https://gis.dogami.oregon.gov/arcgis/rest/services/Public/Landslide_Susceptibility/ImageServer).  -->
+
+The [Oregon Seismic Hazards Database (OSHD)](https://www.oregongeology.org/pubs/dds/p-OSHD-1.htm) published on Jane 21st, 2021 by Oregon Department of Geology and Mineral Industries (DOGAMI) is applied in this analysis with the liquefaction susceptibility, dry landslide susceptibility, wet landslide susceptibility, and probability of damaging shaking. 
 
 ### 3. Fire Hazard
 
@@ -117,4 +119,4 @@ The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility).
 
 # GIS Analysis for the Appendix F Tables
 
-The scripts [Analysis4AppendixF.py](https://github.com/dongmeic/RTP/blob/main/data/Analysis4AppendixF.py) and [analysis_for_AppendixF.ipynb](https://github.com/dongmeic/RTP/blob/main/data/analysis_for_AppendixF.ipynb) are used to calculate the number of projects intersected with the different environmental data layers (see the tables in the [Appendix F Outline & Mapping Needs.docx](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVbeSXT1cblKo1NnhEIi-ZoBDXXLeRCT48o4oPZ8ld_ycg?e=ACuriv)).
+The scripts [Analysis4AppendixF.py](https://github.com/dongmeic/RTP/blob/main/data/Analysis4AppendixF.py) and [analysis_for_AppendixF.ipynb](https://github.com/dongmeic/RTP/blob/main/data/analysis_for_AppendixF.ipynb) are used to calculate the number of projects intersected with the different environmental data layers (see the tables in the [Appendix F Outline & Mapping Needs.docx](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVbeSXT1cblKo1NnhEIi-ZoBDXXLeRCT48o4oPZ8ld_ycg?e=ACuriv)). The function *RTP_counted_by_intersection* should create the same results as the tool *Select by Location* in ArcGIS Pro, with settings of the input feature as the bufferred RTP layer, relationship as "intersect", and the selecting feature as the environmental data layer. Since the transit project type only include LTD routes and stations, the intersection between transit projects, i.e., frequent transit network and stations, and environmental data is calculated for the number of unique routes and stations, respectively.
