@@ -8,7 +8,7 @@ datapath = r'T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF'
 def RTP_counted_by_intersection(shapefile='Roadway_lines',
                                 folder='Historic',
                                 file='NationalRegisterHistoricSitesCLMPO.shp',
-                                transit=False, ftn=False):
+                                transit=False, ftn=False, returnID=False):
     if transit:
         rtp = gpd.read_file(os.path.join(datapath, 'RTP', shapefile+'.shp'))
     else:
@@ -33,5 +33,8 @@ def RTP_counted_by_intersection(shapefile='Roadway_lines',
             res = joined[['name', 'geometry']].groupby(['name']).agg('count')
     else:
         joined = joined.drop_duplicates(subset=['RTP_ID', 'geometry'])
-        res = joined[['Category', 'geometry']].groupby(['Category']).agg('count')
+        if returnID:
+            res = joined[['Category', 'RTP_ID']].groupby(['Category']).agg(lambda x: set(x))
+        else:
+            res = joined[['Category', 'geometry']].groupby(['Category']).agg('count')
     return res
