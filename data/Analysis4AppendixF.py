@@ -21,12 +21,33 @@ project_types = ['Added Freeway Lanes or Major Interchange Improvements',
                  'On-Street Lanes or Routes With Road Project',
                  'On-Street Lanes or Routes Without Road Project']
 
+# combine the same environmental category
+def combine_RTP_for_each_env_category(keywords = ['HistoricDistricts', 'HistoricSites'],
+                                      varnms = ['Historic Districts', 'Historic Sites'],
+                                      folder = 'Historic',
+                                      files = ['NationalRegisterHistoricDistrictsCLMPO.shp',
+                                               'NationalRegisterHistoricSitesCLMPO.shp']):
+    for keyword in keywords:
+        k = keywords.index(keyword)
+        df = combine_RTP_for_each_env_factor(keyword = keyword,
+                                             varnm = varnms[k],
+                                             folder = folder,
+                                             file = files[k])
+        if keyword == keywords[0]:
+            ndf = df
+        else:
+            ndf = pd.concat([ndf, df[[varnm]]], axis=1)
+        
+    return ndf
+
 # combine the same environmental factor
-def combine_RTP_for_each_env_factor(folder='Historic',
+def combine_RTP_for_each_env_factor(keyword = 'HistoricSites',
+                                    varnm = 'Historic Sites',
+                                    folder='Historic',
                                     file='NationalRegisterHistoricSitesCLMPO.shp'):
     df = pd.DataFrame(data={'Project Category': categories, 'Project Type': project_types})
-    if 'HistoricSites' in file:
-        var = 'Historic Sites'
+    if keyword in file:
+        var = varnm
     df[var] = 0
     # rwdf: roadway dataframe
     rwdf = combine_RTP_by_mode(mode='roadway', folder=folder, file=file)
