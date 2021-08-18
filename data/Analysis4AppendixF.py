@@ -72,7 +72,7 @@ def sum_RTP(export=False):
     pdf = pd.concat([pd.DataFrame(data={'Project Category': [''], 'Project Type': ['PERCENT OF ALL CONSTRAINED PROJECTS']}), 
                 pd.DataFrame(ndf[ndf.columns[2:]].apply(lambda x: int(sum(x)/tot_rtp_prj*100+0.5), axis=0)).T], axis=1)
     ndf = pd.concat([ndf, tdf, pdf])
-    print(ndf)
+    #print(ndf)
     if export:
         ndf.to_csv(os.path.join(datapath, 'Tables', 'Summary.csv'), index=False)
     return ndf
