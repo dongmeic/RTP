@@ -115,7 +115,7 @@ The environmental justice elements are derived from the Title VI data. The Title
 
 ## RTP projects
 
-The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility).
+The LTD stations are collected from the facility data (RLIDGeo.DBO.Facility). The transit routes with 15-minute headways are included in the analysis for the EJ table. These routes are 'EmX', '41', '51', '52', '81', '82', and '79x'.
 
 # GIS Analysis for the Appendix F Tables
 
