@@ -67,8 +67,14 @@ def sum_RTP(export=False):
         else:
             ndf = pd.concat([ndf, df[[varcat]]], axis=1)
         #print(varcat)
+    tdf = pd.concat([pd.DataFrame(data={'Project Category': [''], 'Project Type': ['TOTAL']}), 
+                pd.DataFrame(ndf[ndf.columns[2:]].apply(np.sum, axis=0)).T], axis=1)
+    pdf = pd.concat([pd.DataFrame(data={'Project Category': [''], 'Project Type': ['PERCENT OF ALL CONSTRAINED PROJECTS']}), 
+                pd.DataFrame(ndf[ndf.columns[2:]].apply(lambda x: int(sum(x)/tot_rtp_prj*100+0.5), axis=0)).T], axis=1)
+    ndf = pd.concat([ndf, tdf, pdf])
+    print(ndf)
     if export:
-        ndf.to_csv(os.path.join(datapath, 'Tables', 'Summary.csv'))
+        ndf.to_csv(os.path.join(datapath, 'Tables', 'Summary.csv'), index=False)
     return ndf
 
 # summarize the number of projects when the env factor includes multiple layers                                
@@ -178,6 +184,7 @@ def sum_RTP_by_shp(shapefile='Roadway_lines', folder = 'Historic',
     return res         
 
 # print the tables by env category, by ID or geometry
+# require the summary table for the total number of RTP project in CLMPO
 def combine_RTP(export=False, by='ID'):
     for outname in outnames:
         l = outnames.index(outname)
@@ -186,12 +193,16 @@ def combine_RTP(export=False, by='ID'):
                                                folder = folders[n[l]],
                                                files = filelist[n[l]],
                                                by=by)
-        print(df)
+        tdf = pd.concat([pd.DataFrame(data={'Project Category': [''], 'Project Type': ['TOTAL']}), 
+                pd.DataFrame(df[varnmlist[l]].apply(np.sum, axis=0)).T], axis=1)
+        pdf = pd.concat([pd.DataFrame(data={'Project Category': [''], 'Project Type': ['PERCENT OF ALL CONSTRAINED PROJECTS']}), 
+                pd.DataFrame(df[varnmlist[l]].apply(lambda x: int(sum(x)/tot_rtp_prj*100+0.5), axis=0)).T], axis=1)
+        ndf = pd.concat([df, tdf, pdf])
+        print(ndf)
         if export:
-            df.to_csv(os.path.join(datapath, 'Tables', outname + '.csv'))
+            ndf.to_csv(os.path.join(datapath, 'Tables', outname + '.csv'), index=False)
 
 # combine the same environmental category, by ID or geometry
-# require the summary table for the total number of RTP project in CLMPO
 def combine_RTP_for_each_env_category(keywords = ['HistoricDistricts', 'HistoricSites'],
                                       varnms = ['Historic Districts', 'Historic Sites'],
                                       folder = 'Historic',
@@ -210,7 +221,7 @@ def combine_RTP_for_each_env_category(keywords = ['HistoricDistricts', 'Historic
             ndf = df
         else:
             ndf = pd.concat([ndf, df[[varnm]]], axis=1)
-        
+    
     return ndf
 
 # combine the same environmental factor, by ID or geometry
