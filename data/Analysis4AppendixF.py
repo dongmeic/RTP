@@ -36,7 +36,7 @@ filelist = [['equity_area.shp'],
             'wetlandsCLMPO.shp'],
            ['ODFW_COAs_CLMPO.shp',
             'CRITHAB_CLMPO.shp'],
-           ['FloodwayCLMPO.shp',
+           ['Flood100yearCLMPO.shp',
             'EarthquakeLayer.shp'],
            ['MPO_Boundary.shp']]
 
@@ -44,7 +44,7 @@ keywordlist = [['equity'],
                ['HistoricDistricts', 'HistoricSites'],
                ['DEQ', 'SWV', 'Rivers', 'wetlands'],
                ['ODFW', 'CRITHAB'],
-               ['Floodway', 'Earthquake']]
+               ['Flood', 'Earthquake']]
 varnmlist = [['Communities of Concern'],
              ['Historic Districts', 'Historic Sites'],
              ['303d Streams', 'GWMA', 'Navigable Rivers', 'Wetlands'],
