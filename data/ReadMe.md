@@ -69,7 +69,7 @@ The Oregon rivers layer downloaded from the [Oregon Spatial Data Library](https:
 
 ### 4. Wetlands
 
-The wetlands data layer are derived from the [national wetlands inventory (NWI)](https://www.fws.gov/wetlands/) and the [local wetlands inventories (LWI)](https://www.oregon.gov/dsl/WW/Pages/Inventories.aspx). After comparing the West Eugene LWI with the data layer from the last RTP, which covers larger areas, the West Eugene LWI remains the same as the last RTP. The NWI and LWI layers are combined into a wetlands layer for CLMPO using the script [wetlands.ipynb](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/wetlands.ipynb). For the mapping purpose, the statewide wetlands layer was created using the script [wetlands-Oregon](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/wetlands-Oregon.ipynb). 
+The wetlands data layer are derived from the [national wetlands inventory (NWI)](https://www.fws.gov/wetlands/) and the [local wetlands inventories (LWI)](https://www.oregon.gov/dsl/WW/Pages/Inventories.aspx). After comparing the West Eugene LWI with the data layer from the last RTP, which covers larger areas, the West Eugene LWI remains the same as the last RTP. The NWI and LWI layers are combined into a wetlands layer for CLMPO using the script [wetlands.ipynb](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/wetlands.ipynb). For the mapping purpose, the statewide wetlands layer was created using the script [wetlands-Oregon](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/wetlands-Oregon.ipynb) and saved as *T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\ForAppendixF\WaterQuality\wetlandsOregon.shp*.
 
 ## Watershed
 
