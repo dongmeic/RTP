@@ -111,7 +111,7 @@ The air quality maintenance area is the Eugene-Springfield Urban Growth Boundari
 
 ## Environmental Justice
 
-The environmental justice elements are derived from the Title VI data. The Title VI variables are explained [here](https://github.com/dongmeic/MPO_Data_Portal/tree/master/PopulationData#explanations-of-the-title-vi-variables).
+The environmental justice elements are derived from the Title VI data. The Title VI variables are explained [here](https://github.com/dongmeic/MPO_Data_Portal/tree/master/PopulationData#explanations-of-the-title-vi-variables). The concept Communities of Concern is revised as Historically Underrepresented Populations. 
 
 ## RTP projects
 
@@ -127,4 +127,4 @@ The [specific steps](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/An
 
 The calculation for the environmental justice table using the population or household for minority, low-income, senior, disabled, and LEP in the intersected block groups and the total population or households columns in MPO from the TitleVI table (see script [analyisis_on_environmental_justice.ipynb](https://github.com/dongmeic/RTP/blob/main/data/AppendixF/analyisis_on_environmental_justice.ipynb)). Note that the population data in 2045 is not available with the same details, so the EJ data for the proposed bike paths and sidewalks is derived from the current TitleVI data. In this case, the intersection results of TitleVI data are the same with or without the proposed RTP projects. In the summary table for the number of intersected RTP projects, the EJ column is calculated based on the equity area defined as the Block Groups in which the percentage of three or four Historically Underrepresented Populations are higher than the region-wide average.
 
-The specific steps to get the EJ table (i.e, Historically Underrepresented Populations’ Access to Bike Paths, Sidewalks, and Transit) include: 1) create feature layers for sidewalks, bike paths, and transit routes; 2) create access feature layers using *Select by Location*; 3) Calculate the percentage of Historically Underrepresented Populations within the access feature layer. 
+The specific steps to get the EJ table (i.e, Historically Underrepresented Populations’ Access to Bike Paths, Sidewalks, and Transit) include: 1) create feature layers for sidewalks, bike paths, and transit routes; 2) create access feature layers using *Select by Location*; 3) calculate the percentage of Historically Underrepresented Populations within the access feature layer.
