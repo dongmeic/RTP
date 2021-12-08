@@ -37,7 +37,7 @@ Project modes
 ·        Bike/Ped
 
 3. Facilities
- 
+
 4. Access to opportunities (off-peak and peaking)
 
 ·        Workplace accessibility auto
@@ -53,13 +53,13 @@ Project modes
 8. Plan designations (future land use)
 
 # RTP map series
-## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb) 
+## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb)
 
 ## [Mapping RTP projects (2045)](https://arcg.is/1jmOyr)
 
 ### Project review and GIS data update
 
-The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data. 
+The final data is saved in the folder T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData\Updated. The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data. 
 
 Four rounds of review were conducted to match RTP list and GIS data. The RTP IDs in the 2045 table were matched with the RTP IDs in the existing GIS data first and then compared with the RTP IDs in the 2040 table, and both are by category. Some RTP IDs are repeated between different categories, which caused a review in the duplicated RTP IDs before updating the attribute table with the 2045 data. The RTP IDs are also duplicated in the exiting GIS data and so the spatial features with the same RTP IDs were reviewed. As such, four steps were followed to create the 2045 GIS data.
 
@@ -75,7 +75,7 @@ The transit projects are excluded in the mapping, however, the tables are matche
 
 ### For future RTP project list update  
 
-There are issues with duplicated RTP IDs within the same category and between categories. These records are documented in T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\2045repeatedRTPID.csv (or 2040repeatedRTPID.csv for the 2040 table). Duplicated names are also found in the tables. It would be easier to track GIS data if the tables can keep unique IDs and names on the projects. GIS data has issues on unclear column names and changing project names. 
+There are issues with duplicated RTP IDs within the same category and between categories. These records are documented in T:\MPO\RTP\FY20 2045 Update\Data and Resources\ProjectReview\2045repeatedRTPID.csv (or 2040repeatedRTPID.csv for the 2040 table). Duplicated names are also found in the tables. It would be easier to track GIS data if the tables can keep unique IDs and names on the projects. GIS data has issues on unclear column names and changing project names.
 
 ### Links for webmap and data download
 
@@ -98,7 +98,7 @@ There are issues with duplicated RTP IDs within the same category and between ca
 # RTP data quality control
 ## Centerline road ownership comparison among street data sets
 
-The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review and update the regional centerline network data. 
+The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review and update the regional centerline network data.
 
 ### Data sources
 
@@ -108,17 +108,17 @@ The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of 
 
 3) Springfield streets from the Geodatabase *Springfield_Infrastructure_P*, access on June 8th, 2021.
 
-The local functional class is excluded in all datasets in the comparison. 
+The local functional class is excluded in all datasets in the comparison.
 
 ### Data manipulation
 
-The owner names "CNTY" and "LANE" are changed to "LCPW" and "CITY" is changed to "SPR" in the Springfield streets data to keep the names consistent between the city street data and central lane data. The ID columns "COMPKEY" and "EUGID" in the Springfield and Eugene streets data are matched with the ID columns "sprid" and "eugid" respectively. Only the common IDs that are shared in both datasets in the comparing group are used in the comparison. The IDs that are not shared between datasets might share the same spatial features, caused by mismatches between IDs. Within the common IDs, features from both datasets in the comparison are selected by each ID one by one. 
+The owner names "CNTY" and "LANE" are changed to "LCPW" and "CITY" is changed to "SPR" in the Springfield streets data to keep the names consistent between the city street data and central lane data. The ID columns "COMPKEY" and "EUGID" in the Springfield and Eugene streets data are matched with the ID columns "sprid" and "eugid" respectively. Only the common IDs that are shared in both datasets in the comparing group are used in the comparison. The IDs that are not shared between datasets might share the same spatial features, caused by mismatches between IDs. Within the common IDs, features from both datasets in the comparison are selected by each ID one by one.
 
-There are four situations that can happen in both selected datasets: only one feature in each, and one or both datasets has/have more than one feature. If both dataset matched by ID has one feature only and the owner information is the same, then it is considered as having same owner information, otherwise, the ID is included in the different-owner ID list. When the number of features are different, if any of differences exist, the ID is also included in the different-owner ID list. The features with an ID in the different-owner ID list or the ID list that excludes the common IDs are selected in each comparing dataset. 
+There are four situations that can happen in both selected datasets: only one feature in each, and one or both datasets has/have more than one feature. If both dataset matched by ID has one feature only and the owner information is the same, then it is considered as having same owner information, otherwise, the ID is included in the different-owner ID list. When the number of features are different, if any of differences exist, the ID is also included in the different-owner ID list. The features with an ID in the different-owner ID list or the ID list that excludes the common IDs are selected in each comparing dataset.
 
-The quality control (QC) results are mapped using the same color schemes to compare spatial features. The differences within common IDs show direct results of different owner information and the differences including mismatched IDs also show features that are with different IDs but the owner information can be consistent. Most of the road segments with different ownerships are relatively short except for Delta Highway, Northwest Expressway, and Ferry Street Bridge. 
+The quality control (QC) results are mapped using the same color schemes to compare spatial features. The differences within common IDs show direct results of different owner information and the differences including mismatched IDs also show features that are with different IDs but the owner information can be consistent. Most of the road segments with different ownerships are relatively short except for Delta Highway, Northwest Expressway, and Ferry Street Bridge.
 
-Detailed QC output can be found in T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership. The text files *reviewCommonIDsEUG.txt* and *reviewCommonIDsSPR.txt* list the detailed differences in the two comparing groups. The ArcGIS Pro project *Centerline_Network.aprx* located at T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data displays most of the data except the difference data with common IDs only that was added directly to the web map. 
+Detailed QC output can be found in T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\QC_road_ownership. The text files *reviewCommonIDsEUG.txt* and *reviewCommonIDsSPR.txt* list the detailed differences in the two comparing groups. The ArcGIS Pro project *Centerline_Network.aprx* located at T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data displays most of the data except the difference data with common IDs only that was added directly to the web map.
 
 ### Data update
 
@@ -128,6 +128,6 @@ The ArcGIS Pro project `T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Cent
 
 #### Update the data for DKS
 
-The data can be downloaded [here](https://github.com/dongmeic/RTP/blob/main/data/download/Central_Lane_Centerline_Network.shp.zip). Note that the local functional class is excluded in this data. 
+The data can be downloaded [here](https://github.com/dongmeic/RTP/blob/main/data/download/Central_Lane_Centerline_Network.shp.zip). Note that the local functional class is excluded in this data.
 
-To keep the road ownership consistent between the regional and city data, the adjustments are made firstly among the common IDs and then based on the length and geometry with a precision setting to make sure the exact one-on-one match. Some extra segments in either dataset and different road segments with the same ID or on the same road cause the remaining mismatches. These mismatches are usually in small segments, which are considered minor issues and ignored. However, more work might be required to ensure the different road segments in either are necessarily matched, particularly on the mismatches in multiple road segments on the same road or large gaps. 
+To keep the road ownership consistent between the regional and city data, the adjustments are made firstly among the common IDs and then based on the length and geometry with a precision setting to make sure the exact one-on-one match. Some extra segments in either dataset and different road segments with the same ID or on the same road cause the remaining mismatches. These mismatches are usually in small segments, which are considered minor issues and ignored. However, more work might be required to ensure the different road segments in either are necessarily matched, particularly on the mismatches in multiple road segments on the same road or large gaps.
