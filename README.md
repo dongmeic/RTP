@@ -1,5 +1,5 @@
 # RTP
-The repo is to collect data for RTP performance analysis and mapping
+The repo is to collect data for RTP performance analysis and mapping. There are scripts using two python environments. To update the arcpy environment, clone the environment in ArcGIS Pro into C:\Users\clid1852\AppData\Local\ESRI\conda\envs. Delete the clone when there is an update in ArcGIS Pro.
 
 # Required datasets for performance analysis
 
@@ -59,7 +59,7 @@ Project modes
 
 ### Project review and GIS data update
 
-The final data is saved in the folder T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData\Updated. The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data. 
+The final data is saved in the folder T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\GISData\Updated. The script [*reivew_RTP.py*](https://github.com/dongmeic/RTP/blob/main/projlist/review_RTP.py) includes all the functions used to review RTP project list spreadsheets and GIS data.
 
 Four rounds of review were conducted to match RTP list and GIS data. The RTP IDs in the 2045 table were matched with the RTP IDs in the existing GIS data first and then compared with the RTP IDs in the 2040 table, and both are by category. Some RTP IDs are repeated between different categories, which caused a review in the duplicated RTP IDs before updating the attribute table with the 2045 data. The RTP IDs are also duplicated in the exiting GIS data and so the spatial features with the same RTP IDs were reviewed. As such, four steps were followed to create the 2045 GIS data.
 
@@ -96,6 +96,11 @@ There are issues with duplicated RTP IDs within the same category and between ca
 [Illustrative_Roadway_points](https://services5.arcgis.com/9s1YtFmLS0YTl10F/arcgis/rest/services/Illustrative_Roadway_points/FeatureServer)
 
 # RTP data quality control
+
+## Facilities (bikeways and sidewalks in CLMPO)
+
+The [facilities](https://github.com/dongmeic/RTP/blob/main/data/facilities.ipynb) data includes [bikeways](https://github.com/dongmeic/RTP/blob/main/data/bikeways_MPO.ipynb) and [sidewalks](https://github.com/dongmeic/RTP/blob/main/data/sidewalks_MPO.ipynb), clipped by the boundary of MPO. The bike facility data is updated weekly in RLID Geo from RLID Transportation, a collaborative data layer among cities. Sidewalks and bikeways are combined to be the facilities layer after data cleaning, e.g., excluding the future status in the bike facility and combining the [Coburg bike paths edited](https://github.com/dongmeic/RTP/blob/main/data/coburg_sidewalks_bike_lanes.ipynb).
+
 ## Centerline road ownership comparison among street data sets
 
 The webmap [Centerlines by Owner](https://arcg.is/19naGy0) shows the results of the comparisons. Go to the Content column to select the specific layers for more information. The script [QC_centerlines.py](https://github.com/dongmeic/RTP/blob/main/data/QC_centerlines.py) lists the functions used to review and update the regional centerline network data.
@@ -124,7 +129,7 @@ Detailed QC output can be found in T:\MPO\RTP\FY20 2045 Update\Data and Resource
 
 #### Review after the RLID update
 
-The ArcGIS Pro project `T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.aprx` shows the changes before and after the updates of road ownership. The [main changes](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVIHdP4GmRNNtbSrdKh0HrYBXF19Qg7bQIDu921kZr_gtg?e=mB7QAR) in road ownership are in the Delta Highway, from LCPW to ODOT, Northwest Expreseeway, from EUG to LCPW, and Coburg Road (near E 2nd Ave), from EUG to ODOT, although some differences between the regional and city data still exist. The rest differences (not limited on road ownership difference) are shown in small segments, mainly in three conditions: 1) either the Central Lane centerlines or Eugene streets have extra segments, 2) the IDs are different, and 3) the IDs are the same but with different numbers of features.   
+The ArcGIS Pro project `T:\MPO\RTP\FY20 2045 Update\Data and Resources\Data\Centerline_Network.aprx` shows the changes before and after the updates of road ownership. The [main changes](https://lanecouncilofgovernments-my.sharepoint.com/:w:/g/personal/dchen_lcog_org/EVIHdP4GmRNNtbSrdKh0HrYBXF19Qg7bQIDu921kZr_gtg?e=mB7QAR) in road ownership are in the Delta Highway, from LCPW to ODOT, Northwest Expressway, from EUG to LCPW, and Coburg Road (near E 2nd Ave), from EUG to ODOT, although some differences between the regional and city data still exist. The rest differences (not limited on road ownership difference) are shown in small segments, mainly in three conditions: 1) either the Central Lane centerlines or Eugene streets have extra segments, 2) the IDs are different, and 3) the IDs are the same but with different numbers of features.   
 
 #### Update the data for DKS
 
