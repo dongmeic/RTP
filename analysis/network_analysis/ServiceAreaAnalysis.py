@@ -13,7 +13,7 @@ else:
     
 def ServiceAreaAnalysis(layer_name = "Service Area", 
                        impedance = "Biking by distance",
-                       dist = 17582.4,
+                       dist = 17582.4, # this distance unit is feet
                        facilities = os.path.join(input_folder, "PerformanceAnalysis", 
                                                  "service_transit_equity", "service_stops.shp"),
                        mode = "Biking",
