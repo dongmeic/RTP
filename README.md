@@ -57,6 +57,8 @@ Project modes
 # RTP map series
 ## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb)
 
+This map is outdated. The RTP layer is not available. 
+
 ## [Mapping RTP projects (2045)](https://arcg.is/1jmOyr)
 
 ### Project review and GIS data update
