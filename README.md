@@ -52,7 +52,7 @@ Project modes
 
 8. Plan designations (future land use)
 
-# [Steps for the calculation of accessibility]()
+# [Steps for the calculation of accessibility](https://github.com/dongmeic/RTP/blob/main/analysis/Steps.png)
 
 # RTP map series
 ## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb)
