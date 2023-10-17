@@ -38,15 +38,15 @@ Project modes
 
 3. Facilities
 
-4. Access to opportunities (off-peak and peaking)
+4. Access to opportunities (off-peak and peaking, from the travel demand model)
 
 · Workplace accessibility auto
 
 · Workplace accessibility transit
 
-5. Communities of concern
+5. Historically excluded populations (Title VI data)
 
-6. Households and employment
+6. Households and employment (from UrbanSim)
 
 7. Land use
 
