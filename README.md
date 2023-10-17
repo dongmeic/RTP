@@ -20,29 +20,29 @@ The MPO facilities include bikeways and sidewalks. The steps for performance ana
 # Required datasets for [web-mapping](https://arcg.is/0L8azS)
 1. Transportation
 
-·        Roads (interstate, state freeways, arterials)
+· Roads (interstate, state freeways, arterials)
 
-·        Transit network and stops
+· Transit network and stops
 
-·        Bike/Ped facilities
+· Bike/Ped facilities
 
 2. RTP
 
 Project modes
 
-·        Roads
+· Roads
 
-·        Transit
+· Transit
 
-·        Bike/Ped
+· Bike/Ped
 
 3. Facilities
 
 4. Access to opportunities (off-peak and peaking)
 
-·        Workplace accessibility auto
+· Workplace accessibility auto
 
-·        Workplace accessibility transit
+· Workplace accessibility transit
 
 5. Communities of concern
 
@@ -51,6 +51,8 @@ Project modes
 7. Land use
 
 8. Plan designations (future land use)
+
+# [Steps for the calculation of accessibility]()
 
 # RTP map series
 ## [Scale-based RTP mapping (2040)](https://arcg.is/yL0nb)
